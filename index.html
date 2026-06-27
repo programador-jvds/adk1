@@ -1,0 +1,2837 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<title>Alderico Kleimpaul</title>
+
+<link rel="icon" href="imagens/logo.png" type="image/png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:80px;
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  width:100%;
+  max-width:100vw;
+  overflow-x:hidden;
+  transition:.35s ease;
+  position:relative;
+}
+
+body.menu-open{
+  overflow:hidden;
+}
+
+:root{
+  --orange:#ff6a00;
+  --orange-light:#ff8f3c;
+  --green:#1d7a49;
+  --radius:30px;
+  --transition:.35s ease;
+  --shadow: 0 10px 40px rgba(0,0,0,.08);
+  --shadow-hover: 0 25px 80px rgba(255,106,0,.18);
+}
+
+body.light{
+  --bg:#f4f7fb;
+  --bg-secondary:#ffffff;
+  --text:#111827;
+  --text-soft:#000000;
+  --card:#ffffff;
+  --border:rgba(0,0,0,.08);
+  --glass:rgba(255,255,255,.72);
+  background:var(--bg);
+  color:var(--text);
+}
+
+body.dark{
+  --bg:#0b1118;
+  --bg-secondary:#121922;
+  --text:#ffffff;
+  --text-soft:#ffffff;
+  --card:#161f2b;
+  --border:rgba(255,255,255,.08);
+  --glass:rgba(255,255,255,.06);
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+  padding:0 clamp(0.75rem, 4vw, 2rem);
+  box-sizing:border-box;
+}
+
+section{
+  width:100%;
+  padding:clamp(60px, 12vw, 120px) 0;
+  position:relative;
+  box-sizing:border-box;
+}
+
+img{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  background:transparent;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:var(--text-soft);
+  opacity:0.6;
+}
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  max-width:100vw;
+  z-index:999;
+  backdrop-filter:blur(16px);
+  background:rgba(0,0,0,.18);
+  border-bottom:1px solid var(--border);
+}
+
+.navbar{
+  height:clamp(60px, 12vh, 92px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:clamp(0.5rem, 2vw, 1.2rem);
+  padding:0 clamp(0.75rem, 4vw, 2rem);
+  box-sizing:border-box;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:clamp(0.7rem, 2vw, 1rem);
+  cursor:pointer;
+  transition:var(--transition);
+  flex-shrink:0;
+  min-width:fit-content;
+}
+
+.logo:hover{
+  opacity:0.8;
+}
+
+.logo img{
+  width:clamp(48px, 10vw, 64px);
+  height:clamp(48px, 10vw, 64px);
+  object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+}
+
+.logo-text strong{
+  color:var(--text);
+  font-size:clamp(0.85rem, 3vw, 1rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  line-height:1;
+}
+
+.logo-text span{
+  color:var(--text-soft);
+  font-size:clamp(0.65rem, 2vw, 0.82rem);
+  line-height:1;
+}
+
+.menu-overlay{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.5);
+  z-index:997;
+}
+
+.menu-overlay.show{
+  display:block;
+}
+
+.menu-toggle{
+  display:none;
+  flex-direction:column;
+  gap:clamp(4px, 1vw, 6px);
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  z-index:1001;
+  padding:clamp(0.5rem, 1vw, 0.75rem);
+  flex-shrink:0;
+}
+
+.menu-toggle span{
+  width:clamp(24px, 6vw, 28px);
+  height:3px;
+  background:var(--text);
+  border-radius:999px;
+  transition:.4s ease;
+  display:block;
+}
+
+.menu-toggle.active span:nth-child(1){
+  transform:rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2){
+  opacity:0;
+}
+
+.menu-toggle.active span:nth-child(3){
+  transform:rotate(-45deg) translate(7px, -7px);
+}
+
+.menu {
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 2vw, 0.75rem);
+  flex-grow:1;
+}
+
+.menu a {
+  color:var(--text-soft);
+  font-weight:700;
+  padding:clamp(0.6rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.3rem);
+  border-radius:14px;
+  transition:var(--transition);
+  position:relative;
+  white-space:nowrap;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.menu a::after {
+  content:'';
+  position:absolute;
+  bottom:8px;
+  left:clamp(0.75rem, 2vw, 1.2rem);
+  right:clamp(0.75rem, 2vw, 1.2rem);
+  height:2px;
+  background:var(--orange);
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:0.3s ease;
+}
+
+.menu a:hover {
+  color:var(--text);
+}
+
+.menu a:hover::after {
+  transform:scaleX(1);
+  transform-origin:left;
+}
+
+.support-btn {
+  display:none;
+  padding:clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.6rem) !important;
+  font-size:clamp(0.8rem, 1.8vw, 0.95rem) !important;
+  border-radius:18px !important;
+  flex-shrink:0;
+}
+
+.header-controls {
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 2vw, 0.75rem);
+  flex-shrink:0;
+}
+
+@media(max-width:1024px) {
+  .menu {
+    display:none;
+    position:fixed;
+    top:clamp(60px, 12vh, 92px);
+    left:0;
+    right:0;
+    width:100%;
+    max-width:100vw;
+    flex-direction:column;
+    gap:0;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    padding:clamp(1rem, 3vw, 1.5rem);
+    box-sizing:border-box;
+    z-index:998;
+    box-shadow:var(--shadow);
+    overflow-y:auto;
+    max-height:calc(100vh - clamp(60px, 12vh, 92px));
+  }
+
+  .menu.show {
+    display:flex;
+  }
+
+  .menu a {
+    padding:clamp(1rem, 2vw, 1.2rem) clamp(0.75rem, 3vw, 1.5rem);
+    width:100%;
+    border-radius:0;
+    font-size:clamp(0.9rem, 2.5vw, 1rem);
+  }
+
+  .menu a::after{
+    display:none;
+  }
+
+  .menu-toggle {
+    display:flex;
+  }
+
+  .support-btn {
+    display:flex !important;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-top:clamp(0.75rem, 2vw, 1rem);
+    gap:0.5rem;
+  }
+
+  .header-controls {
+    gap:clamp(0.35rem, 1.5vw, 0.5rem);
+  }
+}
+
+.btn{
+  border:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(0.5rem, 1.5vw, 0.75rem);
+  transition:var(--transition);
+  font-weight:700;
+  white-space:nowrap;
+  font-size:clamp(0.8rem, 2vw, 0.95rem);
+}
+
+.btn-primary{
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  color:white;
+  padding:clamp(0.9rem, 2vw, 1rem) clamp(1.5rem, 3vw, 1.6rem);
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(255,106,0,.3);
+}
+
+.btn-primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(255,106,0,.35);
+}
+
+.btn-outline{
+  padding:clamp(0.9rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.5rem);
+  border-radius:18px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+}
+
+.btn-outline:hover{
+  background:var(--orange);
+  color:white;
+}
+
+.btn i {
+  font-size:clamp(0.9rem, 2vw, 1.1rem);
+}
+
+.theme-toggle{
+  width:clamp(44px, 10vw, 52px);
+  height:clamp(44px, 10vw, 52px);
+  border:none;
+  border-radius:18px;
+  cursor:pointer;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:clamp(0.95rem, 2vw, 1.1rem);
+  transition:var(--transition);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.theme-toggle:hover{
+  transform:translateY(-3px);
+  background:var(--orange);
+  color:white;
+}
+
+.hero{
+    position:relative;
+    --hero-bg:url("imagens/banner01.png");
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.60)),
+        var(--hero-bg);
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    z-index:-2;
+    transition:opacity .5s ease;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:clamp(2rem, 8vw, 4rem);
+  align-items:center;
+  width:100%;
+  max-width:100%;
+}
+
+.hero-content{
+  animation:fadeUp 1s ease;
+  min-width:0;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:clamp(0.5rem, 1.5vw, 0.75rem);
+  padding:clamp(0.7rem, 2vw, 1rem) clamp(1rem, 2.5vw, 1.3rem);
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.1);
+  color:white;
+  margin-bottom:clamp(1.5rem, 5vw, 2rem);
+  font-size:clamp(0.8rem, 2vw, 0.92rem);
+  font-weight:700;
+}
+
+.hero h1{
+  font-size:clamp(1.8rem, 8vw, 3.5rem);
+  line-height:1.1;
+  margin-bottom:clamp(1.5rem, 4vw, 2rem);
+  color:white;
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  word-wrap:break-word;
+}
+
+.hero h1 span{
+  background:linear-gradient(135deg, var(--orange), #ffd0aa);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero p{
+  max-width:100%;
+  color:#e5e7eb;
+  font-size:clamp(0.95rem, 2.5vw, 1.1rem);
+  margin-bottom:clamp(2rem, 5vw, 2.5rem);
+  line-height:1.6;
+}
+
+.hero-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:clamp(0.75rem, 2vw, 1rem);
+  width:100%;
+}
+
+.hero-buttons .btn{
+  flex:1;
+  min-width:clamp(120px, 40vw, 200px);
+}
+
+.glass-card{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(18px);
+  border-radius:36px;
+  padding:clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow:0 20px 80px rgba(0,0,0,.3);
+  animation:fadeUp 1.2s ease;
+  min-width:0;
+}
+
+.glass-card h3{
+  font-size:clamp(1.3rem, 4vw, 1.8rem);
+  color:white;
+  margin-bottom:clamp(1rem, 2vw, 1.2rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  line-height:1.2;
+}
+
+.slogan{
+    font-weight:700;
+    font-style:italic;
+}
+
+.slogan2{
+    font-weight:700;
+    text-decoration:underline;
+    text-decoration-color:#ff7a1a;
+    text-underline-offset:6px;
+}
+
+.slogan3{
+    text-align:center;
+    font-size:1.05rem;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:.3px;
+    line-height:1.6;
+    max-width:320px;
+    margin:0 auto 24px;
+}
+
+.glass-card p{
+  color:#d6d6d6;
+  font-size:clamp(0.9rem, 2vw, 1rem);
+  line-height:1.6;
+}
+
+.hero-stats{
+  margin-top:clamp(1.5rem, 3vw, 2rem);
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:clamp(1rem, 2vw, 1.2rem);
+}
+
+.hero-stat{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:22px;
+  padding:clamp(1rem, 2vw, 1.4rem);
+}
+
+.hero-stat h4{
+  font-size:clamp(1.2rem, 3vw, 1.6rem);
+  color:var(--orange);
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  line-height:1;
+}
+
+.hero-stat p{
+  margin-top:clamp(0.4rem, 1vw, 0.6rem);
+  font-size:clamp(0.75rem, 1.8vw, 0.95rem);
+  line-height:1.3;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:clamp(3rem, 8vw, 5rem);
+}
+
+.section-title span{
+  color:var(--orange);
+  letter-spacing:3px;
+  font-weight:800;
+  font-size:clamp(0.7rem, 2vw, 0.85rem);
+  font-family:'Poppins',sans-serif;
+}
+
+.section-title h2{
+  font-size:clamp(1.6rem, 5vw, 2.8rem);
+  margin-top:clamp(0.8rem, 2vw, 1.2rem);
+  margin-bottom:clamp(1rem, 2vw, 1.3rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+  line-height:1.2;
+}
+
+.section-title p{
+  max-width:100%;
+  margin:auto;
+  color:var(--text-soft);
+  font-size:clamp(0.9rem, 2.5vw, 1.05rem);
+  line-height:1.6;
+  padding:0 clamp(0.5rem, 3vw, 1rem);
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(clamp(200px, 40vw, 280px), 1fr));
+  gap:clamp(1.5rem, 3vw, 1.8rem);
+  width:100%;
+  max-width:100%;
+}
+
+.product-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:32px;
+  overflow:hidden;
+  transition:var(--transition);
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  max-width:100%;
+}
+
+.product-card:hover{
+  transform:translateY(-10px);
+  box-shadow:var(--shadow-hover);
+  border-color:rgba(255,106,0,.3);
+}
+
+.product-image{
+  height:clamp(150px, 30vw, 260px);
+  overflow:hidden;
+  width:100%;
+}
+
+.product-image img{
+  height:100%;
+  width:100%;
+  object-fit:cover;
+  transition:.7s ease;
+}
+
+.product-card:hover img{
+  transform:scale(1.08);
+}
+
+.product-content{
+  padding:clamp(1.5rem, 3vw, 1.8rem);
+  flex-grow:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.product-tag{
+  display:inline-flex;
+  padding:clamp(0.5rem, 1vw, 0.6rem) clamp(0.8rem, 2vw, 0.9rem);
+  border-radius:999px;
+  background:rgba(255,106,0,.12);
+  color:var(--orange);
+  font-size:clamp(0.7rem, 1.5vw, 0.8rem);
+  font-weight:700;
+  margin-bottom:clamp(0.8rem, 2vw, 1rem);
+  width:fit-content;
+}
+
+.product-content h3{
+  color:var(--text);
+  font-size:clamp(1.1rem, 3vw, 1.3rem);
+  margin-bottom:clamp(0.6rem, 1.5vw, 0.8rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  line-height:1.2;
+}
+
+.product-content p{
+  color:var(--text-soft);
+  margin-bottom:clamp(1.2rem, 2vw, 1.5rem);
+  flex-grow:1;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  line-height:1.5;
+}
+
+.product-link{
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 1vw, 0.75rem);
+  color:var(--orange);
+  font-weight:800;
+  margin-top:auto;
+  font-size:clamp(0.8rem, 1.8vw, 0.95rem);
+}
+
+.carousel-mobile{
+  display:none;
+  width:100%;
+  max-width:100vw;
+}
+
+@media(max-width:1024px){
+
+  .carousel-mobile{
+    display:block;
+  }
+
+  .products-grid{
+    display:none;
+  }
+
+  .carousel-wrapper{
+    position:relative;
+    overflow:hidden;
+    width:100%;
+    max-width:100vw;
+  }
+
+  .carousel-track{
+    display:flex;
+    gap:clamp(1rem, 3vw, 1.5rem);
+    overflow-x:auto;
+    scroll-behavior:smooth;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding:0 clamp(0.75rem, 3vw, 1.2rem);
+    width:100%;
+    max-width:100vw;
+    box-sizing:border-box;
+  }
+
+  .carousel-track::-webkit-scrollbar{
+    display:none;
+  }
+
+  .carousel-item{
+    flex:0 0 calc(100vw - clamp(1.5rem, 6vw, 2.4rem));
+    min-width:calc(100vw - clamp(1.5rem, 6vw, 2.4rem));
+    max-width:calc(100vw - clamp(1.5rem, 6vw, 2.4rem));
+  }
+
+  .carousel-controls{
+    display:flex;
+    justify-content:center;
+    gap:clamp(0.8rem, 2vw, 1rem);
+    margin-top:clamp(1.5rem, 3vw, 1.8rem);
+    padding:0 clamp(0.75rem, 3vw, 1.2rem);
+  }
+
+  .carousel-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--border);
+    border:none;
+    cursor:pointer;
+    transition:var(--transition);
+    flex-shrink:0;
+  }
+
+  .carousel-dot.active{
+    background:var(--orange);
+    width:24px;
+    border-radius:999px;
+  }
+
+}
+
+.stories-section{
+  padding:clamp(60px, 12vw, 120px) 0;
+}
+
+.stories-wrapper{
+  display:flex;
+  gap:clamp(1rem, 3vw, 1.5rem);
+  overflow-x:auto;
+  padding:clamp(1rem, 2vw, 1.5rem) 0;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+}
+
+.stories-wrapper::-webkit-scrollbar{
+  display:none;
+}
+
+.story-btn{
+  flex:0 0 clamp(90px, 20vw, 140px);
+  min-width:clamp(90px, 20vw, 140px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(0.6rem, 1.5vw, 0.8rem);
+  background:none;
+  border:none;
+  cursor:pointer;
+  transition:var(--transition);
+  padding:0.5rem;
+}
+
+.story-btn:hover{
+  transform:scale(1.05);
+}
+
+.story-ring{
+  width:clamp(90px, 20vw, 140px);
+  height:clamp(90px, 20vw, 140px);
+  padding:clamp(3px, 1vw, 5px);
+  background:linear-gradient(135deg, var(--orange), var(--orange-light), #ffb347);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(255, 106, 0, 0.3);
+  transition:var(--transition);
+}
+
+.story-btn:hover .story-ring{
+  box-shadow:0 10px 30px rgba(255, 106, 0, 0.5);
+  transform:scale(1.08);
+}
+
+.story-ring img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--bg);
+  aspect-ratio:1;
+}
+
+.story-name{
+  text-align:center;
+  font-weight:700;
+  font-size:clamp(0.75rem, 2vw, 0.9rem);
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+}
+
+.stories-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  z-index:10000;
+  backdrop-filter:blur(8px);
+  animation:fadeIn .3s ease;
+}
+
+.stories-modal.show{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.stories-modal-content{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  max-width:100vw;
+  max-height:100vh;
+}
+
+.stories-modal-container{
+  position:relative;
+  width:clamp(320px, 90vw, 550px);
+  height:clamp(550px, 90vh, 900px);
+  background:linear-gradient(135deg, rgba(0,0,0,0.85), rgba(20,20,30,0.95));
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 30px 100px rgba(0,0,0,.9);
+  display:flex;
+  flex-direction:column;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.stories-progress-bar{
+  display:flex;
+  gap:4px;
+  padding:clamp(0.8rem, 2vw, 1.2rem);
+  background:rgba(0,0,0,.4);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.stories-progress{
+  flex:1;
+  height:3px;
+  background:rgba(255,255,255,.2);
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.stories-progress.active{
+  background:var(--orange);
+}
+
+.stories-progress-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--orange), var(--orange-light));
+  width:0;
+  animation:progressFill 5s linear forwards;
+}
+
+@keyframes progressFill{
+  from{width:0;}
+  to{width:100%;}
+}
+
+.stories-header{
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
+  padding:clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 1.5rem) 0;
+  color:white;
+  font-size:clamp(0.85rem, 2vw, 1rem);
+}
+
+.stories-avatar{
+  width:clamp(45px, 10vw, 55px);
+  height:clamp(45px, 10vw, 55px);
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--orange);
+  box-shadow:0 4px 12px rgba(255, 106, 0, 0.3);
+}
+
+.stories-header-text{
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+}
+
+.stories-header-text strong{
+  font-weight:700;
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(0.9rem, 2vw, 1.05rem);
+}
+
+.stories-header-text span{
+  font-size:clamp(0.7rem, 1.8vw, 0.85rem);
+  opacity:0.7;
+}
+
+.stories-close{
+  position:absolute;
+  top:clamp(0.8rem, 2vw, 1.2rem);
+  right:clamp(0.8rem, 2vw, 1.2rem);
+  background:rgba(255,255,255,.15);
+  border:none;
+  color:white;
+  width:clamp(44px, 10vw, 54px);
+  height:clamp(44px, 10vw, 54px);
+  border-radius:50%;
+  cursor:pointer;
+  font-size:clamp(1.1rem, 2.5vw, 1.4rem);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+  z-index:10001;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.stories-close:hover{
+  background:rgba(255,255,255,.25);
+  transform:scale(1.1);
+  border-color:rgba(255,255,255,.2);
+}
+
+.stories-image-wrapper{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  padding:clamp(0.8rem, 2vw, 1.2rem);
+  min-height:0;
+  background:rgba(0,0,0,.3);
+}
+
+.stories-image-wrapper img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:12px;
+  animation:zoomIn .4s ease;
+}
+
+@keyframes zoomIn{
+  from{
+    opacity:0;
+    transform:scale(0.95);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.stories-nav-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.15);
+  color:white;
+  width:clamp(50px, 12vw, 65px);
+  height:clamp(50px, 12vw, 65px);
+  border-radius:50%;
+  cursor:pointer;
+  font-size:clamp(1.3rem, 3vw, 1.8rem);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+  z-index:10001;
+}
+
+.stories-nav-btn:hover{
+  background:rgba(255,255,255,.22);
+  transform:translateY(-50%) scale(1.12);
+  border-color:rgba(255,255,255,.25);
+}
+
+.stories-nav-btn.prev{
+  left:clamp(0.8rem, 2vw, 1.2rem);
+}
+
+.stories-nav-btn.next{
+  right:clamp(0.8rem, 2vw, 1.2rem);
+}
+
+.stories-nav-btn:disabled{
+  opacity:0.25;
+  cursor:not-allowed;
+  background:rgba(255,255,255,.08);
+}
+
+.stories-nav-btn:disabled:hover{
+  background:rgba(255,255,255,.08);
+  transform:translateY(-50%);
+  border-color:rgba(255,255,255,.1);
+}
+
+.stories-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:clamp(0.8rem, 2vw, 1rem);
+  padding:clamp(1rem, 2vw, 1.5rem);
+  background:rgba(0,0,0,.4);
+  border-top:1px solid rgba(255,255,255,.05);
+  color:white;
+  font-size:clamp(0.8rem, 2vw, 0.95rem);
+  min-height:60px;
+}
+
+.stories-counter{
+  font-weight:700;
+  font-family:'Poppins',sans-serif;
+  background:rgba(255, 106, 0, 0.2);
+  padding:0.4rem 0.8rem;
+  border-radius:12px;
+  border:1px solid rgba(255, 106, 0, 0.3);
+}
+
+.stories-description{
+  flex:1;
+  text-align:center;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  opacity:0.9;
+}
+
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(2rem, 8vw, 3.5rem);
+  align-items:center;
+  width:100%;
+  max-width:100%;
+}
+
+.about-image{
+  position:relative;
+  width:100%;
+  max-width:100%;
+}
+
+.about-image img{
+  border-radius:36px;
+  box-shadow:0 30px 80px rgba(0,0,0,.25);
+  width:100%;
+  height:auto;
+}
+
+.about-float{
+  position:absolute;
+  bottom:clamp(-1.5rem, -5vw, -2rem);
+  right:clamp(-1.5rem, -5vw, -2rem);
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  color:white;
+  width:clamp(200px, 35vw, 260px);
+  padding:clamp(1.5rem, 3vw, 1.8rem);
+  border-radius:28px;
+}
+
+.about-float h3{
+  font-size:clamp(2rem, 6vw, 2.2rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  line-height:1;
+}
+
+.about-content h2{
+  font-size:clamp(1.6rem, 5vw, 2.5rem);
+  line-height:1.1;
+  margin-bottom:clamp(1.5rem, 3vw, 1.8rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+}
+
+.about-content p{
+  color:var(--text-soft);
+  margin-bottom:clamp(1rem, 2vw, 1.3rem);
+  font-size:clamp(0.9rem, 2.5vw, 1rem);
+  line-height:1.6;
+}
+
+.about-list{
+  display:grid;
+  gap:clamp(1.2rem, 2vw, 1.5rem);
+  margin-top:clamp(2rem, 4vw, 2.5rem);
+}
+
+.about-item{
+  display:flex;
+  gap:clamp(1rem, 2vw, 1.3rem);
+  align-items:flex-start;
+}
+
+.about-item h4{
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  font-size:clamp(0.95rem, 2vw, 1.05rem);
+  line-height:1.3;
+}
+
+.about-item p{
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  line-height:1.5;
+}
+
+.about-icon{
+  min-width:clamp(50px, 10vw, 62px);
+  height:clamp(50px, 10vw, 62px);
+  border-radius:20px;
+  background:rgba(255,106,0,.12);
+  color:var(--orange);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(1rem, 2.5vw, 1.3rem);
+  flex-shrink:0;
+}
+
+.contact-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(1.5rem, 3vw, 2rem);
+  width:100%;
+  max-width:100%;
+}
+
+.contact-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:32px;
+  padding:clamp(1.8rem, 3vw, 2.5rem);
+  box-shadow:var(--shadow);
+  width:100%;
+  max-width:100%;
+}
+
+.contact-card h3{
+  font-size:clamp(1.3rem, 4vw, 1.6rem);
+  margin-bottom:clamp(1.5rem, 3vw, 2rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  line-height:1.2;
+}
+
+.contact-info{
+  display:grid;
+  gap:clamp(1.2rem, 2vw, 1.5rem);
+}
+
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:clamp(1rem, 2vw, 1.2rem);
+}
+
+.contact-item i{
+  width:clamp(50px, 10vw, 60px);
+  height:clamp(50px, 10vw, 60px);
+  border-radius:20px;
+  background:rgba(255,106,0,.12);
+  color:var(--orange);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:clamp(1rem, 2vw, 1.2rem);
+  flex-shrink:0;
+}
+
+.contact-item strong{
+  display:block;
+  margin-bottom:clamp(0.2rem, 0.5vw, 0.3rem);
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(0.9rem, 2vw, 1rem);
+}
+
+.contact-item p{
+  color:var(--text-soft);
+  white-space:normal;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  line-height:1.4;
+}
+
+.contact-buttons{
+  display:flex;
+  gap:clamp(1rem, 2vw, 1.3rem);
+  flex-wrap:wrap;
+  margin-top:clamp(2rem, 3vw, 2.5rem);
+}
+
+.contact-buttons .btn{
+  flex:1;
+  min-width:clamp(100px, 40vw, 150px);
+}
+
+.map{
+  width:100%;
+  overflow:hidden;
+  border-radius:32px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+
+.map iframe{
+  width:100%;
+  height:450px;
+  border:none;
+  display:block;
+}
+
+@media(max-width:768px){
+  .map iframe{
+    height:300px;
+  }
+}
+
+footer{
+  padding:clamp(3rem, 8vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  border-top:1px solid var(--border);
+}
+
+.footer-wrapper{
+  display:flex;
+  justify-content:space-between;
+  gap:clamp(1.5rem, 3vw, 2rem);
+  flex-wrap:wrap;
+  align-items:flex-start;
+}
+
+.footer-wrapper h3{
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  font-size:clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom:clamp(0.5rem, 1vw, 0.8rem);
+}
+
+.footer-wrapper p{
+  color:var(--text-soft);
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  line-height:1.5;
+}
+
+.footer-social{
+  display:flex;
+  gap:clamp(0.8rem, 2vw, 1rem);
+  flex-wrap:wrap;
+}
+
+.footer-social a{
+  width:clamp(44px, 10vw, 54px);
+  height:clamp(44px, 10vw, 54px);
+  border-radius:18px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+  font-size:clamp(1rem, 2vw, 1.2rem);
+  flex-shrink:0;
+}
+
+.footer-social a:hover{
+  background:var(--orange);
+  color:white;
+  transform:translateY(-5px);
+}
+
+.footer-bottom{
+  margin-top:clamp(2rem, 3vw, 2.5rem);
+  padding-top:clamp(1.5rem, 2vw, 2rem);
+  border-top:1px solid var(--border);
+  text-align:center;
+  color:var(--text-soft);
+  font-size:clamp(0.8rem, 1.8vw, 0.9rem);
+  line-height:1.5;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+  }
+  to{
+    opacity:1;
+  }
+}
+
+@keyframes slideIn{
+  from{
+    opacity:0;
+    transform:translateX(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+
+@media(max-width:1024px){
+
+  .hero-grid,
+  .about-grid,
+  .contact-wrapper{
+    grid-template-columns:1fr;
+  }
+
+  section{
+    padding:clamp(45px, 10vw, 80px) 0;
+  }
+
+  .hero{
+    min-height:auto;
+    padding-top:clamp(3rem, 5vw, 4rem);
+  }
+
+  .hero-buttons{
+    flex-direction:column;
+  }
+
+  .hero-buttons .btn{
+    width:100%;
+    min-width:unset;
+  }
+
+  .about-float{
+    position:relative;
+    bottom:auto;
+    right:auto;
+    margin-top:clamp(1.5rem, 3vw, 2rem);
+    width:100%;
+  }
+
+  .contact-buttons .btn{
+    min-width:unset;
+  }
+
+  .stories-modal-container{
+    border-radius:15px;
+  }
+}
+
+@media(max-width:640px){
+
+  .navbar{
+    height:clamp(56px, 10vh, 70px);
+  }
+
+  .hero{
+    margin-top:clamp(56px, 10vh, 70px);
+    min-height:calc(100vh - clamp(56px, 10vh, 70px));
+  }
+
+  .menu{
+    top:clamp(56px, 10vh, 70px) !important;
+    max-height:calc(100vh - clamp(56px, 10vh, 70px)) !important;
+  }
+
+  .product-image{
+    height:clamp(120px, 25vw, 200px);
+  }
+
+  section{
+    padding:clamp(40px, 8vw, 60px) 0;
+  }
+
+  .stories-modal-container{
+    width:95vw;
+    height:95vh;
+  }
+}
+
+@media(max-width:480px){
+
+  .container{
+    padding:0 clamp(0.5rem, 3vw, 1rem);
+  }
+
+  .navbar{
+    height:clamp(54px, 9vh, 64px);
+    gap:clamp(0.25rem, 1.5vw, 0.5rem);
+  }
+
+  .hero{
+    margin-top:clamp(54px, 9vh, 64px);
+    min-height:calc(100vh - clamp(54px, 9vh, 64px));
+  }
+
+  .menu{
+    top:clamp(54px, 9vh, 64px) !important;
+    max-height:calc(100vh - clamp(54px, 9vh, 64px)) !important;
+  }
+
+  .logo img{
+    width:clamp(42px, 8vw, 48px);
+    height:clamp(42px, 8vw, 48px);
+  }
+
+  .hero h1{
+    font-size:clamp(1.4rem, 6vw, 2.2rem);
+  }
+
+  .section-title h2{
+    font-size:clamp(1.2rem, 4vw, 1.8rem);
+  }
+
+  .products-grid{
+    grid-template-columns:1fr;
+  }
+
+  .carousel-item{
+    flex:0 0 calc(100vw - clamp(1rem, 4vw, 1.5rem)) !important;
+    min-width:calc(100vw - clamp(1rem, 4vw, 1.5rem)) !important;
+    max-width:calc(100vw - clamp(1rem, 4vw, 1.5rem)) !important;
+  }
+
+  .carousel-track{
+    padding:0 clamp(0.5rem, 2vw, 0.75rem) !important;
+  }
+
+  .hero-buttons .btn{
+    font-size:clamp(0.75rem, 1.8vw, 0.9rem);
+    padding:clamp(0.75rem, 1.5vw, 0.9rem) clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .contact-buttons{
+    flex-direction:column;
+    gap:clamp(0.75rem, 1.5vw, 1rem);
+  }
+
+  .contact-buttons .btn{
+    width:100%;
+  }
+
+  .stories-modal-container{
+    width:98vw;
+    height:98vh;
+    border-radius:12px;
+  }
+
+}
+
+.stories-wrapper {
+  display: flex;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  overflow-x: auto;
+  padding: clamp(1rem, 2vw, 1.5rem) 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.stories-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Para telas pequenas */
+@media (max-width: 768px) {
+  .stories-wrapper {
+    justify-content: flex-start;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+}
+
+</style>
+
+</head>
+
+<body class="dark">
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<header>
+  <div class="container" style="padding:0;">
+    <div class="navbar">
+
+      <a href="adm.html" class="logo">
+        <img src="imagens/logo.png" alt="Alderico Kleimpaul" loading="lazy">
+        <div class="logo-text">
+          <strong>Alderico Kleimpaul</strong>
+          <span>Tradição, Qualidade e Confiança</span>
+        </div>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="menu" id="menu" role="navigation">
+        <a href="#inicio">Início</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+        <a
+          href="https://wa.me/5549999973286?text=Olá%2C%20Suporte%20Alderico%20Kleimpaul%2C%20tudo%20bem%3F"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary support-btn"
+        >
+          <i class="fas fa-headset"></i>
+          <span>Suporte</span>
+        </a>
+      </nav>
+
+      <div class="header-controls">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          title="Alternar tema"
+          aria-label="Alternar tema claro/escuro"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+
+<div class="container">
+
+<div class="hero-grid">
+
+<div class="hero-content">
+
+<div class="hero-badge">
+<i class="fa-solid fa-award"></i>
+<span>Referência STIHL em Xanxerê</span>
+</div>
+
+<h1>
+A força que impulsiona o seu
+<span>trabalho todos os dias</span>
+</h1>
+
+<p class="slogan2">
+Venda, manutenção e assistência técnica
+para linha STIHL com atendimento especializado,
+peças originais e suporte profissional.
+</p>
+
+<div class="hero-buttons">
+
+<a href="#contato" class="btn btn-primary">
+<i class="fab fa-whatsapp"></i>
+<span>Falar agora</span>
+</a>
+
+<a href="#produtos" class="btn btn-outline">
+<i class="fa-solid fa-arrow-down"></i>
+<span>Ver equipamentos</span>
+</a>
+
+</div>
+
+</div>
+
+<div class="glass-card">
+
+<h3>
+Excelência em equipamentos STIHL
+</h3>
+
+<p class="slogan3">
+Mais de 50 anos entregando confiança,
+qualidade e atendimento especializado.
+</p>
+
+<div class="hero-stats">
+
+<div class="hero-stat">
+<h4>Desde 1970</h4>
+<p class="slogan">É tradição que inspira confiança</p>
+</div>
+
+<div class="hero-stat">
+<h4>100%</h4>
+<p class="slogan">Peças genuínas</p>
+</div>
+
+<div class="hero-stat">
+<h4>Qualidade</h4>
+<p class="slogan">Assistência técnica certificada</p>
+</div>
+
+<div class="hero-stat">
+<h4>STIHL</h4>
+<p class="slogan">Especialistas autorizados</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="stories-section" id="stories">
+  <div class="container">
+    <div class="section-title">
+      <span>FIQUE POR DENTRO</span>
+      <h2>Novidades e Destaques</h2>
+      <p>Descubra as últimas novidades da nossa loja</p>
+    </div>
+
+    <div class="stories-wrapper">
+      <button class="story-btn" data-story="0" aria-label="Ver story de Promoções">
+        <div class="story-ring">
+          <img src="imagens/logo.png" alt="Promoções">
+        </div>
+        <div class="story-name">Promoções</div>
+      </button>
+
+      <button class="story-btn" data-story="1" aria-label="Ver story de STIHL">
+        <div class="story-ring">
+          <img src="imagens/stihl.png" alt="STIHL">
+        </div>
+        <div class="story-name">STIHL</div>
+      </button>
+
+      <button class="story-btn" data-story="2" aria-label="Ver story de Loja">
+        <div class="story-ring">
+          <img src="imagens/loja.png" alt="Loja">
+        </div>
+        <div class="story-name">Oficina</div>
+      </button>
+
+      <button class="story-btn" data-story="3" aria-label="Ver story de Peças">
+        <div class="story-ring">
+          <img src="imagens/pecas.png" alt="Peças">
+        </div>
+        <div class="story-name">Peças</div>
+      </button>
+
+      <button class="story-btn" data-story="4" aria-label="Ver story de Novidades">
+        <div class="story-ring">
+          <img src="imagens/novidades.png" alt="Novidades">
+        </div>
+        <div class="story-name">Novidades</div>
+      </button>
+
+      <button class="story-btn" data-story="5" aria-label="Ver story de Contato">
+        <div class="story-ring">
+          <img src="imagens/contatos.png" alt="Contato">
+        </div>
+        <div class="story-name">Contato</div>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="stories-modal" id="storiesModal">
+  <div class="stories-modal-content">
+    <button class="stories-close" id="storiesClose" aria-label="Fechar stories">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="stories-modal-container">
+      <div class="stories-progress-bar" id="storiesProgressBar"></div>
+
+      <div class="stories-header">
+        <img src="imagens/stihl.png" alt="Avatar do story" class="stories-avatar">
+        <div class="stories-header-text">
+          <strong id="storyTitle">Story</strong>
+          <span id="storyTime">Loja</span>
+        </div>
+      </div>
+
+      <div class="stories-image-wrapper">
+        <img id="storyImage" src="imagens/stihl.png" alt="Imagem do story">
+      </div>
+
+      <div class="stories-footer">
+        <span class="stories-counter"><span id="currentSlide">1</span> / <span id="totalSlides">3</span></span>
+        <span class="stories-description" id="storyDescription">Confira nossas novidades</span>
+      </div>
+
+      <button class="stories-nav-btn prev" id="prevBtn" aria-label="Story anterior">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button class="stories-nav-btn next" id="nextBtn" aria-label="Próximo story">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<section id="produtos">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>PRODUTOS STIHL</span>
+
+<h2>
+Equipamentos de alta performance
+</h2>
+
+<p>
+Soluções profissionais para agricultura,
+jardinagem e manutenção pesada.
+</p>
+
+</div>
+
+<div class="products-grid">
+
+<a href="motosserras.html" class="product-card">
+
+<div class="product-image">
+<img src="imagens/motosserra.png" alt="Motosserras" loading="lazy">
+</div>
+
+<div class="product-content">
+
+<div class="product-tag">
+Linha Profissional
+</div>
+
+<h3>Motosserras</h3>
+
+<p>
+Potência extrema para cortes precisos e trabalhos exigentes.
+</p>
+
+<div class="product-link">
+Ver categoria
+<i class="fa-solid fa-arrow-right"></i>
+</div>
+
+</div>
+
+</a>
+
+<a href="rocadeiras.html" class="product-card">
+
+<div class="product-image">
+<img src="imagens/rocadeira.png" alt="Roçadeiras" loading="lazy">
+</div>
+
+<div class="product-content">
+
+<div class="product-tag">
+Alta Eficiência
+</div>
+
+<h3>Roçadeiras</h3>
+
+<p>
+Desempenho profissional para terrenos e áreas verdes.
+</p>
+
+<div class="product-link">
+Ver categoria
+<i class="fa-solid fa-arrow-right"></i>
+</div>
+
+</div>
+
+</a>
+
+<a href="sopradores.html" class="product-card">
+
+<div class="product-image">
+<img src="imagens/soprador.png" alt="Sopradores" loading="lazy">
+</div>
+
+<div class="product-content">
+
+<div class="product-tag">
+Tecnologia STIHL
+</div>
+
+<h3>Sopradores</h3>
+
+<p>
+Limpeza rápida com potência e ergonomia avançada.
+</p>
+
+<div class="product-link">
+Ver categoria
+<i class="fa-solid fa-arrow-right"></i>
+</div>
+
+</div>
+
+</a>
+
+<a href="lavadoras.html" class="product-card">
+
+<div class="product-image">
+<img src="imagens/lavadora.png" alt="Lavadoras" loading="lazy">
+</div>
+
+<div class="product-content">
+
+<div class="product-tag">
+Alta Pressão
+</div>
+
+<h3>Lavadoras</h3>
+
+<p>
+Resistência e força para limpezas pesadas profissionais.
+</p>
+
+<div class="product-link">
+Ver categoria
+<i class="fa-solid fa-arrow-right"></i>
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+<div class="carousel-mobile">
+
+<div class="carousel-wrapper">
+
+<div class="carousel-track" id="carouselTrack">
+
+<a href="motosserras.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/motosserra.png" alt="Motosserras" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Linha Profissional</div>
+<h3>Motosserras</h3>
+<p>Potência extrema para cortes precisos e trabalhos exigentes.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="rocadeiras.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/rocadeira.png" alt="Roçadeiras" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Alta Eficiência</div>
+<h3>Roçadeiras</h3>
+<p>Desempenho profissional para terrenos e áreas verdes.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="sopradores.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/soprador.png" alt="Sopradores" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Tecnologia STIHL</div>
+<h3>Sopradores</h3>
+<p>Limpeza rápida com potência e ergonomia avançada.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="lavadoras.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/lavadora.png" alt="Lavadoras" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Alta Pressão</div>
+<h3>Lavadoras</h3>
+<p>Resistência e força para limpezas pesadas profissionais.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+</div>
+
+</div>
+
+<div class="carousel-controls" id="carouselControls"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="pecas">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>PRODUTOS</span>
+
+<h2>
+Peças e acessórios
+</h2>
+
+<p>
+Soluções de alta qualidade para manutenção e performance
+</p>
+
+</div>
+
+<div class="products-grid">
+
+<a href="mangueiras-automotivas.html" class="product-card">
+<div class="product-image">
+<img src="imagens/mangueiras.png" alt="Mangueiras Automotivas" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Linha Automotiva</div>
+<h3>Mangueiras Automotivas</h3>
+<p>Alta resistência e durabilidade para aplicações automotivas profissionais.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="rolamentos.html" class="product-card">
+<div class="product-image">
+<img src="imagens/rolamentos.png" alt="Rolamentos" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Peças de Precisão</div>
+<h3>Rolamentos</h3>
+<p>Desempenho confiável para movimento suave e durabilidade elevada.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="mancais.html" class="product-card">
+<div class="product-image">
+<img src="imagens/mancais.png" alt="Mancais" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Eixos</div>
+<h3>Mancais</h3>
+<p>Suporte e estabilidade para eixos e componentes rotativos.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="retentores.html" class="product-card">
+<div class="product-image">
+<img src="imagens/retentores.png" alt="Retentores" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Proteção</div>
+<h3>Retentores</h3>
+<p>Evita vazamentos e protege o sistema mecânico contra contaminações.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="correias.html" class="product-card">
+<div class="product-image">
+<img src="imagens/correias.png" alt="Correias" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Alta Performance</div>
+<h3>Correias</h3>
+<p>Transmissão eficiente de energia e resistência ao desgaste.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="oleos.html" class="product-card">
+<div class="product-image">
+<img src="imagens/oleos.png" alt="Óleos" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Lubrificação</div>
+<h3>Óleos</h3>
+<p>Proteção e desempenho máximo para motores e sistemas mecânicos.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="polias.html" class="product-card">
+<div class="product-image">
+<img src="imagens/polias.png" alt="Polias" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Transmissão Mecânica</div>
+<h3>Polias</h3>
+<p>Componentes essenciais para transmitir força e movimento entre eixos, garantindo eficiência e durabilidade em motores e máquinas.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="pinhao.html" class="product-card">
+<div class="product-image">
+<img src="imagens/pinhao.png" alt="Pinhão de Betoneira" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Engrenagem</div>
+<h3>Pinhão de Betoneira</h3>
+<p>Peça fundamental no sistema de transmissão da betoneira, responsável por transferir torque do motor ao tambor, garantindo mistura eficiente e operação confiável.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+</div>
+
+<div class="carousel-mobile">
+
+<div class="carousel-wrapper">
+
+<div class="carousel-track" id="carouselTrack2">
+
+<a href="mangueiras-automotivas.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/mangueiras.png" alt="Mangueiras Automotivas" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Linha Automotiva</div>
+<h3>Mangueiras Automotivas</h3>
+<p>Alta resistência e durabilidade para aplicações automotivas profissionais.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="rolamentos.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/rolamentos.png" alt="Rolamentos" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Peças de Precisão</div>
+<h3>Rolamentos</h3>
+<p>Desempenho confiável para movimento suave e durabilidade elevada.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="mancais.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/mancais.png" alt="Mancais" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Eixos</div>
+<h3>Mancais</h3>
+<p>Suporte e estabilidade para eixos e componentes rotativos.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="retentores.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/retentores.png" alt="Retentores" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Proteção</div>
+<h3>Retentores</h3>
+<p>Evita vazamentos e protege o sistema mecânico contra contaminações.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="correias.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/correias.png" alt="Correias" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Alta Performance</div>
+<h3>Correias</h3>
+<p>Transmissão eficiente de energia e resistência ao desgaste.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="oleos.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/oleos.png" alt="Óleos" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Lubrificação</div>
+<h3>Óleos</h3>
+<p>Proteção e desempenho máximo para motores e sistemas mecânicos.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="polias.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/polias.png" alt="Polias" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Transmissão Mecânica</div>
+<h3>Polias</h3>
+<p>Componentes essenciais para transmitir força e movimento entre eixos, garantindo eficiência e durabilidade em motores e máquinas.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+<a href="pinhao.html" class="product-card carousel-item">
+<div class="product-image">
+<img src="imagens/pinhao.png" alt="Pinhão de Betoneira" loading="lazy">
+</div>
+<div class="product-content">
+<div class="product-tag">Engrenagem</div>
+<h3>Pinhão de Betoneira</h3>
+<p>Peça fundamental no sistema de transmissão da betoneira, responsável por transferir torque do motor ao tambor, garantindo mistura eficiente e operação confiável.</p>
+<div class="product-link">Ver categoria <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</a>
+
+</div>
+
+</div>
+
+<div class="carousel-controls" id="carouselControls2"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="sobre">
+
+<div class="container">
+
+<div class="about-grid">
+
+<div class="about-image">
+
+<img
+  src="imagens/equipamentos.png"
+  alt="Equipamentos Alderico Kleimpaul"
+  loading="lazy"
+>
+
+<div class="about-float">
+
+<h3>DESDE 1970</h3>
+
+<p class="slogan">
+É tradição que inspira confiança
+</p>
+
+</div>
+
+</div>
+
+<div class="about-content">
+
+<h2>
+Especialistas em equipamentos STIHL
+</h2>
+
+<p>
+A Alderico Kleimpaul é referência em venda,
+manutenção e assistência técnica especializada
+em Xanxerê e região.
+</p>
+
+<p>
+Atendimento técnico profissional, peças genuínas
+e suporte completo para clientes residenciais e profissionais.
+</p>
+
+<div class="about-list">
+
+<div class="about-item">
+
+<div class="about-icon">
+<i class="fa-solid fa-screwdriver-wrench"></i>
+</div>
+
+<div>
+<h4>Assistência Técnica</h4>
+<p>Equipe especializada em manutenção.</p>
+</div>
+
+</div>
+
+<div class="about-item">
+
+<div class="about-icon">
+<i class="fa-solid fa-gears"></i>
+</div>
+
+<div>
+<h4>Peças genuínas</h4>
+<p>Maior durabilidade e desempenho.</p>
+</div>
+
+</div>
+
+<div class="about-item">
+
+<div class="about-icon">
+<i class="fa-solid fa-headset"></i>
+</div>
+
+<div>
+<h4>Atendimento Especializado</h4>
+<p>Suporte técnico completo e especializado.</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="contato">
+
+<div class="container">
+
+<div class="section-title">
+
+<span>CONTATO</span>
+
+<h2>
+Fale com nossa equipe
+</h2>
+
+<p>
+Entre em contato para orçamentos,
+manutenção e suporte técnico.
+</p>
+
+</div>
+
+<div class="contact-wrapper">
+
+<div class="contact-card">
+
+<h3>
+Entre em contato
+</h3>
+
+<div class="contact-info">
+
+<div class="contact-item">
+
+<i class="fab fa-whatsapp"></i>
+
+<div>
+<strong>WhatsApp</strong>
+<p>(49) 99997-3286</p>
+</div>
+
+</div>
+
+<div class="contact-item">
+
+<i class="fa-solid fa-phone"></i>
+
+<div>
+<strong>Telefone</strong>
+<p>(49) 3433-0455</p>
+</div>
+
+</div>
+
+<div class="contact-item">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<div>
+<strong>Endereço</strong>
+<p>
+R. Antônio Vitório Giordani, 34<br>
+Centro - Xanxerê/SC
+</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="contact-buttons">
+
+<a
+href="https://wa.me/5549999973286"
+target="_blank"
+rel="noopener noreferrer"
+class="btn btn-primary"
+>
+
+<i class="fab fa-whatsapp"></i>
+<span>WhatsApp</span>
+
+</a>
+
+<a
+href="https://instagram.com/alderico_kleimpaul"
+target="_blank"
+rel="noopener noreferrer"
+class="btn btn-outline"
+>
+
+<i class="fab fa-instagram"></i>
+<span>Instagram</span>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="map">
+
+<iframe
+loading="lazy"
+allowfullscreen
+referrerpolicy="no-referrer-when-downgrade"
+src="https://www.google.com/maps?q=R.%20Ant%C3%B4nio%20Vit%C3%B3rio%20Giordani,%2034,%20Centro,%20Xanxer%C3%AA,%20SC&output=embed&t=k&z=18"
+title="Localização Alderico Kleimpaul">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<div class="container">
+
+<div class="footer-wrapper">
+
+<div>
+
+<h3>Alderico Kleimpaul</h3>
+
+<p class="slogan">
+    Aqui é tradição, experiência e compromisso com você.
+</p>
+
+</div>
+
+<div class="footer-social">
+
+<a
+href="https://instagram.com/alderico_kleimpaul"
+target="_blank"
+rel="noopener noreferrer"
+title="Instagram Alderico Kleimpaul"
+aria-label="Seguir no Instagram"
+>
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+<a
+href="https://wa.me/5549999973286"
+target="_blank"
+rel="noopener noreferrer"
+title="WhatsApp Alderico Kleimpaul"
+aria-label="Entrar em contato pelo WhatsApp"
+>
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+Todos os direitos reservados.
+
+</div>
+
+</div>
+
+</footer>
+
+<script>
+
+const storiesData = [
+  {
+    title: 'Promoções',
+    images: [
+      { url: 'imagens/logo.png', desc: 'Confira nossas promoções especiais' },
+      { url: 'imagens/logo.png', desc: 'Desconto de até 30% em peças' },
+      { url: 'imagens/logo.png', desc: 'Promoção válida até o final do mês' }
+    ]
+  },
+  {
+    title: 'STIHL',
+    images: [
+      { url: 'imagens/logo.png', desc: 'Equipamentos profissionais STIHL' },
+      { url: 'imagens/logo.png', desc: 'Qualidade comprovada há 90 anos' },
+      { url: 'imagens/logo.png', desc: 'Consulte nossos especialistas' }
+    ]
+  },
+  {
+    title: 'Oficina',
+    images: [
+      { url: 'imagens/logo.png', desc: 'Manutenção profissional' },
+      { url: 'imagens/logo.png', desc: 'Assistência técnica especializada' },
+      { url: 'imagens/logo.png', desc: 'Peças genuínas STIHL' }
+    ]
+  },
+  {
+    title: 'Peças',
+    images: [
+      { url: 'imagens/logo.png', desc: 'Peças de alta qualidade' },
+      { url: 'imagens/logo.png', desc: 'Garantia de originalidade' },
+      { url: 'imagens/logo.png', desc: 'Estoque variado em permanência' }
+    ]
+  },
+  {
+    title: 'Novidades',
+    images: [
+      { url: 'imagens/logo.png', desc: 'Últimas novidades do mercado' },
+      { url: 'imagens/logo.png', desc: 'Lançamentos STIHL 2026' },
+      { url: 'imagens/logo.png', desc: 'Fique por dentro das tendências' }
+    ]
+  },
+  {
+    title: 'Contato',
+    images: [
+      { url: 'imagens/loja.png', desc: 'Visite nossa loja' },
+      { url: 'imagens/logo.png', desc: 'WhatsApp: (49) 99997-3286' },
+      { url: 'imagens/logo.png', desc: 'Estamos sempre prontos para ajudar' }
+    ]
+  }
+];
+
+const storiesModal = document.getElementById('storiesModal');
+const storiesClose = document.getElementById('storiesClose');
+const storyImage = document.getElementById('storyImage');
+const storyTitle = document.getElementById('storyTitle');
+const storyTime = document.getElementById('storyTime');
+const storyDescription = document.getElementById('storyDescription');
+const currentSlideSpan = document.getElementById('currentSlide');
+const totalSlidesSpan = document.getElementById('totalSlides');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const storiesProgressBar = document.getElementById('storiesProgressBar');
+
+let currentStory = 0;
+let currentSlide = 0;
+let autoplayTimer;
+
+document.querySelectorAll('.story-btn').forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    currentStory = idx;
+    currentSlide = 0;
+    loadStory();
+    storiesModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+storiesClose.addEventListener('click', closeStories);
+storiesModal.addEventListener('click', (e) => {
+  if (e.target === storiesModal) closeStories();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && storiesModal.classList.contains('show')) {
+    closeStories();
+  }
+});
+
+function closeStories() {
+  storiesModal.classList.remove('show');
+  document.body.style.overflow = 'auto';
+  clearTimeout(autoplayTimer);
+}
+
+function loadStory() {
+  const story = storiesData[currentStory];
+  const image = story.images[currentSlide];
+
+  storyTitle.textContent = story.title;
+  storyImage.src = image.url;
+  storyImage.alt = image.desc;
+  storyDescription.textContent = image.desc;
+  currentSlideSpan.textContent = currentSlide + 1;
+  totalSlidesSpan.textContent = story.images.length;
+
+  updateProgressBar();
+  updateNavButtons();
+  autoplay();
+}
+
+function updateProgressBar() {
+  const story = storiesData[currentStory];
+  storiesProgressBar.innerHTML = '';
+
+  story.images.forEach((_, idx) => {
+    const progress = document.createElement('div');
+    progress.classList.add('stories-progress');
+    if (idx <= currentSlide) progress.classList.add('active');
+    if (idx === currentSlide) {
+      const fill = document.createElement('div');
+      fill.classList.add('stories-progress-fill');
+      progress.appendChild(fill);
+    }
+    storiesProgressBar.appendChild(progress);
+  });
+}
+
+function updateNavButtons() {
+  const story = storiesData[currentStory];
+  prevBtn.disabled = currentSlide === 0;
+  nextBtn.disabled = currentSlide === story.images.length - 1;
+}
+
+function autoplay() {
+  clearTimeout(autoplayTimer);
+  autoplayTimer = setTimeout(() => {
+    if (currentSlide < storiesData[currentStory].images.length - 1) {
+      currentSlide++;
+      loadStory();
+    } else if (currentStory < storiesData.length - 1) {
+      currentStory++;
+      currentSlide = 0;
+      loadStory();
+    } else {
+      closeStories();
+    }
+  }, 5000);
+}
+
+prevBtn.addEventListener('click', () => {
+  if (currentSlide > 0) {
+    currentSlide--;
+    loadStory();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentSlide < storiesData[currentStory].images.length - 1) {
+    currentSlide++;
+    loadStory();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (!storiesModal.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+});
+
+const menuToggle = document.getElementById('menuToggle');
+const menu = document.getElementById('menu');
+const menuOverlay = document.getElementById('menuOverlay');
+const body = document.body;
+
+function closeMenu() {
+  menuToggle.classList.remove('active');
+  menu.classList.remove('show');
+  menuOverlay.classList.remove('show');
+  body.classList.remove('menu-open');
+}
+
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  menu.classList.toggle('show');
+  menuOverlay.classList.toggle('show');
+  body.classList.toggle('menu-open');
+});
+
+document.querySelectorAll('.menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    closeMenu();
+  });
+});
+
+menuOverlay.addEventListener('click', closeMenu);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeMenu();
+  }
+});
+
+const themeToggle = document.getElementById("themeToggle");
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme){
+  body.className = savedTheme;
+}else{
+  body.className = "dark";
+}
+
+updateIcon();
+
+themeToggle.addEventListener("click", () => {
+
+  if(body.classList.contains("dark")){
+    body.classList.remove("dark");
+    body.classList.add("light");
+    localStorage.setItem("theme","light");
+  }else{
+    body.classList.remove("light");
+    body.classList.add("dark");
+    localStorage.setItem("theme","dark");
+  }
+
+  updateIcon();
+
+});
+
+function updateIcon(){
+  if(body.classList.contains("dark")){
+    themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  }else{
+    themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+  }
+}
+
+function setupCarousel(trackId, controlsId) {
+  const track = document.getElementById(trackId);
+  const controlsContainer = document.getElementById(controlsId);
+  
+  if (!track) return;
+
+  const items = track.querySelectorAll('.carousel-item');
+  const itemCount = items.length;
+
+  for (let i = 0; i < itemCount; i++) {
+    const dot = document.createElement('button');
+    dot.classList.add('carousel-dot');
+    dot.setAttribute('aria-label', `Ir para slide ${i + 1}`);
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => scrollToItem(i));
+    controlsContainer.appendChild(dot);
+  }
+
+  function updateDots() {
+    const scrollLeft = track.scrollLeft;
+    const itemWidth = items[0].offsetWidth;
+    const gap = parseFloat(window.getComputedStyle(track).gap) || 16;
+    const currentIndex = Math.round(scrollLeft / (itemWidth + gap));
+    
+    document.querySelectorAll(`#${controlsId} .carousel-dot`).forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function scrollToItem(index) {
+    const itemWidth = items[0].offsetWidth;
+    const gap = parseFloat(window.getComputedStyle(track).gap) || 16;
+    track.scrollLeft = index * (itemWidth + gap);
+  }
+
+  track.addEventListener('scroll', updateDots);
+  window.addEventListener('resize', updateDots);
+  
+  updateDots();
+}
+
+setupCarousel('carouselTrack', 'carouselControls');
+setupCarousel('carouselTrack2', 'carouselControls2');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeUp 0.8s ease forwards';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section').forEach(section => {
+  observer.observe(section);
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    closeMenu();
+  }
+});
+
+</script>
+
+<script>
+
+document.querySelectorAll('.product-card,.contact-card,.about-item').forEach(el=>{
+  el.classList.add('reveal');
+});
+
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:.12});
+
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+document.addEventListener('mousemove',(e)=>{
+  const x=(e.clientX/window.innerWidth)*100;
+  const y=(e.clientY/window.innerHeight)*100;
+  document.documentElement.style.setProperty('--mx',x+'%');
+  document.documentElement.style.setProperty('--my',y+'%');
+});
+</script>
+
+<script id="ultimate-js">
+
+const topBtn=document.createElement('button');
+topBtn.innerHTML='↑';
+topBtn.style.cssText='position:fixed;bottom:20px;right:20px;width:55px;height:55px;border:none;border-radius:50%;cursor:pointer;z-index:9999;font-size:22px;display:none;background:var(--orange);color:white;font-weight:bold;transition:all .35s ease;box-shadow:0 5px 20px rgba(255,106,0,.3)';
+document.body.appendChild(topBtn);
+
+window.addEventListener('scroll',()=>{
+  topBtn.style.display=window.scrollY>500?'block':'none';
+});
+
+topBtn.addEventListener('mouseover',()=>{
+  topBtn.style.boxShadow='0 10px 40px rgba(255,106,0,.5)';
+  topBtn.style.transform='scale(1.1)';
+});
+
+topBtn.addEventListener('mouseout',()=>{
+  topBtn.style.boxShadow='0 5px 20px rgba(255,106,0,.3)';
+  topBtn.style.transform='scale(1)';
+});
+
+topBtn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+document.querySelectorAll('.btn,.product-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    el.style.transition='all .35s ease';
+  });
+});
+</script>
+
+<script>
+const banners = [
+    "imagens/banner01.png",
+    "imagens/banner02.png",
+    "imagens/banner03.png"
+];
+
+const hero = document.querySelector(".hero");
+let index = 0;
+
+setInterval(() => {
+    index = (index + 1) % banners.length;
+    hero.style.setProperty("--hero-bg", `url("${banners[index]}")`);
+}, 30000);
+</script>
+
+</body>
+</html>

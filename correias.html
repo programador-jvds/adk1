@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+<title>Correias - Alderico Kleimpaul</title>
+
+<link rel="icon" href="imagens/logo.png" type="image/png"/>
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:80px;
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  width:100%;
+  max-width:100vw;
+  overflow-x:hidden;
+  transition:.35s ease;
+  position:relative;
+}
+
+body.menu-open{
+  overflow:hidden;
+}
+
+/* =========================================================
+   THEME VARIABLES
+========================================================= */
+
+:root{
+  --orange:#ff6a00;
+  --orange-light:#ff8f3c;
+  --green:#1d7a49;
+  --radius:30px;
+  --transition:.35s ease;
+  --shadow: 0 10px 40px rgba(0,0,0,.08);
+  --shadow-hover: 0 25px 80px rgba(255,106,0,.18);
+}
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+body.light{
+  --bg:#f4f7fb;
+  --bg-secondary:#ffffff;
+  --text:#111827;
+  --text-soft:#000000;
+  --card:#ffffff;
+  --border:rgba(0,0,0,.08);
+  --glass:rgba(255,255,255,.72);
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark{
+  --bg:#0b1118;
+  --bg-secondary:#121922;
+  --text:#ffffff;
+  --text-soft:#ffffff;
+  --card:#161f2b;
+  --border:rgba(255,255,255,.08);
+  --glass:rgba(255,255,255,.06);
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+.container{
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+  padding:0 clamp(0.75rem, 4vw, 2rem);
+  box-sizing:border-box;
+}
+
+section{
+  width:100%;
+  padding:clamp(60px, 12vw, 120px) 0;
+  position:relative;
+  box-sizing:border-box;
+}
+
+img{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+/* =========================================================
+   CUSTOM SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  background:transparent;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:var(--text-soft);
+  opacity:0.6;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  max-width:100vw;
+  z-index:999;
+  backdrop-filter:blur(16px);
+  background:rgba(0,0,0,.18);
+  border-bottom:1px solid var(--border);
+}
+
+.navbar{
+  height:clamp(60px, 12vh, 92px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:clamp(0.5rem, 2vw, 1.2rem);
+  padding:0 clamp(0.75rem, 4vw, 2rem);
+  box-sizing:border-box;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:clamp(0.7rem, 2vw, 1rem);
+  cursor:pointer;
+  transition:var(--transition);
+  flex-shrink:0;
+  min-width:fit-content;
+}
+
+.logo:hover{
+  opacity:0.8;
+}
+
+.logo img{
+  width:clamp(48px, 10vw, 64px);
+  height:clamp(48px, 10vw, 64px);
+  object-fit:contain;
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+}
+
+.logo-text strong{
+  color:var(--text);
+  font-size:clamp(0.85rem, 3vw, 1rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  line-height:1;
+}
+
+.logo-text span{
+  color:var(--text-soft);
+  font-size:clamp(0.65rem, 2vw, 0.82rem);
+  line-height:1;
+}
+
+/* =========================================================
+   MENU OVERLAY
+========================================================= */
+
+.menu-overlay{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.5);
+  z-index:997;
+}
+
+.menu-overlay.show{
+  display:block;
+}
+
+/* =========================================================
+   MENU HAMBURGER
+========================================================= */
+
+.menu-toggle{
+  display:none;
+  flex-direction:column;
+  gap:clamp(4px, 1vw, 6px);
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  z-index:1001;
+  padding:clamp(0.5rem, 1vw, 0.75rem);
+  flex-shrink:0;
+}
+
+.menu-toggle span{
+  width:clamp(24px, 6vw, 28px);
+  height:3px;
+  background:var(--text);
+  border-radius:999px;
+  transition:.4s ease;
+  display:block;
+}
+
+.menu-toggle.active span:nth-child(1){
+  transform:rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2){
+  opacity:0;
+}
+
+.menu-toggle.active span:nth-child(3){
+  transform:rotate(-45deg) translate(7px, -7px);
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.menu {
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 2vw, 0.75rem);
+  flex-grow:1;
+}
+
+.menu a {
+  color:var(--text-soft);
+  font-weight:700;
+  padding:clamp(0.6rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.3rem);
+  border-radius:14px;
+  transition:var(--transition);
+  position:relative;
+  white-space:nowrap;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.menu a::after {
+  content:'';
+  position:absolute;
+  bottom:8px;
+  left:clamp(0.75rem, 2vw, 1.2rem);
+  right:clamp(0.75rem, 2vw, 1.2rem);
+  height:2px;
+  background:var(--orange);
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:0.3s ease;
+}
+
+.menu a:hover {
+  color:var(--text);
+}
+
+.menu a:hover::after {
+  transform:scaleX(1);
+  transform-origin:left;
+}
+
+.support-btn {
+  display:none;
+  padding:clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.6rem) !important;
+  font-size:clamp(0.8rem, 1.8vw, 0.95rem) !important;
+  border-radius:18px !important;
+  flex-shrink:0;
+}
+
+.header-controls {
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 2vw, 0.75rem);
+  flex-shrink:0;
+}
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+@media(max-width:1024px) {
+  .menu {
+    display:none;
+    position:fixed;
+    top:clamp(60px, 12vh, 92px);
+    left:0;
+    right:0;
+    width:100%;
+    max-width:100vw;
+    flex-direction:column;
+    gap:0;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    padding:clamp(1rem, 3vw, 1.5rem);
+    box-sizing:border-box;
+    z-index:998;
+    box-shadow:var(--shadow);
+    overflow-y:auto;
+    max-height:calc(100vh - clamp(60px, 12vh, 92px));
+  }
+
+  .menu.show {
+    display:flex;
+  }
+
+  .menu a {
+    padding:clamp(1rem, 2vw, 1.2rem) clamp(0.75rem, 3vw, 1.5rem);
+    width:100%;
+    border-radius:0;
+    font-size:clamp(0.9rem, 2.5vw, 1rem);
+  }
+
+  .menu a::after{
+    display:none;
+  }
+
+  .menu-toggle {
+    display:flex;
+  }
+
+  .support-btn {
+    display:flex !important;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-top:clamp(0.75rem, 2vw, 1rem);
+    gap:0.5rem;
+  }
+
+  .header-controls {
+    gap:clamp(0.35rem, 1.5vw, 0.5rem);
+  }
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+  border:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(0.5rem, 1.5vw, 0.75rem);
+  transition:var(--transition);
+  font-weight:700;
+  white-space:nowrap;
+  font-size:clamp(0.8rem, 2vw, 0.95rem);
+}
+
+.btn-primary{
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  color:white;
+  padding:clamp(0.9rem, 2vw, 1rem) clamp(1.5rem, 3vw, 1.6rem);
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(255,106,0,.3);
+}
+
+.btn-primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(255,106,0,.35);
+}
+
+.btn-outline{
+  padding:clamp(0.9rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.5rem);
+  border-radius:18px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+}
+
+.btn-outline:hover{
+  background:var(--orange);
+  color:white;
+}
+
+.btn i {
+  font-size:clamp(0.9rem, 2vw, 1.1rem);
+}
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.theme-toggle{
+  width:clamp(44px, 10vw, 52px);
+  height:clamp(44px, 10vw, 52px);
+  border:none;
+  border-radius:18px;
+  cursor:pointer;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:clamp(0.95rem, 2vw, 1.1rem);
+  transition:var(--transition);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.theme-toggle:hover{
+  transform:translateY(-3px);
+  background:var(--orange);
+  color:white;
+}
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.breadcrumb{
+  padding:clamp(1rem, 2vw, 1.5rem) 0;
+  margin-top:clamp(60px, 12vh, 92px);
+  border-bottom:1px solid var(--border);
+}
+
+.breadcrumb-nav{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  flex-wrap:wrap;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.breadcrumb-nav a{
+  color:var(--orange);
+  transition:var(--transition);
+}
+
+.breadcrumb-nav a:hover{
+  opacity:0.8;
+}
+
+.breadcrumb-nav span{
+  color:var(--text-soft);
+}
+
+/* =========================================================
+   HERO SECTION - PRODUCT
+========================================================= */
+
+.hero-product{
+  min-height:auto;
+  padding:clamp(3rem, 8vw, 5rem) 0;
+  position:relative;
+  width:100%;
+  max-width:100vw;
+}
+
+.hero-product-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(2rem, 8vw, 4rem);
+  align-items:center;
+  width:100%;
+  max-width:100%;
+}
+
+.hero-product-image{
+  position:relative;
+  width:100%;
+  max-width:100%;
+}
+
+.hero-product-image img{
+  width:100%;
+  height:auto;
+  border-radius:36px;
+  box-shadow:0 30px 80px rgba(0,0,0,.25);
+  transition:var(--transition);
+}
+
+.hero-product-image img:hover{
+  transform:scale(1.03);
+}
+
+.hero-product-content h1{
+  font-size:clamp(1.8rem, 5vw, 3rem);
+  line-height:1.1;
+  margin-bottom:clamp(1rem, 2vw, 1.5rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+}
+
+.hero-product-content h1 span{
+  background:linear-gradient(135deg, var(--orange), #ffd0aa);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.price-tag{
+  display:inline-block;
+  background:rgba(255,106,0,.12);
+  color:var(--orange);
+  padding:clamp(0.5rem, 1vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+  border-radius:999px;
+  font-weight:700;
+  font-size:clamp(1rem, 2.5vw, 1.3rem);
+  margin-bottom:clamp(1rem, 2vw, 1.5rem);
+  font-family:'Poppins',sans-serif;
+}
+
+.hero-product-content p{
+  color:var(--text-soft);
+  font-size:clamp(0.95rem, 2vw, 1.05rem);
+  line-height:1.7;
+  margin-bottom:clamp(1.5rem, 3vw, 2rem);
+}
+
+.features-list{
+  display:grid;
+  gap:clamp(1rem, 2vw, 1.3rem);
+  margin-bottom:clamp(2rem, 4vw, 2.5rem);
+}
+
+.feature-item{
+  display:flex;
+  align-items:flex-start;
+  gap:clamp(1rem, 2vw, 1.2rem);
+}
+
+.feature-icon{
+  width:clamp(45px, 10vw, 55px);
+  height:clamp(45px, 10vw, 55px);
+  background:rgba(255,106,0,.12);
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--orange);
+  font-size:clamp(1.2rem, 3vw, 1.5rem);
+  flex-shrink:0;
+}
+
+.feature-text h4{
+  font-weight:700;
+  font-size:clamp(0.95rem, 2vw, 1.05rem);
+  font-family:'Poppins',sans-serif;
+  margin-bottom:0.3rem;
+}
+
+.feature-text p{
+  font-size:clamp(0.85rem, 1.8vw, 0.95rem);
+  color:var(--text-soft);
+  line-height:1.5;
+}
+
+.cta-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:clamp(1rem, 2vw, 1.3rem);
+  width:100%;
+}
+
+.cta-buttons .btn{
+  flex:1;
+  min-width:clamp(140px, 40vw, 200px);
+}
+
+/* =========================================================
+   SPECIFICATIONS
+========================================================= */
+
+.specifications{
+  padding:clamp(60px, 12vw, 120px) 0;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:clamp(3rem, 8vw, 5rem);
+}
+
+.section-title span{
+  color:var(--orange);
+  letter-spacing:3px;
+  font-weight:800;
+  font-size:clamp(0.7rem, 2vw, 0.85rem);
+  font-family:'Poppins',sans-serif;
+}
+
+.section-title h2{
+  font-size:clamp(1.6rem, 5vw, 2.8rem);
+  margin-top:clamp(0.8rem, 2vw, 1.2rem);
+  margin-bottom:clamp(1rem, 2vw, 1.3rem);
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+  line-height:1.2;
+}
+
+.section-title p{
+  max-width:100%;
+  margin:auto;
+  color:var(--text-soft);
+  font-size:clamp(0.9rem, 2.5vw, 1.05rem);
+  line-height:1.6;
+  padding:0 clamp(0.5rem, 3vw, 1rem);
+}
+
+.specs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(clamp(200px, 40vw, 280px), 1fr));
+  gap:clamp(1.5rem, 3vw, 2rem);
+  width:100%;
+  max-width:100%;
+}
+
+.spec-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:clamp(1.5rem, 3vw, 2rem);
+  transition:var(--transition);
+  box-shadow:var(--shadow);
+}
+
+.spec-card:hover{
+  transform:translateY(-8px);
+  box-shadow:var(--shadow-hover);
+  border-color:rgba(255,106,0,.3);
+}
+
+.spec-card-icon{
+  width:clamp(50px, 12vw, 65px);
+  height:clamp(50px, 12vw, 65px);
+  background:rgba(255,106,0,.12);
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--orange);
+  font-size:clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom:clamp(1rem, 2vw, 1.3rem);
+}
+
+.spec-card h3{
+  font-size:clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight:700;
+  font-family:'Poppins',sans-serif;
+  margin-bottom:clamp(0.6rem, 1vw, 0.8rem);
+  color:var(--text);
+}
+
+.spec-card p{
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  color:var(--text-soft);
+  line-height:1.6;
+}
+
+/* =========================================================
+   MODELS SECTION
+========================================================= */
+
+.models-section{
+  padding:clamp(60px, 12vw, 120px) 0;
+}
+
+.models-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(clamp(200px, 40vw, 300px), 1fr));
+  gap:clamp(1.5rem, 3vw, 2rem);
+  width:100%;
+  max-width:100%;
+}
+
+.model-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:28px;
+  overflow:hidden;
+  transition:var(--transition);
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+}
+
+.model-card:hover{
+  transform:translateY(-10px);
+  box-shadow:var(--shadow-hover);
+  border-color:rgba(255,106,0,.3);
+}
+
+.model-image{
+  height:clamp(150px, 30vw, 250px);
+  overflow:hidden;
+  background:rgba(255,106,0,.05);
+}
+
+.model-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.7s ease;
+}
+
+.model-card:hover .model-image img{
+  transform:scale(1.08);
+}
+
+.model-content{
+  padding:clamp(1.5rem, 3vw, 1.8rem);
+  flex-grow:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.model-tag{
+  display:inline-flex;
+  padding:clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 2vw, 1rem);
+  border-radius:999px;
+  background:rgba(255,106,0,.12);
+  color:var(--orange);
+  font-size:clamp(0.7rem, 1.5vw, 0.8rem);
+  font-weight:700;
+  margin-bottom:clamp(0.8rem, 2vw, 1rem);
+  width:fit-content;
+}
+
+.model-content h3{
+  font-size:clamp(1.1rem, 2.5vw, 1.3rem);
+  font-weight:700;
+  font-family:'Poppins',sans-serif;
+  margin-bottom:clamp(0.5rem, 1vw, 0.8rem);
+}
+
+.model-content p{
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  color:var(--text-soft);
+  line-height:1.6;
+  flex-grow:1;
+  margin-bottom:clamp(1rem, 2vw, 1.3rem);
+}
+
+.model-specs{
+  display:grid;
+  gap:clamp(0.6rem, 1.5vw, 0.8rem);
+  padding-top:clamp(1rem, 2vw, 1.3rem);
+  border-top:1px solid var(--border);
+}
+
+.spec-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:clamp(0.8rem, 1.8vw, 0.9rem);
+}
+
+.spec-item strong{
+  color:var(--text);
+  font-weight:600;
+}
+
+.spec-item span{
+  color:var(--orange);
+  font-weight:700;
+}
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
+.gallery-section{
+  padding:clamp(60px, 12vw, 120px) 0;
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(clamp(180px, 40vw, 250px), 1fr));
+  gap:clamp(1.2rem, 3vw, 1.8rem);
+  width:100%;
+  max-width:100%;
+}
+
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:20px;
+  aspect-ratio:1;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:var(--transition);
+}
+
+.gallery-item:hover{
+  transform:scale(1.05);
+  box-shadow:var(--shadow-hover);
+}
+
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.7s ease;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.1);
+}
+
+/* =========================================================
+   FAQ
+========================================================= */
+
+.faq-section{
+  padding:clamp(60px, 12vw, 120px) 0;
+}
+
+.faq-container{
+  max-width:900px;
+  margin:0 auto;
+}
+
+.faq-item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  margin-bottom:clamp(1rem, 2vw, 1.5rem);
+  overflow:hidden;
+  transition:var(--transition);
+}
+
+.faq-item:hover{
+  border-color:rgba(255,106,0,.3);
+  box-shadow:var(--shadow);
+}
+
+.faq-header{
+  padding:clamp(1.2rem, 3vw, 1.8rem);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  cursor:pointer;
+  transition:var(--transition);
+}
+
+.faq-header:hover{
+  background:rgba(255,106,0,.05);
+}
+
+.faq-title{
+  font-size:clamp(1rem, 2.5vw, 1.15rem);
+  font-weight:700;
+  font-family:'Poppins',sans-serif;
+  flex-grow:1;
+}
+
+.faq-toggle{
+  width:clamp(40px, 10vw, 50px);
+  height:clamp(40px, 10vw, 50px);
+  background:rgba(255,106,0,.1);
+  border:1px solid rgba(255,106,0,.2);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--orange);
+  font-size:clamp(1.1rem, 2.5vw, 1.3rem);
+  transition:var(--transition);
+  flex-shrink:0;
+}
+
+.faq-item.open .faq-toggle{
+  background:rgba(255,106,0,.2);
+  transform:rotate(180deg);
+}
+
+.faq-content{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s ease;
+  padding:0 clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.faq-item.open .faq-content{
+  max-height:500px;
+  padding:0 clamp(1.2rem, 3vw, 1.8rem) clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.faq-text{
+  color:var(--text-soft);
+  font-size:clamp(0.9rem, 2vw, 1rem);
+  line-height:1.7;
+}
+
+/* =========================================================
+   CTA SECTION
+========================================================= */
+
+.cta-section{
+  padding:clamp(3rem, 8vw, 5rem) 0;
+  background:linear-gradient(135deg, rgba(255,106,0,.1), rgba(255,106,0,.05));
+  border-radius:32px;
+  text-align:center;
+}
+
+.cta-content h2{
+  font-size:clamp(1.6rem, 5vw, 2.5rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  margin-bottom:clamp(1rem, 2vw, 1.5rem);
+}
+
+.cta-content p{
+  font-size:clamp(0.95rem, 2.5vw, 1.05rem);
+  color:var(--text-soft);
+  margin-bottom:clamp(2rem, 4vw, 2.5rem);
+  max-width:600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.cta-buttons-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:clamp(1rem, 2vw, 1.3rem);
+  justify-content:center;
+}
+
+.cta-buttons-group .btn{
+  min-width:clamp(150px, 40vw, 220px);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  padding:clamp(3rem, 8vw, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  border-top:1px solid var(--border);
+}
+
+.footer-wrapper{
+  display:flex;
+  justify-content:space-between;
+  gap:clamp(1.5rem, 3vw, 2rem);
+  flex-wrap:wrap;
+  align-items:flex-start;
+}
+
+.footer-wrapper h3{
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+  font-size:clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom:clamp(0.5rem, 1vw, 0.8rem);
+}
+
+.footer-wrapper p{
+  color:var(--text-soft);
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  line-height:1.5;
+}
+
+.footer-social{
+  display:flex;
+  gap:clamp(0.8rem, 2vw, 1rem);
+  flex-wrap:wrap;
+}
+
+.footer-social a{
+  width:clamp(44px, 10vw, 54px);
+  height:clamp(44px, 10vw, 54px);
+  border-radius:18px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+  font-size:clamp(1rem, 2vw, 1.2rem);
+  flex-shrink:0;
+}
+
+.footer-social a:hover{
+  background:var(--orange);
+  color:white;
+  transform:translateY(-5px);
+}
+
+.footer-bottom{
+  margin-top:clamp(2rem, 3vw, 2.5rem);
+  padding-top:clamp(1.5rem, 2vw, 2rem);
+  border-top:1px solid var(--border);
+  text-align:center;
+  color:var(--text-soft);
+  font-size:clamp(0.8rem, 1.8vw, 0.9rem);
+  line-height:1.5;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+  }
+  to{
+    opacity:1;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1024px){
+
+  .hero-product-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cta-buttons{
+    flex-direction:column;
+  }
+
+  .cta-buttons .btn{
+    width:100%;
+    min-width:unset;
+  }
+
+  section{
+    padding:clamp(45px, 10vw, 80px) 0;
+  }
+}
+
+@media(max-width:640px){
+
+  .navbar{
+    height:clamp(56px, 10vh, 70px);
+  }
+
+  .breadcrumb{
+    margin-top:clamp(56px, 10vh, 70px);
+  }
+
+  .cta-buttons-group{
+    flex-direction:column;
+  }
+
+  .cta-buttons-group .btn{
+    width:100%;
+    min-width:unset;
+  }
+
+  section{
+    padding:clamp(40px, 8vw, 60px) 0;
+  }
+}
+
+@media(max-width:480px){
+
+  .container{
+    padding:0 clamp(0.5rem, 3vw, 1rem);
+  }
+
+  .navbar{
+    height:clamp(54px, 9vh, 64px);
+    gap:clamp(0.25rem, 1.5vw, 0.5rem);
+  }
+
+  .breadcrumb{
+    margin-top:clamp(54px, 9vh, 64px);
+  }
+
+  .logo img{
+    width:clamp(42px, 8vw, 48px);
+    height:clamp(42px, 8vw, 48px);
+  }
+
+  .specs-grid,
+  .models-grid{
+    grid-template-columns:1fr;
+  }
+
+  .feature-item{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body class="dark">
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+  <div class="container" style="padding:0;">
+    <div class="navbar">
+
+      <a href="index.html" class="logo">
+        <img src="imagens/logo.png" alt="Alderico Kleimpaul" loading="lazy">
+        <div class="logo-text">
+          <strong>Alderico Kleimpaul</strong>
+          <span>Assistência Técnica STIHL</span>
+        </div>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="menu" id="menu" role="navigation">
+        <a href="index.html">Início</a>
+        <a href="index.html#produtos">Produtos</a>
+        <a href="index.html#sobre">Sobre</a>
+        <a href="index.html#contato">Contato</a>
+        <a
+          href="https://wa.me/5549999973286?text=Olá%2C%20Gostaria%20de%20informações%20sobre%20Correias"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary support-btn"
+        >
+          <i class="fas fa-headset"></i>
+          <span>Suporte</span>
+        </a>
+      </nav>
+
+      <div class="header-controls">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          title="Alternar tema"
+          aria-label="Alternar tema claro/escuro"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================
+     BREADCRUMB
+========================================================= -->
+
+<section class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-nav">
+      <a href="index.html">
+        <i class="fa-solid fa-house"></i> Início
+      </a>
+      <span><i class="fa-solid fa-chevron-right"></i></span>
+      <a href="index.html#pecas">Peças e Acessórios</a>
+      <span><i class="fa-solid fa-chevron-right"></i></span>
+      <span>Correias</span>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     HERO PRODUCT
+========================================================= -->
+
+<section class="hero-product">
+
+<div class="container">
+
+<div class="hero-product-grid">
+
+<!-- LEFT - IMAGE -->
+<div class="hero-product-image">
+  <img src="imagens/correias.png" alt="Correias de Alta Performance" loading="lazy">
+</div>
+
+<!-- RIGHT - CONTENT -->
+<div class="hero-product-content">
+
+<h1>
+Correias de
+<span>Alta Performance</span>
+</h1>
+
+<div class="price-tag">
+A partir de R$ 89,90
+</div>
+
+<p>
+As correias de alta performance são componentes essenciais para a transmissão de força e movimento entre eixos em motores e máquinas. Fabricadas com materiais de qualidade superior, garantem eficiência máxima e durabilidade excepcional.
+</p>
+
+<div class="features-list">
+
+<div class="feature-item">
+<div class="feature-icon">
+<i class="fa-solid fa-bolt"></i>
+</div>
+<div class="feature-text">
+<h4>Transmissão Eficiente</h4>
+<p>Reduz perdas de energia e melhora a eficiência do equipamento</p>
+</div>
+</div>
+
+<div class="feature-item">
+<div class="feature-icon">
+<i class="fa-solid fa-shield"></i>
+</div>
+<div class="feature-text">
+<h4>Durabilidade Comprovada</h4>
+<p>Resiste ao desgaste intenso e variações de temperatura</p>
+</div>
+</div>
+
+<div class="feature-item">
+<div class="feature-icon">
+<i class="fa-solid fa-wrench"></i>
+</div>
+<div class="feature-text">
+<h4>Fácil Instalação</h4>
+<p>Design compatível com a maioria dos equipamentos convencionais</p>
+</div>
+</div>
+
+</div>
+
+<div class="cta-buttons">
+
+<a href="https://wa.me/5549999973286?text=Olá%2C%20Gostaria%20de%20informações%20e%20orçamento%20sobre%20Correias" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+<i class="fab fa-whatsapp"></i>
+<span>Solicitar Orçamento</span>
+</a>
+
+<a href="#modelos" class="btn btn-outline">
+<i class="fa-solid fa-arrow-down"></i>
+<span>Ver Modelos</span>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     SPECIFICATIONS
+========================================================= -->
+
+<section class="specifications">
+
+<div class="container">
+
+<div class="section-title">
+<span>CARACTERÍSTICAS</span>
+<h2>Especificações Técnicas</h2>
+<p>Conheça todas as características que fazem nossas correias serem referência no mercado</p>
+</div>
+
+<div class="specs-grid">
+
+<div class="spec-card">
+<div class="spec-card-icon">
+<i class="fa-solid fa-gears"></i>
+</div>
+<h3>Múltiplos Perfis</h3>
+<p>Disponíveis em diversos perfis (A, B, C, D e E) para diferentes aplicações e potências</p>
+</div>
+
+<div class="spec-card">
+<div class="spec-card-icon">
+<i class="fa-solid fa-thermometer"></i>
+</div>
+<h3>Resistência Térmica</h3>
+<p>Mantém desempenho em temperaturas de -10°C a +80°C sem perda de eficiência</p>
+</div>
+
+<div class="spec-card">
+<div class="spec-card-icon">
+<i class="fa-solid fa-fire"></i>
+</div>
+<h3>Resistência ao Atrito</h3>
+<p>Revestimento especial reduz fricção e dissipação de calor durante a operação</p>
+</div>
+
+<div class="spec-card">
+<div class="spec-card-icon">
+<i class="fa-solid fa-check-double"></i>
+</div>
+<h3>Garantia de Qualidade</h3>
+<p>Certificação internacional e testes rigorosos de controle de qualidade</p>
+</div>
+
+<div class="spec-card">
+<div class="spec-card-icon">
+<i class="fa-solid fa-hourglass-end"></i>
+</div>
+<h3>Longa Durabilidade</h3>
+<p>Vida útil estendida de até 5.000 horas de funcionamento contínuo</p>
+</div>
+
+<div class="spec-card">
+<div class="spec-card-icon">
+<i class="fa-solid fa-layer-group"></i>
+</div>
+<h3>Construção Robusta</h3>
+<p>Fibras de poliéster entrelaçadas garantem estrutura resistente e confiável</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     MODELS
+========================================================= -->
+
+<section class="models-section" id="modelos">
+
+<div class="container">
+
+<div class="section-title">
+<span>VARIEDADES</span>
+<h2>Modelos Disponíveis</h2>
+<p>Escolha o modelo ideal para sua aplicação específica</p>
+</div>
+
+<div class="models-grid">
+
+<!-- MODELO 1 -->
+<div class="model-card">
+<div class="model-image">
+<img src="imagens/correias.png" alt="Correia Tipo A" loading="lazy">
+</div>
+<div class="model-content">
+<span class="model-tag">Tipo A</span>
+<h3>Correia Perfil A</h3>
+<p>Indicada para pequenos equipamentos e baixas potências. Ideal para uso residencial.</p>
+<div class="model-specs">
+<div class="spec-item">
+<strong>Largura:</strong>
+<span>12 mm</span>
+</div>
+<div class="spec-item">
+<strong>Comprimento:</strong>
+<span>Variável</span>
+</div>
+<div class="spec-item">
+<strong>Potência:</strong>
+<span>Até 3 CV</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MODELO 2 -->
+<div class="model-card">
+<div class="model-image">
+<img src="imagens/correias.png" alt="Correia Tipo B" loading="lazy">
+</div>
+<div class="model-content">
+<span class="model-tag">Tipo B</span>
+<h3>Correia Perfil B</h3>
+<p>Uso geral em máquinas agrícolas e industriais. Excelente relação custo-benefício.</p>
+<div class="model-specs">
+<div class="spec-item">
+<strong>Largura:</strong>
+<span>17 mm</span>
+</div>
+<div class="spec-item">
+<strong>Comprimento:</strong>
+<span>Variável</span>
+</div>
+<div class="spec-item">
+<strong>Potência:</strong>
+<span>Até 7 CV</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MODELO 3 -->
+<div class="model-card">
+<div class="model-image">
+<img src="imagens/correias.png" alt="Correia Tipo C" loading="lazy">
+</div>
+<div class="model-content">
+<span class="model-tag">Tipo C</span>
+<h3>Correia Perfil C</h3>
+<p>Aplicações industriais de média potência. Ideal para sistemas de transmissão pesada.</p>
+<div class="model-specs">
+<div class="spec-item">
+<strong>Largura:</strong>
+<span>22 mm</span>
+</div>
+<div class="spec-item">
+<strong>Comprimento:</strong>
+<span>Variável</span>
+</div>
+<div class="spec-item">
+<strong>Potência:</strong>
+<span>Até 15 CV</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MODELO 4 -->
+<div class="model-card">
+<div class="model-image">
+<img src="imagens/correias.png" alt="Correia Tipo D" loading="lazy">
+</div>
+<div class="model-content">
+<span class="model-tag">Tipo D</span>
+<h3>Correia Perfil D</h3>
+<p>Para equipamentos de grande porte e alta potência. Transmissão industrial pesada.</p>
+<div class="model-specs">
+<div class="spec-item">
+<strong>Largura:</strong>
+<span>32 mm</span>
+</div>
+<div class="spec-item">
+<strong>Comprimento:</strong>
+<span>Variável</span>
+</div>
+<div class="spec-item">
+<strong>Potência:</strong>
+<span>Até 30 CV</span>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     GALLERY
+========================================================= -->
+
+<section class="gallery-section">
+
+<div class="container">
+
+<div class="section-title">
+<span>GALERIA</span>
+<h2>Veja Nossos Produtos em Ação</h2>
+<p>Conheça a qualidade e acabamento de nossas correias</p>
+</div>
+
+<div class="gallery-grid">
+<div class="gallery-item">
+<img src="imagens/correias.png" alt="Correia 1" loading="lazy">
+</div>
+<div class="gallery-item">
+<img src="imagens/correias.png" alt="Correia 2" loading="lazy">
+</div>
+<div class="gallery-item">
+<img src="imagens/correias.png" alt="Correia 3" loading="lazy">
+</div>
+<div class="gallery-item">
+<img src="imagens/correias.png" alt="Correia 4" loading="lazy">
+</div>
+<div class="gallery-item">
+<img src="imagens/correias.png" alt="Correia 5" loading="lazy">
+</div>
+<div class="gallery-item">
+<img src="imagens/correias.png" alt="Correia 6" loading="lazy">
+</div>
+</div>
+
+</section>
+
+<!-- =========================================================
+     FAQ
+========================================================= -->
+
+<section class="faq-section">
+
+<div class="container">
+
+<div class="section-title">
+<span>DÚVIDAS</span>
+<h2>Perguntas Frequentes</h2>
+<p>Encontre respostas para as questões mais comuns sobre nossas correias</p>
+</div>
+
+<div class="faq-container">
+
+<div class="faq-item">
+<div class="faq-header">
+<h3 class="faq-title">Como escolher a correia correta para meu equipamento?</h3>
+<div class="faq-toggle">
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+</div>
+<div class="faq-content">
+<p class="faq-text">
+Para escolher a correia correta, você precisa conhecer o tipo de perfil, a largura e o comprimento original do seu equipamento. Consulte o manual do fabricante ou entre em contato conosco com esses dados. Nossa equipe técnica será feliz em ajudá-lo.
+</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-header">
+<h3 class="faq-title">Qual é o tempo de vida útil de uma correia?</h3>
+<div class="faq-toggle">
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+</div>
+<div class="faq-content">
+<p class="faq-text">
+A vida útil depende da frequência de uso e das condições de operação. Em média, nossas correias têm durabilidade de 2 a 5 anos ou até 5.000 horas de funcionamento contínuo. Recomendamos inspeção regular e substituição preventiva.
+</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-header">
+<h3 class="faq-title">Como instalar a nova correia?</h3>
+<div class="faq-toggle">
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+</div>
+<div class="faq-content">
+<p class="faq-text">
+A instalação é simples: solte o equipamento, remova a correia antiga, coloque a nova no lugar, verifique o alinhamento e a tensão. Para instruções detalhadas e profissionais, solicite nosso serviço de instalação especializado.
+</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-header">
+<h3 class="faq-title">Vocês oferecem garantia nos produtos?</h3>
+<div class="faq-toggle">
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+</div>
+<div class="faq-content">
+<p class="faq-text">
+Sim! Todas as nossas correias vêm com garantia de 12 meses contra defeitos de fabricação. A garantia não cobre desgaste normal ou mau uso. Consulte nossa política de garantia para detalhes completos.
+</p>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-header">
+<h3 class="faq-title">Fazem entregas rápidas?</h3>
+<div class="faq-toggle">
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+</div>
+<div class="faq-content">
+<p class="faq-text">
+Sim! Mantemos estoque variado em permanência. Para pedidos locais, a entrega é imediata. Para outras regiões, contate-nos via WhatsApp para informações sobre prazos e frete.
+</p>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     CTA SECTION
+========================================================= -->
+
+<section class="cta-section">
+
+<div class="container">
+
+<div class="cta-content">
+
+<h2>Pronto para garantir a eficiência do seu equipamento?</h2>
+
+<p>
+Nossas correias de alta performance garantem transmissão eficiente, durabilidade excepcional e melhor desempenho. Entre em contato conosco agora e encontre a solução perfeita para sua aplicação.
+</p>
+
+<div class="cta-buttons-group">
+
+<a href="https://wa.me/5549999973286?text=Olá%2C%20Gostaria%20de%20fazer%20um%20orçamento%20de%20Correias" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+<i class="fab fa-whatsapp"></i>
+<span>Solicitar Orçamento</span>
+</a>
+
+<a href="index.html#contato" class="btn btn-outline">
+<i class="fa-solid fa-phone"></i>
+<span>Falar com Especialista</span>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+<div class="container">
+
+<div class="footer-wrapper">
+
+<div>
+
+<h3>
+Alderico Kleimpaul
+</h3>
+
+<p>
+Assistência Técnica STIHL em Xanxerê/SC
+</p>
+
+</div>
+
+<div class="footer-social">
+
+<a
+href="https://instagram.com/alderico_kleimpaul"
+target="_blank"
+rel="noopener noreferrer"
+title="Instagram Alderico Kleimpaul"
+aria-label="Seguir no Instagram"
+>
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+<a
+href="https://wa.me/5549999973286"
+target="_blank"
+rel="noopener noreferrer"
+title="WhatsApp Alderico Kleimpaul"
+aria-label="Entrar em contato pelo WhatsApp"
+>
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+© 2026 — Todos os direitos reservados.
+
+</div>
+
+</div>
+
+</footer>
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
+<script>
+
+// =========================================================
+// MENU HAMBURGER & OVERLAY
+// =========================================================
+
+const menuToggle = document.getElementById('menuToggle');
+const menu = document.getElementById('menu');
+const menuOverlay = document.getElementById('menuOverlay');
+const body = document.body;
+
+function closeMenu() {
+  menuToggle.classList.remove('active');
+  menu.classList.remove('show');
+  menuOverlay.classList.remove('show');
+  body.classList.remove('menu-open');
+}
+
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  menu.classList.toggle('show');
+  menuOverlay.classList.toggle('show');
+  body.classList.toggle('menu-open');
+});
+
+document.querySelectorAll('.menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    closeMenu();
+  });
+});
+
+menuOverlay.addEventListener('click', closeMenu);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeMenu();
+  }
+});
+
+// =========================================================
+// THEME TOGGLE + LOCAL STORAGE
+// =========================================================
+
+const themeToggle = document.getElementById("themeToggle");
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme){
+  body.className = savedTheme;
+}else{
+  body.className = "dark";
+}
+
+updateIcon();
+
+themeToggle.addEventListener("click", () => {
+
+  if(body.classList.contains("dark")){
+    body.classList.remove("dark");
+    body.classList.add("light");
+    localStorage.setItem("theme","light");
+  }else{
+    body.classList.remove("light");
+    body.classList.add("dark");
+    localStorage.setItem("theme","dark");
+  }
+
+  updateIcon();
+
+});
+
+function updateIcon(){
+  if(body.classList.contains("dark")){
+    themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  }else{
+    themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+  }
+}
+
+// =========================================================
+// FAQ ACCORDION
+// =========================================================
+
+const faqItems = document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+  const header = item.querySelector('.faq-header');
+  
+  header.addEventListener('click', () => {
+    // Fechar todos os outros FAQs
+    faqItems.forEach(otherItem => {
+      if (otherItem !== item) {
+        otherItem.classList.remove('open');
+      }
+    });
+    
+    // Toggle do FAQ atual
+    item.classList.toggle('open');
+  });
+});
+
+// =========================================================
+// SCROLL ANIMATIONS
+// =========================================================
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeUp 0.8s ease forwards';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section').forEach(section => {
+  observer.observe(section);
+});
+
+// =========================================================
+// CARD ANIMATIONS
+// =========================================================
+
+document.querySelectorAll('.spec-card, .model-card, .gallery-item').forEach(el => {
+  el.classList.add('reveal');
+});
+
+const obsReveal = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:.12});
+
+document.querySelectorAll('.reveal').forEach(el => obsReveal.observe(el));
+
+// =========================================================
+// BOTÃO VOLTAR AO TOPO
+// =========================================================
+
+const topBtn = document.createElement('button');
+topBtn.innerHTML = '↑';
+topBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;width:55px;height:55px;border:none;border-radius:50%;cursor:pointer;z-index:9999;font-size:22px;display:none;background:var(--orange);color:white;font-weight:bold;transition:all .35s ease;box-shadow:0 5px 20px rgba(255,106,0,.3)';
+document.body.appendChild(topBtn);
+
+window.addEventListener('scroll',() => {
+  topBtn.style.display = window.scrollY > 500 ? 'block' : 'none';
+});
+
+topBtn.addEventListener('mouseover', () => {
+  topBtn.style.boxShadow = '0 10px 40px rgba(255,106,0,.5)';
+  topBtn.style.transform = 'scale(1.1)';
+});
+
+topBtn.addEventListener('mouseout', () => {
+  topBtn.style.boxShadow = '0 5px 20px rgba(255,106,0,.3)';
+  topBtn.style.transform = 'scale(1)';
+});
+
+topBtn.onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+
+// =========================================================
+// PREVENT BODY OVERFLOW
+// =========================================================
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    closeMenu();
+  }
+});
+
+</script>
+
+</body>
+</html>

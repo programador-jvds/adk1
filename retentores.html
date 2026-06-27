@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retentores | Alderico Kleimpaul</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+--bg:#060d18;
+--card:rgba(17,27,46,.88);
+--card2:#16233a;
+--accent:#ff7a00;
+--accent2:#ffb347;
+--text:#fff;
+--muted:#b7c4d9;
+--border:rgba(255,255,255,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Segoe UI,Arial,sans-serif;
+background:radial-gradient(circle at top left,#1b2b49,#060d18 45%);
+color:var(--text);
+min-height:100vh;
+}
+.hero{
+background:
+linear-gradient(135deg,rgba(0,0,0,.5),rgba(0,0,24,.88)),
+url('banner.png') center/cover no-repeat;
+min-height:340px;
+position:relative;
+display:flex;
+align-items:center;
+box-shadow:0 25px 60px rgba(0,0,0,.1);
+}
+.hero::before{
+display:none;
+}
+.hero-content{position:relative;z-index:2;max-width:1400px;margin:auto;padding:40px 20px}
+.hero h1{font-size:3rem}
+.hero p{margin-top:8px}
+.topbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{
+background:#fff;color:#111;padding:12px 18px;border-radius:14px;
+font-weight:700;text-decoration:none;cursor:pointer;border:none
+}
+main{max-width:1400px;margin:auto;padding:20px}
+.dashboard{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;margin-bottom:20px
+}
+.card{
+background:var(--card);border:1px solid var(--border);
+border-radius:20px;padding:20px
+}
+.card strong{display:block;font-size:1.8rem;margin-top:5px}
+.layout{
+display:grid;grid-template-columns:300px 1fr;gap:20px
+}
+.panel{
+background:var(--card);border:1px solid var(--border);
+border-radius:24px;padding:18px
+}
+input{
+width:100%;padding:14px;border-radius:14px;border:1px solid var(--border);
+background:var(--card2);color:#fff
+}
+input:focus{outline:none;border-color:var(--accent)}
+.filter-group{display:flex;flex-direction:column;gap:12px}
+.table-wrap{max-height:70vh;overflow:auto}
+table{width:100%;border-collapse:collapse}
+thead{position:sticky;top:0;background:var(--accent)}
+th,td{padding:12px;text-align:left}
+tbody tr:nth-child(even){background:#10192a}
+tbody tr:hover{background:#223251}
+.badge{
+background:#243756;padding:5px 10px;border-radius:20px;
+color:#ffc47a;font-weight:bold
+}
+#sugestoes{
+position:absolute;background:var(--card);width:100%;
+display:none;border:1px solid var(--border);border-radius:14px;
+max-height:250px;overflow:auto;z-index:100
+}
+.sug{padding:10px;cursor:pointer}
+.sug:hover{background:#243756}
+.rel{position:relative}
+.toast{
+position:fixed;right:20px;bottom:20px;background:#1f8b4c;
+padding:12px 18px;border-radius:12px;display:none
+}
+@media(max-width:900px){
+.layout{grid-template-columns:1fr}
+.hero h1{font-size:2rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+<div class="hero-content">
+<h1><i class="fa-solid fa-gears"></i> Alderico Kleimpaul</h1>
+
+<div class="topbar">
+<label class="btn">
+<i class="fa-solid fa-file-import"></i> carregar
+<input id="arquivo" type="file" accept=".txt" hidden>
+</label>
+<button class="btn" onclick="limparFiltros()">reiniciar</button>
+</div>
+</div>
+</header>
+
+<main>
+
+<div class="dashboard">
+<div class="card"><span>Total Registros</span><strong id="total">0</strong></div>
+<div class="card"><span>Filtrados</span><strong id="filtrados">0</strong></div>
+</div>
+
+<div class="layout">
+
+<div class="panel">
+<h3>Filtros</h3><br>
+<div class="filter-group">
+<div class="rel">
+<input id="busca" placeholder="Pesquisar...">
+<div id="sugestoes"></div>
+</div>
+<input id="eixo" placeholder="Ø Eixo">
+<input id="aloj" placeholder="Ø Alojamento">
+<input id="altura" placeholder="Altura">
+</div>
+</div>
+
+<div class="panel">
+<div id="contador">Carregue um catálogo.</div><br>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Sabó</th>
+<th>Arca</th>
+<th>Medida</th>
+</tr>
+</thead>
+<tbody id="dados">
+<tr><td colspan="4">Nenhum catálogo carregado.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<div class="toast" id="toast">Arquivo carregado com sucesso</div>
+
+<script>
+const arquivo=document.getElementById("arquivo");
+const busca=document.getElementById("busca");
+const eixo=document.getElementById("eixo");
+const aloj=document.getElementById("aloj");
+const altura=document.getElementById("altura");
+const dados=document.getElementById("dados");
+const contador=document.getElementById("contador");
+const sugestoes=document.getElementById("sugestoes");
+
+let base=[];
+
+function toast(msg){
+const t=document.getElementById("toast");
+t.textContent=msg;
+t.style.display="block";
+setTimeout(()=>t.style.display="none",2500);
+}
+
+function render(lista){
+document.getElementById("filtrados").textContent=lista.length;
+contador.textContent=lista.length+" resultados encontrados";
+
+dados.innerHTML=lista.map((r,i)=>`
+<tr>
+<td>${i+1}</td>
+<td>${r.codigo}</td>
+<td>${r.tipo}</td>
+<td><span class="badge">${r.eixo} × ${r.aloj} × ${r.altura}</span></td>
+</tr>`).join("") || '<tr><td colspan="4">Nenhum resultado.</td></tr>';
+}
+
+function filtrar(){
+const t=busca.value.toLowerCase();
+const e=eixo.value.toLowerCase();
+const a=aloj.value.toLowerCase();
+const h=altura.value.toLowerCase();
+
+const res=base.filter(r=>{
+const p=`${r.codigo} ${r.tipo} ${r.eixo} ${r.aloj} ${r.altura}`.toLowerCase();
+return (!t||p.includes(t))&&(!e||r.eixo.toLowerCase().includes(e))
+&&(!a||r.aloj.toLowerCase().includes(a))
+&&(!h||r.altura.toLowerCase().includes(h));
+});
+render(res);
+}
+
+function limparFiltros(){
+busca.value=eixo.value=aloj.value=altura.value="";
+render(base);
+}
+
+arquivo.addEventListener("change",e=>{
+const f=e.target.files[0];
+if(!f)return;
+
+const reader=new FileReader();
+reader.onload=x=>{
+base=x.target.result.split(/\r?\n/)
+.filter(l=>l.trim())
+.slice(1)
+.map(l=>{
+const p=l.trim().split(/\s+/);
+return{
+codigo:p[0]||"",
+tipo:p[1]||"",
+eixo:p[2]||"",
+aloj:p[3]||"",
+altura:p[4]||""
+};
+});
+
+document.getElementById("total").textContent=base.length;
+render(base);
+toast("Catálogo carregado com sucesso");
+};
+
+reader.readAsText(f,"utf-8");
+});
+
+["busca","eixo","aloj","altura"].forEach(id=>{
+document.getElementById(id).addEventListener("input",filtrar);
+});
+</script>
+
+</body>
+</html>

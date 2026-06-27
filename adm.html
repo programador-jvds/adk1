@@ -1,0 +1,2686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Alderico Kleimpaul</title>
+
+<link rel="icon" href="imagens/logo.png" type="image/png"/>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+:root{
+--orange:#ff6a00;
+--orange2:#ff9048;
+--bg:#0b1118;
+--card:#161f2b;
+--card2:#1d2837;
+--text:#fff;
+--soft:#9aa8ba;
+--border:rgba(255,255,255,.07);
+--green:#00d26a;
+--red:#ff4d4d;
+--blue:#00b7ff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+img{
+display:block;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:var(--bg);
+color:white;
+overflow-x:hidden;
+}
+
+/* LOGIN */
+
+#loginTela{
+position:fixed;
+inset:0;
+background:
+linear-gradient(
+135deg,
+#05070b,
+#111927
+);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999999;
+}
+
+.loginBox{
+width:100%;
+max-width:430px;
+background:rgba(22,31,43,.98);
+padding:45px;
+border-radius:35px;
+border:1px solid var(--border);
+box-shadow:
+0 30px 90px rgba(0,0,0,.6);
+animation:fade .5s;
+}
+
+.loginLogo{
+text-align:center;
+font-size:55px;
+margin-bottom:15px;
+color:var(--orange);
+}
+
+.loginBox h1{
+text-align:center;
+margin-bottom:10px;
+}
+
+.loginBox p{
+text-align:center;
+color:#aaa;
+margin-bottom:25px;
+}
+
+.loginBox input{
+width:100%;
+padding:17px;
+margin-top:14px;
+border:none;
+outline:none;
+border-radius:18px;
+background:#0f1722;
+color:white;
+font-size:15px;
+}
+
+.loginBox button{
+width:100%;
+padding:17px;
+margin-top:18px;
+border:none;
+border-radius:18px;
+cursor:pointer;
+font-weight:bold;
+font-size:16px;
+background:
+linear-gradient(
+135deg,
+var(--orange),
+var(--orange2)
+);
+color:white;
+transition:.4s;
+}
+
+.loginBox button:hover{
+transform:translateY(-4px);
+}
+
+#erroLogin{
+margin-top:18px;
+text-align:center;
+font-weight:bold;
+color:#ff7b7b;
+}
+
+/* HEADER */
+
+header{
+position:sticky;
+top:0;
+z-index:999;
+backdrop-filter:blur(20px);
+background:rgba(7,10,15,.72);
+box-shadow:
+0 10px 35px rgba(0,0,0,.35);
+border-bottom:1px solid var(--border);
+}
+
+.nav{
+max-width:1450px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:23px;
+font-weight:bold;
+}
+
+.logo i{
+color:var(--orange);
+}
+
+.menu{
+display:flex;
+gap:15px;
+align-items:center;
+padding:8px;
+border-radius:50px;
+background:rgba(255,255,255,.03);
+border:1px solid var(--border);
+backdrop-filter:blur(15px);
+}
+
+.menu a{
+text-decoration:none;
+color:#ddd;
+padding:12px 20px;
+border-radius:30px;
+transition:.3s;
+}
+
+.menu a:hover{
+background:linear-gradient(
+135deg,
+var(--orange),
+var(--orange2)
+);
+transform:translateY(-2px);
+}
+
+.logoutBtn{
+width:auto;
+padding:8px 14px;
+margin:0;
+font-size:13px;
+border-radius:30px;
+background:#ff4444;
+}
+
+.voltarBtn{
+width:auto;
+padding:8px 14px;
+margin:0;
+font-size:13px;
+border-radius:30px;
+background:#808080;
+}
+
+/* HERO */
+
+.hero{
+max-width:1450px;
+margin:30px auto;
+padding:70px;
+border-radius:35px;
+background:
+linear-gradient(
+rgba(0,0,0,.75),
+rgba(0,0,0,.75)
+),
+url("imagens/equipamentos.png");
+background-size:cover;
+background-position:center;
+position:relative;
+overflow:hidden;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+width:500px;
+height:500px;
+background:rgba(255,106,0,.15);
+border-radius:50%;
+right:-180px;
+top:-180px;
+filter:blur(80px);
+}
+
+.hero h1{
+font-size:55px;
+margin-bottom:15px;
+position:relative;
+z-index:2;
+}
+
+.hero span{
+color:var(--orange);
+}
+
+.hero p{
+max-width:700px;
+line-height:1.7;
+color:#ddd;
+position:relative;
+z-index:2;
+}
+
+.statusBar{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-top:25px;
+position:relative;
+z-index:2;
+}
+
+.status{
+padding:14px 18px;
+background:rgba(255,255,255,.05);
+border:1px solid var(--border);
+border-radius:16px;
+font-size:14px;
+}
+
+.container{
+max-width:1450px;
+margin:auto;
+padding:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:var(--card);
+padding:25px;
+border-radius:30px;
+border:1px solid var(--border);
+transition:.4s;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:
+0 20px 50px rgba(255,106,0,.15);
+border-color:var(--orange);
+}
+
+.card::after{
+content:"";
+position:absolute;
+inset:0;
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,.03),
+transparent
+);
+pointer-events:none;
+}
+
+.card::before{
+content:"";
+position:absolute;
+width:180px;
+height:180px;
+background:rgba(255,106,0,.06);
+border-radius:50%;
+right:-70px;
+top:-70px;
+}
+
+.icon{
+font-size:32px;
+color:var(--orange);
+position:relative;
+z-index:2;
+}
+
+.stats{
+font-size:42px;
+font-weight:bold;
+margin:12px 0;
+position:relative;
+z-index:2;
+}
+
+.card p{
+position:relative;
+z-index:2;
+color:#ccc;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:16px;
+margin-top:12px;
+border:none;
+outline:none;
+border-radius:16px;
+background:var(--card2);
+color:white;
+font-size:15px;
+}
+
+textarea{
+resize:none;
+min-height:110px;
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+cursor:pointer;
+border-radius:16px;
+font-weight:bold;
+background:
+linear-gradient(
+135deg,
+var(--orange),
+var(--orange2)
+);
+color:white;
+transition:.4s;
+}
+
+button:hover{
+transform:translateY(-4px);
+}
+
+.table{
+overflow:auto;
+margin-top:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:var(--card2);
+padding:15px;
+text-align:left;
+}
+
+td{
+padding:15px;
+border-bottom:1px solid var(--border);
+}
+
+tr:hover{
+background:rgba(255,255,255,.03);
+}
+
+.acoes{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.acoes button{
+width:auto;
+padding:10px 14px;
+margin:0;
+}
+
+.btnDelete{
+background:var(--red);
+}
+
+.btnEdit{
+background:var(--blue);
+}
+
+.baixo{
+background:rgba(255,0,0,.18);
+padding:6px 12px;
+border-radius:10px;
+color:#ff8a8a;
+font-weight:bold;
+}
+
+.chart{
+height:12px;
+background:#0f1722;
+border-radius:30px;
+overflow:hidden;
+margin-top:15px;
+}
+
+.chart span{
+display:block;
+height:100%;
+background:
+linear-gradient(
+90deg,
+var(--orange),
+var(--orange2)
+);
+}
+
+.notificacao{
+position:fixed;
+top:20px;
+right:20px;
+padding:16px 25px;
+border-radius:16px;
+background:
+linear-gradient(
+135deg,
+#ff6a00,
+#ff9048
+);
+z-index:9999;
+animation:fade .4s;
+font-weight:bold;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(-20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.chat{
+position:fixed;
+right:20px;
+bottom:20px;
+width:70px;
+height:70px;
+border-radius:50%;
+background:#25d366;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+text-decoration:none;
+color:white;
+box-shadow:
+0 0 40px rgba(37,211,102,.5);
+z-index:999;
+}
+
+.chatbox{
+display:flex;
+flex-direction:column;
+gap:14px;
+max-height:650px;
+overflow-y:auto;
+margin-top:25px;
+padding-right:6px;
+contain:content;
+}
+
+.chatbox::-webkit-scrollbar{
+width:8px;
+}
+
+.chatbox::-webkit-scrollbar-thumb{
+background:rgba(255,106,0,.4);
+border-radius:999px;
+}
+
+.msg{
+display:flex;
+gap:18px;
+padding:22px;
+border-radius:28px;
+background:
+linear-gradient(
+145deg,
+#1c2837,
+#121c28
+);
+border:1px solid rgba(255,255,255,.05);
+position:relative;
+overflow:hidden;
+animation:fade .35s;
+box-shadow:
+0 15px 40px rgba(0,0,0,.28);
+transition:.3s;
+}
+
+.msg:hover{
+transform:translateY(-4px);
+border-color:rgba(255,106,0,.3);
+}
+
+.msg::before{
+content:"";
+position:absolute;
+width:220px;
+height:220px;
+background:rgba(255,106,0,.05);
+border-radius:50%;
+right:-90px;
+top:-90px;
+}
+
+.msg-avatar{
+min-width:60px;
+width:60px;
+height:60px;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:bold;
+background:
+linear-gradient(
+135deg,
+var(--orange),
+var(--orange2)
+);
+position:relative;
+z-index:2;
+box-shadow:
+0 10px 25px rgba(255,106,0,.35);
+
+overflow:hidden;
+cursor:pointer;
+padding:0;
+border:
+2px solid rgba(255,255,255,.12);
+}
+
+.msg-avatar img{
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:20px;
+}
+
+.msg-content{
+flex:1;
+position:relative;
+z-index:2;
+}
+
+.msg-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:12px;
+}
+
+.msg h4{
+font-size:18px;
+color:#fff;
+}
+
+.msg-time{
+padding:8px 14px;
+border-radius:999px;
+background:rgba(255,255,255,.05);
+font-size:12px;
+color:#9aa8ba;
+}
+
+.msg p{
+line-height:1.8;
+color:#d8e1eb;
+white-space:pre-wrap;
+font-size:15px;
+}
+
+.msg .delete{
+width:auto;
+padding:7px 11px;
+margin:0;
+border-radius:10px;
+font-size:12px;
+background:#ff4d4d;
+min-width:auto;
+flex:none;
+box-shadow:none;
+}
+
+.msg .delete:hover{
+transform:none;
+filter:brightness(1.08);
+}
+
+.kpi{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,.03);
+margin-top:15px;
+}
+
+.kpi i{
+font-size:35px;
+color:var(--orange);
+}
+
+footer{
+margin-top:40px;
+padding:30px;
+text-align:center;
+color:#777;
+}
+
+@media(max-width:900px){
+
+.menu{
+display:none;
+}
+
+.nav{
+padding:15px;
+}
+
+.hero{
+padding:30px;
+margin:15px;
+border-radius:28px;
+box-shadow:
+0 30px 90px rgba(0,0,0,.45);
+border:1px solid rgba(255,255,255,.05);
+}
+
+.hero h1{
+font-size:34px;
+line-height:1.1;
+}
+
+.hero p{
+font-size:14px;
+}
+
+.statusBar{
+flex-direction:column;
+}
+
+.container{
+padding:15px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.card{
+padding:20px;
+border-radius:24px;
+}
+
+.stats{
+font-size:32px;
+}
+
+.loginBox{
+margin:20px;
+padding:30px;
+border-radius:28px;
+}
+
+.table{
+overflow-x:auto;
+}
+
+table{
+min-width:700px;
+}
+
+.chat{
+width:62px;
+height:62px;
+font-size:25px;
+right:15px;
+bottom:15px;
+}
+
+.msg{
+padding:18px;
+border-radius:22px;
+gap:14px;
+}
+
+.msg-avatar{
+width:50px;
+height:50px;
+min-width:50px;
+font-size:18px;
+border-radius:16px;
+}
+
+.msg h4{
+font-size:16px;
+}
+
+.msg p{
+font-size:14px;
+line-height:1.7;
+}
+
+.msg-time{
+font-size:11px;
+padding:6px 10px;
+}
+
+.chatbox{
+max-height:500px;
+}
+
+button{
+padding:14px;
+font-size:14px;
+}
+
+input,
+select,
+textarea{
+padding:14px;
+font-size:14px;
+}
+
+}
+
+/* =========================
+EFEITOS PREMIUM
+========================= */
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left,
+rgba(255,106,0,.12),
+transparent 35%),
+
+radial-gradient(circle at bottom right,
+rgba(0,183,255,.10),
+transparent 35%);
+pointer-events:none;
+z-index:-1;
+}
+
+/* GLASS */
+
+.card,
+.loginBox,
+.menu,
+.status{
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+}
+
+/* HOVER PREMIUM */
+
+.card{
+transition:
+transform .35s,
+box-shadow .35s,
+border-color .35s;
+}
+
+.card:hover{
+transform:
+translateY(-8px)
+scale(1.01);
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.45),
+0 0 30px rgba(255,106,0,.12);
+}
+
+/* INPUTS PREMIUM */
+
+input,
+select,
+textarea{
+transition:
+.25s border,
+.25s box-shadow,
+.25s transform;
+border:1px solid transparent;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:rgba(255,106,0,.5);
+
+box-shadow:
+0 0 0 4px rgba(255,106,0,.12);
+
+transform:translateY(-2px);
+}
+
+/* BOTÕES PREMIUM */
+
+button{
+position:relative;
+overflow:hidden;
+}
+
+button::before{
+content:"";
+position:absolute;
+inset:0;
+background:
+linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,.25),
+transparent
+);
+
+transform:translateX(-100%);
+transition:.7s;
+}
+
+button:hover::before{
+transform:translateX(100%);
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+width:10px;
+height:10px;
+}
+
+::-webkit-scrollbar-thumb{
+background:
+linear-gradient(
+180deg,
+var(--orange),
+var(--orange2)
+);
+
+border-radius:999px;
+}
+
+::-webkit-scrollbar-track{
+background:#0d141d;
+}
+
+/* TABELA PREMIUM */
+
+table{
+border-spacing:0 10px;
+border-collapse:separate;
+}
+
+tbody tr{
+background:rgba(255,255,255,.02);
+transition:.25s;
+}
+
+tbody tr td:first-child{
+border-radius:14px 0 0 14px;
+}
+
+tbody tr td:last-child{
+border-radius:0 14px 14px 0;
+}
+
+tbody tr:hover{
+background:
+rgba(255,106,0,.08);
+transform:scale(1.01);
+}
+
+/* HERO MAIS PREMIUM */
+
+.hero{
+box-shadow:
+0 40px 100px rgba(0,0,0,.45);
+border:1px solid rgba(255,255,255,.05);
+}
+
+/* STATUS ONLINE PISCANDO */
+
+.status:first-child{
+animation:pulseOnline 2s infinite;
+}
+
+@keyframes pulseOnline{
+
+0%{
+box-shadow:0 0 0 rgba(0,210,106,0);
+}
+
+50%{
+box-shadow:0 0 20px rgba(0,210,106,.4);
+}
+
+100%{
+box-shadow:0 0 0 rgba(0,210,106,0);
+}
+
+}
+
+/* CHAT MAIS MODERNO */
+
+.chatbox{
+padding-bottom:10px;
+}
+
+.msg{
+border:
+1px solid rgba(255,255,255,.04);
+
+background:
+linear-gradient(
+145deg,
+rgba(29,40,55,.95),
+rgba(15,23,34,.95)
+);
+}
+
+.msg:hover{
+box-shadow:
+0 20px 45px rgba(0,0,0,.4);
+}
+
+/* AVATAR COM BORDA */
+
+.msg-avatar{
+border:
+2px solid rgba(255,255,255,.12);
+}
+
+/* BADGE ADMIN */
+
+.adminBadge{
+display:inline-flex;
+align-items:center;
+gap:6px;
+padding:5px 10px;
+border-radius:999px;
+background:rgba(255,106,0,.14);
+color:#ffb37a;
+font-size:11px;
+font-weight:bold;
+margin-left:10px;
+}
+
+/* LOADING */
+
+.loading{
+width:45px;
+height:45px;
+border-radius:50%;
+border:4px solid rgba(255,255,255,.08);
+border-top:4px solid var(--orange);
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+/* FLOATING EFFECT */
+
+.chat{
+animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+
+0%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-8px);
+}
+
+100%{
+transform:translateY(0);
+}
+
+}
+
+/* TITULOS */
+
+h1,h2,h3{
+letter-spacing:.5px;
+}
+
+/* GLASS KPI */
+
+.kpi{
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.04),
+rgba(255,255,255,.01)
+);
+border:1px solid rgba(255,255,255,.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginTela">
+
+<div class="loginBox">
+
+<div class="loginLogo">
+<i class="fa-solid fa-lock"></i>
+</div>
+
+<h1>ADM</h1>
+
+<p>
+Acesso restrito
+</p>
+
+<input
+type="text"
+id="loginUsuario"
+placeholder="Usuário">
+
+<input
+type="password"
+id="loginSenha"
+placeholder="Senha">
+
+<button onclick="fazerLogin()">
+Entrar no sistema
+</button>
+
+<div id="erroLogin"></div>
+
+</div>
+
+</div>
+
+<!-- PAINEL -->
+<div id="painelSistema" style="display:none;">
+
+<header>
+
+<div class="nav">
+
+<div class="logo">
+<i class="fa-solid fa-screwdriver-wrench"></i>
+Alderico Kleimpaul
+</div>
+
+<div class="menu">
+
+<a href="#inicio">Início</a>
+<a href="#estoque">Estoque</a>
+<a href="#pecas">Peças</a>
+<a href="#chatInterno">Chat</a>
+<a href="#relatorios">Relatórios</a>
+
+<button
+class="logoutBtn"
+onclick="logout()">
+
+Sair
+
+</button>
+
+<button
+class="voltarBtn"
+onclick="voltar()">
+
+Voltar
+
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+<section class="hero" id="inicio">
+
+<h1>
+Painel <span>Kleimpaul</span>
+</h1>
+
+<p>
+Gerenciamento de estoque
+</p>
+
+<div class="statusBar">
+
+<div class="status">
+🟢 Sistema online
+</div>
+
+<div class="status">
+🔥 Firebase conectada
+</div>
+
+<div class="status">
+🔒 Área protegida
+</div>
+
+<div class="status">
+⚡ Tempo real
+</div>
+
+</div>
+
+</section>
+
+<div class="container">
+
+<!-- KPIS -->
+<div class="grid" id="estoque">
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-box"></i>
+</div>
+
+<div class="stats" id="tpecas">0</div>
+
+<p>Total de peças</p>
+
+<div class="chart">
+<span id="bar1" style="width:0%"></span>
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-cubes"></i>
+</div>
+
+<div class="stats" id="tqtd">0</div>
+
+<p>Total em estoque</p>
+
+<div class="chart">
+<span id="bar2" style="width:0%"></span>
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-sack-dollar"></i>
+</div>
+
+<div class="stats" id="tvalor">R$0</div>
+
+<p>Valor do estoque</p>
+
+<div class="chart">
+<span id="bar3" style="width:0%"></span>
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+<i class="fa-solid fa-triangle-exclamation"></i>
+</div>
+
+<div class="stats" id="baixoEstoque">0</div>
+
+<p>Itens com estoque baixo</p>
+
+<div class="chart">
+<span id="bar4" style="width:0%"></span>
+</div>
+
+</div>
+
+</div>
+
+<!-- CADASTRO -->
+<div class="card"
+id="pecas"
+style="margin-top:30px">
+
+<h2>Cadastro de peças</h2>
+
+<input id="nome" placeholder="Nome da peça">
+
+<input id="codigo" placeholder="Código">
+
+<input id="valor" type="number" placeholder="Valor">
+
+<input id="qtd" type="number" placeholder="Quantidade">
+
+<select id="categoria">
+
+<option>Motosserras</option>
+<option>Peças</option>
+<option>Rolamentos</option>
+<option>Óleos</option>
+<option>Mancais</option>
+<option>Polias</option>
+<option>Sabre</option>
+<option>Correias</option>
+<option>Correntes</option>
+<option>Outros</option>
+
+</select>
+
+<button onclick="salvar()">
+Cadastrar peça
+</button>
+
+<button onclick="baixarDados()">
+Baixar backup .txt
+</button>
+
+</div>
+
+<!-- PESQUISA -->
+<div class="card" style="margin-top:30px">
+
+<h2>Pesquisar estoque</h2>
+
+<input
+id="busca"
+placeholder="Pesquisar nome, código ou categoria"
+onkeyup="render()">
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+<th>Código</th>
+<th>Categoria</th>
+<th>Qtd</th>
+<th>Valor</th>
+<th>Data</th>
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="lista"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- CHAT -->
+<div class="card"
+id="chatInterno"
+style="margin-top:30px">
+
+<h2 style="
+font-size:32px;
+margin-bottom:10px;
+display:flex;
+align-items:center;
+gap:12px;
+">
+
+💬 Chat
+
+</h2>
+
+<p style="
+color:#94a3b8;
+margin-bottom:25px;
+line-height:1.7;
+">
+
+mensagem
+
+</p>
+
+<input
+id="chatNome"
+placeholder="Nome">
+
+<textarea
+id="chatMensagem"
+placeholder="Digite uma mensagem para equipe..."></textarea>
+
+<button onclick="enviarMensagem()">
+
+<i class="fa-solid fa-paper-plane"></i>
+Enviar mensagem
+
+</button>
+
+<div class="chatbox" id="chatLista"></div>
+
+</div>
+
+<!-- LIXEIRA -->
+<div class="card"
+style="margin-top:30px">
+
+<h2>🗑 Lixeira</h2>
+
+<div class="table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nome</th>
+<th>Data exclusão</th>
+<th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="lixeiraLista"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- RELATORIOS -->
+<div class="card"
+id="relatorios"
+style="margin-top:30px">
+
+<h2>Relatórios</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="stats"
+id="mediaEstoque">0</div>
+
+<p>Média estoque</p>
+
+</div>
+
+<div class="card">
+
+<div class="stats"
+id="categorias">0</div>
+
+<p>Categorias</p>
+
+</div>
+
+<div class="card">
+
+<div class="stats"
+id="maisCaro">0</div>
+
+<p>Item mais caro</p>
+
+</div>
+
+<div class="card">
+
+<div class="stats"
+id="maiorItem">0</div>
+
+<p>Maior estoque</p>
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div>
+
+<h3>administração</h3>
+
+<p style="margin-top:8px;color:#aaa">
+v1.0
+</p>
+
+</div>
+
+<i class="fa-solid fa-gauge-high"></i>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+© Alderico Kleimpaul
+</footer>
+
+</div>
+
+<a
+class="chat"
+href="https://wa.me/5549999973286"
+target="_blank">
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+
+import {
+getFirestore,
+addDoc,
+getDocs,
+deleteDoc,
+collection,
+doc,
+onSnapshot,
+setDoc,
+getDoc,
+updateDoc
+}
+
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+}
+
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-storage.js";
+
+const firebaseConfig={
+
+apiKey:"AIzaSyA-58AAdPJOsT_GDOdwV1oKNZ0wj9DYC2w",
+authDomain:"kleimpaul-c9810.firebaseapp.com",
+projectId:"kleimpaul-c9810",
+storageBucket:"kleimpaul-c9810.firebasestorage.app",
+messagingSenderId:"1094353351727",
+appId:"1:1094353351727:web:14ba727e774be80bf9c2da",
+measurementId:"G-8E6TTFXM3E"
+
+};
+
+const app=initializeApp(firebaseConfig);
+
+try{
+getAnalytics(app);
+}catch(e){
+console.log("Analytics desativado");
+}
+
+const db=getFirestore(app);
+
+const storage=getStorage(app);
+
+window.db=db;
+window.storage=storage;
+
+window.firebaseTools={
+
+addDoc,
+getDocs,
+deleteDoc,
+collection,
+doc,
+onSnapshot,
+setDoc,
+getDoc,
+updateDoc,
+ref,
+uploadBytes,
+getDownloadURL
+
+};
+
+console.log("🔥 Firebase conectado");
+
+</script>
+
+<script>
+
+const LOGIN="diva";
+const SENHA="15187";
+
+let pecas=[];
+let mensagens=[];
+let lixeira=[];
+
+let mensagensLidas=0;
+
+let primeiraCargaChat=true;
+
+/* CONFIG FIREBASE */
+
+async function salvarConfig(chave,valor){
+
+const {
+setDoc,
+doc
+
+}=window.firebaseTools;
+
+await setDoc(
+
+doc(
+window.db,
+"configuracoes",
+chave
+),
+
+{
+valor
+}
+
+);
+
+}
+
+async function carregarConfig(chave){
+
+const {
+getDoc,
+doc
+
+}=window.firebaseTools;
+
+let snap=
+
+await getDoc(
+
+doc(
+window.db,
+"configuracoes",
+chave
+)
+
+);
+
+if(snap.exists()){
+
+return snap.data().valor;
+
+}
+
+return null;
+
+}
+
+/* NOTIFICAÇÃO ABA */
+
+function atualizarTituloNotificacao(){
+
+let totalNaoLidas =
+Math.max(
+0,
+mensagens.length - mensagensLidas
+);
+
+if(document.hidden && totalNaoLidas>0){
+
+document.title=
+`(${totalNaoLidas}) Alderico Kleimpaul`;
+
+}else{
+
+document.title=
+"Alderico Kleimpaul";
+
+}
+
+}
+
+/* QUANDO VOLTAR PARA ABA */
+
+document.addEventListener(
+"visibilitychange",
+()=>{
+
+if(!document.hidden){
+
+mensagensLidas=
+mensagens.length;
+
+}
+
+atualizarTituloNotificacao();
+
+}
+);
+
+/* LOGIN */
+
+async function fazerLogin(){
+
+let usuario=
+document.getElementById("loginUsuario").value;
+
+let senha=
+document.getElementById("loginSenha").value;
+
+if(
+usuario===LOGIN &&
+senha===SENHA
+){
+
+await salvarConfig(
+"painelLogado",
+true
+);
+
+abrirPainel();
+
+}else{
+
+document.getElementById("erroLogin").innerText=
+"Usuário ou senha incorretos";
+
+}
+
+}
+
+function abrirPainel(){
+
+loginTela.style.display="none";
+painelSistema.style.display="block";
+
+let espera=setInterval(()=>{
+
+if(window.firebaseTools && window.db){
+
+clearInterval(espera);
+iniciar();
+
+}
+
+},300);
+
+}
+
+function voltar() {
+window.location.href = "index.html";
+}
+
+async function logout(){
+
+await salvarConfig(
+"painelLogado",
+false
+);
+
+location.reload();
+
+}
+
+window.addEventListener("load",async()=>{
+
+let logado=
+await carregarConfig(
+"painelLogado"
+);
+
+if(logado){
+
+abrirPainel();
+
+}
+
+let nome=
+
+await carregarConfig(
+"nomeChat"
+);
+
+document.getElementById("chatNome").value=
+nome || "";
+
+});
+
+document.addEventListener("keydown",(e)=>{
+
+if(e.key==="Enter"){
+
+if(
+loginTela.style.display!=="none"
+){
+
+fazerLogin();
+
+}
+
+}
+
+});
+
+/* NOTIFICAÇÃO */
+
+function notificar(texto){
+
+let div=
+document.createElement("div");
+
+div.className="notificacao";
+
+div.innerText=texto;
+
+document.body.appendChild(div);
+
+setTimeout(()=>{
+
+div.remove();
+
+},3000);
+
+}
+
+/* INICIAR */
+
+async function iniciar(){
+
+await carregarFotoPerfil();
+
+carregarPecas();
+carregarMensagens();
+carregarLixeira();
+
+}
+
+/* FOTO PERFIL */
+
+async function carregarFotoPerfil(){
+
+window.fotoPerfilUrl=
+
+await carregarConfig(
+"fotoPerfil"
+);
+
+}
+
+/* CARREGAR PEÇAS */
+
+function carregarPecas(){
+
+const {
+collection,
+onSnapshot
+
+}=window.firebaseTools;
+
+onSnapshot(
+
+collection(
+window.db,
+"pecas"
+),
+
+(snapshot)=>{
+
+pecas=[];
+
+snapshot.forEach(item=>{
+
+pecas.push({
+
+id:item.id,
+...item.data()
+
+});
+
+});
+
+render();
+
+}
+
+);
+
+}
+
+/* CARREGAR LIXEIRA */
+
+function carregarLixeira(){
+
+const {
+collection,
+onSnapshot
+
+}=window.firebaseTools;
+
+onSnapshot(
+
+collection(
+window.db,
+"lixeira"
+),
+
+(snapshot)=>{
+
+lixeira=[];
+
+snapshot.forEach(item=>{
+
+lixeira.push({
+
+id:item.id,
+...item.data()
+
+});
+
+});
+
+renderLixeira();
+
+}
+
+);
+
+}
+
+/* SALVAR */
+
+async function salvar(){
+
+if(
+!nome.value ||
+!codigo.value ||
+!valor.value ||
+!qtd.value
+){
+
+alert("Preencha todos os campos");
+return;
+
+}
+
+const {addDoc,collection}=window.firebaseTools;
+
+await addDoc(
+
+collection(window.db,"pecas"),
+
+{
+nome:nome.value,
+codigo:codigo.value,
+categoria:categoria.value,
+valor:Number(valor.value),
+qtd:Number(qtd.value),
+dataCadastro:new Date()
+.toLocaleString()
+}
+
+);
+
+notificar("✅ Peça cadastrada");
+
+nome.value="";
+codigo.value="";
+valor.value="";
+qtd.value="";
+
+}
+
+/* EXCLUIR */
+
+async function excluir(id){
+
+let item=
+pecas.find(x=>x.id===id);
+
+if(item){
+
+const {
+addDoc,
+collection
+
+}=window.firebaseTools;
+
+await addDoc(
+
+collection(
+window.db,
+"lixeira"
+),
+
+{
+
+nome:item.nome,
+codigo:item.codigo,
+categoria:item.categoria,
+valor:item.valor,
+qtd:item.qtd,
+dataExclusao:new Date()
+.toLocaleString()
+
+}
+
+);
+
+}
+
+const {deleteDoc,doc}=window.firebaseTools;
+
+await deleteDoc(
+doc(window.db,"pecas",id)
+);
+
+notificar("🗑 Peça removida");
+
+}
+
+/* RENDER */
+
+function render(){
+
+let pesquisa=
+busca.value?.toLowerCase() || "";
+
+let filtrado=
+
+pecas.filter(x=>
+
+x.nome.toLowerCase()
+.includes(pesquisa)
+
+||
+
+x.codigo.toLowerCase()
+.includes(pesquisa)
+
+||
+
+x.categoria.toLowerCase()
+.includes(pesquisa)
+
+);
+
+lista.innerHTML=
+
+filtrado.map(x=>`
+
+<tr>
+
+<td>${x.nome}</td>
+<td>${x.codigo}</td>
+<td>${x.categoria}</td>
+
+<td>
+
+${x.qtd<5
+
+?`<span class="baixo">
+⚠ ${x.qtd}
+</span>`
+
+:x.qtd}
+
+</td>
+
+<td>
+R$ ${x.valor.toFixed(2)}
+</td>
+
+<td>
+${x.dataCadastro}
+</td>
+
+<td>
+
+<div class="acoes">
+
+<button
+class="btnDelete"
+onclick="excluir('${x.id}')">
+
+🗑
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`).join("");
+
+/* KPIS */
+
+tpecas.innerText=
+pecas.length;
+
+let totalQtd=
+
+pecas.reduce(
+(a,b)=>a+b.qtd,
+0
+);
+
+tqtd.innerText=
+totalQtd;
+
+let totalValor=
+
+pecas.reduce(
+(a,b)=>a+(b.valor*b.qtd),
+0
+);
+
+tvalor.innerText=
+
+"R$ "+
+
+totalValor.toLocaleString(
+"pt-BR",
+{
+minimumFractionDigits:2
+}
+);
+
+let baixo=
+pecas.filter(x=>x.qtd<5).length;
+
+baixoEstoque.innerText=
+baixo;
+
+mediaEstoque.innerText=
+
+pecas.length
+
+?
+
+(totalQtd/pecas.length)
+.toFixed(1)
+
+:
+
+0;
+
+categorias.innerText=
+
+new Set(
+pecas.map(
+x=>x.categoria
+)
+).size;
+
+let maior=
+[...pecas]
+.sort((a,b)=>b.qtd-a.qtd)[0];
+
+maiorItem.innerText=
+
+maior
+? maior.nome
+: "-";
+
+let caro=
+[...pecas]
+.sort((a,b)=>b.valor-a.valor)[0];
+
+maisCaro.innerText=
+
+caro
+? caro.nome
+: "-";
+
+/* BARRAS */
+
+bar1.style.width=
+Math.min(100,pecas.length*10)+"%";
+
+bar2.style.width=
+Math.min(100,totalQtd)+"%";
+
+bar3.style.width=
+Math.min(100,totalValor/100)+"%";
+
+bar4.style.width=
+Math.min(100,baixo*20)+"%";
+
+}
+
+/* LIXEIRA */
+
+function renderLixeira(){
+
+lixeiraLista.innerHTML=
+
+lixeira.map(x=>`
+
+<tr>
+
+<td>${x.nome}</td>
+
+<td>${x.dataExclusao}</td>
+
+<td>
+
+<div class="acoes">
+
+<button onclick="restaurar('${x.id}')">
+♻ Restaurar
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+async function restaurar(id){
+
+let item=
+lixeira.find(x=>x.id===id);
+
+if(!item)return;
+
+const {
+addDoc,
+collection,
+deleteDoc,
+doc
+
+}=window.firebaseTools;
+
+await addDoc(
+
+collection(
+window.db,
+"pecas"
+),
+
+{
+nome:item.nome,
+codigo:item.codigo,
+categoria:item.categoria,
+valor:item.valor,
+qtd:item.qtd,
+dataCadastro:new Date()
+.toLocaleString()
+}
+
+);
+
+await deleteDoc(
+doc(window.db,"lixeira",id)
+);
+
+notificar("♻ Restaurado");
+
+}
+
+/* CHAT */
+
+async function enviarMensagem(){
+
+if(
+!chatNome.value ||
+!chatMensagem.value
+){
+
+alert(
+"Digite nome e mensagem"
+);
+
+return;
+
+}
+
+await salvarConfig(
+"nomeChat",
+chatNome.value
+);
+
+const {
+addDoc,
+collection
+
+}=window.firebaseTools;
+
+await addDoc(
+
+collection(
+window.db,
+"chat"
+),
+
+{
+
+nome:chatNome.value,
+mensagem:chatMensagem.value,
+data:horaAtual()
+
+}
+
+);
+
+chatMensagem.value="";
+
+notificar(
+"💬 Mensagem enviada"
+);
+
+}
+
+function carregarMensagens(){
+
+const {
+collection,
+onSnapshot
+
+}=window.firebaseTools;
+
+onSnapshot(
+
+collection(
+window.db,
+"chat"
+),
+
+(snapshot)=>{
+
+mensagens=[];
+
+snapshot.forEach(item=>{
+
+mensagens.push({
+
+id:item.id,
+...item.data()
+
+});
+
+});
+
+renderMensagens();
+
+/* PRIMEIRA CARGA */
+
+if(primeiraCargaChat){
+
+mensagensLidas=
+mensagens.length;
+
+primeiraCargaChat=false;
+
+}
+
+/* NOVA MSG */
+
+if(document.hidden){
+
+atualizarTituloNotificacao();
+
+}else{
+
+mensagensLidas=
+mensagens.length;
+
+atualizarTituloNotificacao();
+
+}
+
+}
+
+);
+
+}
+
+function renderMensagens(){
+
+if(!mensagens.length){
+
+chatLista.innerHTML=`
+
+<div style="
+padding:80px 20px;
+text-align:center;
+">
+
+<div class="loading"></div>
+
+<h3 style="
+margin-top:25px;
+font-size:28px;
+">
+
+Nenhuma mensagem
+
+</h3>
+
+<p style="
+margin-top:10px;
+color:#8fa0b5;
+">
+
+Converse com sua equipe em tempo real.
+
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+chatLista.innerHTML=
+
+mensagens.slice().reverse().map(x=>{
+
+let admin=
+x.nome.toLowerCase()
+.includes("admin");
+
+return `
+
+<div class="msg">
+
+<div class="msg-avatar"
+onclick="trocarFotoPerfil()">
+
+<img src="${
+window.fotoPerfilUrl ||
+'https://i.imgur.com/6VBx3io.png'
+}">
+
+</div>
+
+<div class="msg-content">
+
+<div class="msg-top">
+
+<div style="
+display:flex;
+align-items:center;
+flex-wrap:wrap;
+">
+
+<h4>
+${x.nome}
+</h4>
+
+${admin ? `
+
+<div class="adminBadge">
+
+<i class="fa-solid fa-shield"></i>
+ADMIN
+
+</div>
+
+` : ""}
+
+</div>
+
+<div class="msg-time">
+
+<i class="fa-regular fa-clock"></i>
+${x.data}
+
+</div>
+
+</div>
+
+<p>
+${x.mensagem}
+</p>
+
+<div style="
+display:flex;
+gap:10px;
+margin-top:15px;
+flex-wrap:wrap;
+">
+
+<button
+class="delete"
+onclick="apagarMensagem('${x.id}')">
+
+🗑 Excluir
+
+</button>
+
+<button
+style="
+width:auto;
+padding:10px 15px;
+background:#1e293b;
+"
+onclick="copiarMensagem(\`${x.mensagem}\`)">
+
+📋 Copiar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+})
+.join("");
+
+chatLista.scrollTop=
+chatLista.scrollHeight;
+
+}
+
+async function apagarMensagem(id){
+
+const {deleteDoc,doc}=window.firebaseTools;
+
+await deleteDoc(
+doc(window.db,"chat",id)
+);
+
+notificar("🗑 Mensagem apagada");
+
+}
+
+/* BACKUP */
+
+function baixarDados(){
+
+let dados={
+
+pecas,
+mensagens,
+lixeira
+
+};
+
+let texto=
+JSON.stringify(
+dados,
+null,
+2
+);
+
+let blob=
+new Blob(
+[texto],
+{
+type:"text/plain"
+}
+);
+
+let a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"backup-kleimpaul.txt";
+
+a.click();
+
+notificar("📥 Backup baixado");
+
+}
+
+/* COPIAR */
+
+function copiarMensagem(texto){
+
+navigator.clipboard.writeText(texto);
+
+notificar("📋 Mensagem copiada");
+
+}
+
+/* ENTER ENVIA */
+
+chatMensagem.addEventListener(
+"keydown",
+(e)=>{
+
+if(
+e.key==="Enter" &&
+!e.shiftKey
+){
+
+e.preventDefault();
+enviarMensagem();
+
+}
+
+}
+);
+
+/* DATA BONITA */
+
+function horaAtual(){
+
+return new Date()
+.toLocaleString(
+"pt-BR",
+{
+dateStyle:"short",
+timeStyle:"short"
+}
+);
+
+}
+
+/* FOTO PERFIL */
+
+async function trocarFotoPerfil(){
+
+let input=
+document.createElement("input");
+
+input.type="file";
+input.accept="image/*";
+
+input.onchange=async(e)=>{
+
+let file=e.target.files[0];
+
+if(!file)return;
+
+const {
+ref,
+uploadBytes,
+getDownloadURL
+
+}=window.firebaseTools;
+
+let nomeArquivo=
+"perfil-"+Date.now();
+
+let referencia=
+ref(
+window.storage,
+"fotos/"+nomeArquivo
+);
+
+await uploadBytes(
+referencia,
+file
+);
+
+let url=
+
+await getDownloadURL(
+referencia
+);
+
+await salvarConfig(
+"fotoPerfil",
+url
+);
+
+window.fotoPerfilUrl=url;
+
+renderMensagens();
+
+notificar(
+"🖼 Foto atualizada"
+);
+
+};
+
+input.click();
+
+}
+
+</script>
+
+</body>
+</html>
