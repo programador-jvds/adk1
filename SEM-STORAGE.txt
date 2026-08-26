@@ -1,0 +1,10 @@
+NÃO É NECESSÁRIO ATIVAR O FIREBASE STORAGE.
+
+Use apenas:
+- Firebase Authentication (Email/Password)
+- Cloud Firestore
+- Hosting opcional
+
+Login: diva / 151871
+
+Para imagens: abra ADM > Mídia, escolha a imagem, salve no Firestore e copie a referência media:ID.

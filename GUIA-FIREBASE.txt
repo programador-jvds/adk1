@@ -1,0 +1,59 @@
+KLEIMPAUL — CONFIGURAÇÃO FIREBASE (SEM STORAGE / SEM BLAZE)
+
+LOGIN DO PAINEL
+Usuário exibido no site: diva
+Senha atual: 151871
+Empresa interna: 1
+
+1) FIREBASE AUTHENTICATION
+- Firebase Console > Authentication > Sign-in method.
+- Ative Email/Password.
+- Em Users, crie ou edite o usuário técnico:
+    E-mail: diva@empresa1.kleimpaul.com
+    Senha: 151871
+- O painel mostra somente o usuário "diva". O e-mail técnico não aparece para quem faz login.
+
+2) FIRESTORE DATABASE
+- Crie/ative o Firestore Database.
+- Abra Firestore Database > Rules.
+- Substitua as regras pelo conteúdo de firestore.rules e clique em Publish.
+- NÃO use regras abertas do tipo allow read, write: if true.
+
+3) CLOUD STORAGE
+- NÃO precisa ativar.
+- NÃO precisa plano Blaze para o funcionamento deste pacote.
+- Imagens do painel são comprimidas para WebP/JPEG e salvas diretamente em empresas/1/media.
+- Cada imagem é mantida bem abaixo do limite de 1 MiB por documento do Firestore.
+- Nos campos de imagem, use URL normal ou a referência gerada pelo painel: media:ID_DO_DOCUMENTO.
+
+4) BACKUP NA NUVEM
+- O botão de backup cloud NÃO usa Storage.
+- O JSON é dividido em blocos e salvo em:
+    empresas/1/backups
+    empresas/1/backup_chunks
+- O painel remonta os blocos para download e valida checksum na restauração.
+- O backup local em JSON continua disponível e é recomendado manter cópias fora do Firebase.
+
+5) ESTRUTURA PRINCIPAL
+empresas/1/site_settings   -> identidade visual, contatos e logo
+empresas/1/site_overrides  -> editor universal por seletor CSS
+empresas/1/highlights      -> destaques da home
+empresas/1/catalog_items   -> catálogos
+empresas/1/media           -> imagens comprimidas no próprio Firestore
+empresas/1/inventory       -> estoque privado
+empresas/1/trash           -> lixeira privada
+empresas/1/chat            -> chat privado
+empresas/1/audit           -> auditoria
+empresas/1/backups         -> metadados dos backups
+empresas/1/backup_chunks   -> blocos dos backups
+
+6) PUBLICAÇÃO
+Com Firebase CLI:
+  firebase login
+  firebase use kleimpaul-c9810
+  firebase deploy --only firestore:rules,hosting
+
+Também pode publicar os arquivos em outro host HTTPS.
+
+IMPORTANTE SOBRE O PLANO GRATUITO
+Este pacote não depende de Firebase Storage. Ainda assim, o Firestore possui cotas gratuitas de armazenamento/leitura/escrita; imagens são comprimidas justamente para reduzir consumo. Para uma loja institucional com volume moderado, mantenha as imagens otimizadas e apague mídias/backups antigos quando não forem mais necessários.

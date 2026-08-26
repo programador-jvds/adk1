@@ -1,0 +1,21 @@
+KLEIMPAUL — VISUAL + LOGIN + FIRESTORE FREE
+
+LOGIN
+Usuário: diva
+Senha: 151871
+Empresa interna: 1
+
+O painel aceita somente o nome de usuário na interface. Internamente o Firebase Authentication usa diva@empresa1.kleimpaul.com.
+
+ARQUITETURA SEM STORAGE
+- Firebase Storage removido do código e do deploy.
+- Imagens são comprimidas automaticamente e armazenadas em documentos Firestore.
+- Referências media:ID podem ser usadas no logo, destaques, catálogo e editor de src.
+- Backup cloud é fragmentado em documentos Firestore.
+- Backup local JSON e restauração com checksum continuam disponíveis.
+
+VISUAL
+- Tema premium escuro industrial.
+- Dashboard em bento/cards, profundidade e melhor hierarquia.
+- Destaques públicos com maior contraste e responsividade.
+- Catálogo e estados Firebase integrados ao mesmo design.
