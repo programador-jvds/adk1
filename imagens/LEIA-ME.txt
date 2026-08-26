@@ -1,0 +1,1 @@
+Imagens de fallback incluídas para evitar arquivos quebrados. Substitua pelas fotos reais quando desejar ou use o painel ADM > Mídia: as imagens novas são comprimidas e salvas diretamente no Firestore, sem Firebase Storage.

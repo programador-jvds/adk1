@@ -1,0 +1,44 @@
+KLEIMPAUL — PRO MAX + PESQUISA
+Versão: 26/08/2026
+
+ACESSO ADMINISTRATIVO
+Usuário: diva
+Senha configurada no Authentication: 151871
+Empresa interna: 1
+
+MELHORIAS PÚBLICAS
+- Barra de pesquisa global em todas as páginas públicas.
+- Atalho Ctrl+K e tecla / para abrir a pesquisa.
+- Pesquisa por categorias, peças, equipamentos e modelos de motosserra.
+- Produtos cadastrados no catálogo administrativo entram na busca quando disponíveis.
+- Pesquisa local automática nos catálogos de cada categoria.
+- Navegação horizontal entre categorias nas páginas internas.
+- Hero da página inicial com busca grande e atalhos rápidos.
+- Seções de orientação nas categorias para nome/código, medida/aplicação e atendimento.
+- Cards, destaques, catálogo, CTAs, cabeçalho e rodapé refinados.
+- Melhor aproveitamento para notebook, 1440p, ultrawide e 4K.
+- Layout mobile reorganizado e controles maiores para toque.
+- Imagens com carregamento otimizado, decoding assíncrono e apresentação mais nítida.
+- Barra discreta de progresso de navegação.
+- Animações leves respeitando prefers-reduced-motion.
+- Zoom do navegador não é mais bloqueado.
+- Metadados e descrições das páginas melhorados.
+- Nenhum texto público menciona Firebase, Firestore, sincronização ou conexão técnica.
+
+MELHORIAS DO PAINEL
+- Pesquisa global do painel com Ctrl+K.
+- Busca rápida por Editor, Destaques, Catálogo, Estoque, Mídia, Backup etc.
+- Atalhos no Dashboard para ações frequentes.
+- Sidebar organizada em grupos.
+- Melhor aproveitamento em telas grandes e no celular.
+- Cards, tabelas, formulários, mídia, login e prévia visual refinados.
+- A autenticação e o código corrigido do admin.js foram preservados.
+
+PUBLICAÇÃO NO GITHUB PAGES
+1. Substitua os arquivos do repositório pelos desta versão.
+2. Aguarde o Pages build and deployment finalizar.
+3. Abra o site e pressione Ctrl+F5 uma vez.
+4. Não altere admin.js nem firebase-config.js se o login já está funcionando.
+
+OBSERVAÇÃO
+As imagens fornecidas no pacote já têm dimensões adequadas para web. O layout evita ampliações desnecessárias e usa contain/cover conforme o contexto para preservar melhor a nitidez em telas de alta resolução.

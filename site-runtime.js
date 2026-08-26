@@ -1,6 +1,6 @@
 import { FIREBASE_CONFIG, DEFAULT_COMPANY_ID } from './firebase-config.js';
 import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
-import { getFirestore, doc, collection, onSnapshot, query, where, getDoc } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
+import { getFirestore, doc, collection, onSnapshot, query, where, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
 
 const COMPANY_ID = document.documentElement.dataset.company || DEFAULT_COMPANY_ID;
 const PAGE = (()=>{
@@ -13,6 +13,8 @@ const company = (...parts)=>['empresas',COMPANY_ID,...parts];
 const escapeHTML=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
 window.KleimpaulCMS = {db, companyId:COMPANY_ID, page:PAGE, connected:false};
+let cachedOverrides=[];
+let searchCatalogPromise=null;
 
 const mediaCache=new Map();
 function mediaId(value){const m=String(value||'').match(/^media:([A-Za-z0-9_-]+)$/);return m?m[1]:null;}
@@ -79,12 +81,13 @@ async function applyOverride(o){
 function listenSettings(){
   onSnapshot(doc(db,...company('site_settings','config')),(snap)=>{setConnected(true); if(snap.exists()) applyGlobalSettings(snap.data())},()=>setConnected(false));
 }
+function applyCachedOverrides(){ cachedOverrides.forEach(applyOverride); }
 function listenOverrides(){
   const q=query(collection(db,...company('site_overrides')),where('page','in',[PAGE,'*']));
   onSnapshot(q,(snap)=>{
     setConnected(true);
-    const rows=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.enabled!==false).sort((a,b)=>(a.priority||0)-(b.priority||0));
-    rows.forEach(applyOverride);
+    cachedOverrides=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.enabled!==false).sort((a,b)=>(a.priority||0)-(b.priority||0));
+    applyCachedOverrides();
   },()=>setConnected(false));
 }
 function ensureHighlightsContainer(){
@@ -92,7 +95,7 @@ function ensureHighlightsContainer(){
   if(section) return section;
   if(PAGE!=='index') return null;
   section=document.createElement('section');section.className='cms-highlights';section.dataset.firestoreHighlights='';
-  section.innerHTML='<div class="container"><div class="section-title"><span>EM DESTAQUE</span><h2>Ofertas e novidades</h2><p>Conteúdo atualizado em tempo real.</p></div><div class="cms-highlights-grid" data-cms-highlight-grid></div></div>';
+  section.innerHTML='<div class="container"><div class="section-title"><span>EM DESTAQUE</span><h2>Ofertas e novidades</h2><p>Seleções, novidades e oportunidades para você.</p></div><div class="cms-highlights-grid" data-cms-highlight-grid></div></div>';
   const anchor=document.querySelector('#produtos');
   if(anchor) anchor.parentNode.insertBefore(section,anchor); else document.body.appendChild(section);
   return section;
@@ -106,18 +109,22 @@ function listenHighlights(){
     const grid=section.querySelector('[data-cms-highlight-grid]');
     if(!rows.length){section.style.display='none';return} section.style.display='';
     grid.innerHTML=rows.map(x=>`<a class="cms-highlight" href="${escapeHTML(x.link||'#')}" ${/^https?:/i.test(x.link||'')?'target="_blank" rel="noopener"':''}>
-      ${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy">`:''}
+      ${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy" decoding="async">`:''}
       <div class="cms-highlight-content">${x.badge?`<span class="cms-highlight-badge">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.title||'Destaque')}</h3>${x.subtitle?`<p>${escapeHTML(x.subtitle)}</p>`:''}</div>
     </a>`).join('');
+    window.dispatchEvent(new CustomEvent('kleimpaul:highlights',{detail:{rows}}));
   });
 }
 function ensureCatalogSection(){
   let section=document.querySelector('[data-firestore-catalog]');
   if(section)return section;
   section=document.createElement('section');section.className='cms-catalog';section.dataset.firestoreCatalog='';
-  section.innerHTML=`<div class="container"><div class="cms-catalog-header"><div><h2>Catálogo atualizado</h2><p>Itens administrados em tempo real.</p></div></div><div class="cms-catalog-grid" data-cms-catalog-grid></div></div>`;
+  section.innerHTML=`<div class="container"><div class="cms-catalog-header"><div><h2>Catálogo atualizado</h2><p>Confira opções, especificações e detalhes da categoria.</p></div></div><div class="cms-catalog-grid" data-cms-catalog-grid></div></div>`;
   const hero=document.querySelector('.hero-product,.hero');
-  if(hero && hero.parentNode) hero.insertAdjacentElement('afterend',section); else document.body.appendChild(section);
+  const assist=document.querySelector('.cms-category-assist');
+  if(assist && assist.parentNode) assist.insertAdjacentElement('afterend',section);
+  else if(hero && hero.parentNode) hero.insertAdjacentElement('afterend',section);
+  else document.body.appendChild(section);
   return section;
 }
 function specArray(x){
@@ -128,14 +135,16 @@ function specArray(x){
 function renderCatalogRows(rows){
   if(PAGE==='motosserras' && typeof window.kleimpaulSetMotosserras==='function'){
     window.kleimpaulSetMotosserras(rows.map((x,i)=>({id:x.slug||x.id||i+1,name:x.name||x.title||'Produto',price:Number(x.price||0),power:Number(x.power||0),image:x.image||'imagens/logo.png',info:specArray(x)})));
+    window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
     return;
   }
   const section=ensureCatalogSection(); const grid=section.querySelector('[data-cms-catalog-grid]');
-  if(!rows.length){section.style.display='none';return} section.style.display='';
+  if(!rows.length){section.style.display='none';window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows:[]}}));return} section.style.display='';
   grid.innerHTML=rows.map(x=>{
     const specs=specArray(x);
-    return `<article class="cms-catalog-card">${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.name||'Produto')}" loading="lazy">`:''}<div class="cms-catalog-body">${x.badge?`<span class="cms-catalog-tag">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.name||'Produto')}</h3>${x.description?`<p>${escapeHTML(x.description)}</p>`:''}${x.price?`<strong class="cms-price">${money(x.price)}</strong>`:''}${specs.length?`<div class="cms-specs">${specs.map(s=>`<span>${escapeHTML(s.label)}: ${escapeHTML(s.value)}</span>`).join('')}</div>`:''}</div></article>`;
+    return `<article class="cms-catalog-card">${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.name||'Produto')}" loading="lazy" decoding="async">`:''}<div class="cms-catalog-body">${x.badge?`<span class="cms-catalog-tag">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.name||'Produto')}</h3>${x.description?`<p>${escapeHTML(x.description)}</p>`:''}${x.price?`<strong class="cms-price">${money(x.price)}</strong>`:''}${specs.length?`<div class="cms-specs">${specs.map(s=>`<span>${escapeHTML(s.label)}: ${escapeHTML(s.value)}</span>`).join('')}</div>`:''}</div></article>`;
   }).join('');
+  window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
 }
 function listenCatalog(){
   if(PAGE==='index') return;
@@ -146,4 +155,16 @@ function listenCatalog(){
     renderCatalogRows(rows);
   });
 }
+async function getSearchCatalog(){
+  if(!searchCatalogPromise){
+    searchCatalogPromise=getDocs(collection(db,...company('catalog_items'))).then(async snap=>{
+      let rows=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.active!==false);
+      rows=await resolveRowsImages(rows);
+      return rows;
+    }).catch(()=>[]);
+  }
+  return searchCatalogPromise;
+}
+window.KleimpaulCMS.getSearchCatalog=getSearchCatalog;
+window.addEventListener('kleimpaul:ui-ready',applyCachedOverrides);
 listenSettings();listenOverrides();listenHighlights();listenCatalog();
