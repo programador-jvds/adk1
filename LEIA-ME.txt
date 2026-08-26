@@ -1,0 +1,10 @@
+KLEIMPAUL — PACOTE DO SITE
+
+Acesso administrativo:
+Usuario: diva
+Senha: 151871
+
+Para testar no Windows, dê dois cliques em INICIAR-SITE.bat e abra o endereço mostrado no navegador.
+Não abra admin.html diretamente por file://, pois navegadores bloqueiam módulos JavaScript nesse modo.
+
+A interface pública não exibe nomes de tecnologias, banco de dados ou estados de conexão.

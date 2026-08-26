@@ -88,7 +88,7 @@ async function login(){
     companyId=comp; await setPersistence(auth,browserLocalPersistence);
     await signInWithEmailAndPassword(auth,adminEmail(user,comp),pass);
   }catch(e){
-    console.error(e); $('loginError').textContent='Firebase Authentication recusou o acesso. Crie/ative o usuário indicado no GUIA-FIREBASE.txt.';
+    console.error(e); $('loginError').textContent='Acesso não autorizado. Verifique o usuário e a senha.';
   }finally{ setBusy($('loginBtn'),false); }
 }
 $('loginBtn').onclick=login; $('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')login()}); $('logoutBtn').onclick=()=>signOut(auth);
@@ -109,7 +109,7 @@ function listen(name,sorter){
   const unsub=onSnapshot(cref(name),snap=>{
     state[name==='site_overrides'?'overrides':name==='catalog_items'?'catalog':name]=snap.docs.map(d=>({id:d.id,...d.data()}));
     if(sorter) state[name==='site_overrides'?'overrides':name==='catalog_items'?'catalog':name].sort(sorter);
-    renderAll(); $('fbState').textContent='conectado';
+    renderAll(); $('fbState').textContent='online';
   },err=>{ console.error(name,err); $('fbState').textContent='erro'; });
   unsubscribers.push(unsub);
 }
@@ -150,7 +150,7 @@ $('ovClear').onclick=clearOverride;
 $('ovSave').onclick=async()=>{
   const id=$('ovId').value; const data={page:$('ovPage').value,label:$('ovLabel').value.trim(),selector:$('ovSelector').value.trim(),mode:$('ovMode').value,attribute:$('ovAttribute').value.trim(),value:$('ovValue').value,priority:Number($('ovPriority').value||0),enabled:$('ovEnabled').checked,updatedAt:serverTimestamp(),updatedAtISO:nowISO()};
   if(!data.selector){toast('Informe um seletor CSS.','error');return}
-  try{ id?await updateDoc(dref('site_overrides',id),data):await addDoc(cref('site_overrides'),data); await audit(id?'override.update':'override.create',data.selector,{page:data.page}); clearOverride(); refreshPreview(); toast('Edição publicada no Firestore.'); }catch(e){console.error(e);toast('Falha ao salvar edição.','error')}
+  try{ id?await updateDoc(dref('site_overrides',id),data):await addDoc(cref('site_overrides'),data); await audit(id?'override.update':'override.create',data.selector,{page:data.page}); clearOverride(); refreshPreview(); toast('Edição publicada com sucesso.'); }catch(e){console.error(e);toast('Falha ao salvar edição.','error')}
 };
 window.editOverride=id=>{const x=state.overrides.find(x=>x.id===id);if(!x)return; $('ovId').value=id;$('ovPage').value=x.page||'index';$('ovLabel').value=x.label||'';$('ovSelector').value=x.selector||'';$('ovMode').value=x.mode||'text';$('ovAttribute').value=x.attribute||'';$('ovValue').value=x.value||'';$('ovPriority').value=x.priority||0;$('ovEnabled').checked=x.enabled!==false;refreshPreview();window.scrollTo({top:0,behavior:'smooth'})};
 window.delOverride=async id=>{if(!confirm('Excluir esta edição?'))return;await deleteDoc(dref('site_overrides',id));await audit('override.delete',id);toast('Edição excluída.')};
@@ -223,7 +223,7 @@ async function compressImageForFirestore(file){
     if(dataUrl.length<=MEDIA_MAX_DOC_CHARS && dataUrlBytes(dataUrl)<=MEDIA_TARGET_BYTES) return {dataUrl,width:w,height:h,bytes:dataUrlBytes(dataUrl),mime:dataUrl.slice(5,dataUrl.indexOf(';'))};
     if(quality>.54) quality-=.08; else {maxDim=Math.round(maxDim*.82);quality=.76;}
   }
-  if(best.length>MEDIA_MAX_DOC_CHARS) throw new Error('Não foi possível compactar a imagem o suficiente para o Firestore.');
+  if(best.length>MEDIA_MAX_DOC_CHARS) throw new Error('Não foi possível otimizar esta imagem. Tente uma imagem menor.');
   return {dataUrl:best,width:ow,height:oh,bytes:dataUrlBytes(best),mime:best.slice(5,best.indexOf(';'))};
 }
 $('mediaUpload').onclick=async()=>{
@@ -237,20 +237,20 @@ $('mediaUpload').onclick=async()=>{
       createdAt:serverTimestamp(), createdAtISO:nowISO()
     });
     await audit('media.firestore_upload',file.name,{id:refDoc.id,originalSize:file.size,size:out.bytes,width:out.width,height:out.height});
-    $('mediaFile').value=''; toast(`Imagem salva no Firestore (${Math.round(out.bytes/1024)} KB).`);
+    $('mediaFile').value=''; toast(`Imagem adicionada à biblioteca (${Math.round(out.bytes/1024)} KB).`);
   }catch(e){console.error(e);toast(e.message||'Falha ao salvar a imagem.','error')}
   finally{setBusy($('mediaUpload'),false)}
 };
-window.copyMedia=async id=>{const x=state.media.find(x=>x.id===id);if(!x)return;await navigator.clipboard.writeText(mediaRef(id));toast('Referência Firestore copiada: use nos campos de imagem.','info')};
+window.copyMedia=async id=>{const x=state.media.find(x=>x.id===id);if(!x)return;await navigator.clipboard.writeText(mediaRef(id));toast('Referência da imagem copiada.','info')};
 window.copyMediaData=async id=>{const x=state.media.find(x=>x.id===id);if(!x)return;await navigator.clipboard.writeText(x.dataUrl||x.url||'');toast('Dados da imagem copiados.','info')};
-window.deleteMedia=async id=>{const x=state.media.find(x=>x.id===id);if(!x||!confirm('Excluir esta imagem do Firestore?'))return;await deleteDoc(dref('media',id));await audit('media.delete',x.name);toast('Mídia excluída.')};
+window.deleteMedia=async id=>{const x=state.media.find(x=>x.id===id);if(!x||!confirm('Excluir esta imagem da biblioteca?'))return;await deleteDoc(dref('media',id));await audit('media.delete',x.name);toast('Mídia excluída.')};
 function renderMedia(){
-  $('mediaGrid').innerHTML=state.media.map(x=>{const src=x.dataUrl||x.url||'imagens/logo.png';const kb=(Number(x.size||0)/1024).toFixed(0);return `<div class="media-card"><img src="${esc(src)}" alt="${esc(x.name)}"><div><strong title="${esc(x.name)}">${esc(x.name)}</strong><small>${kb} KB • ${x.storage==='firestore'?'Firestore':'legado'}</small><code style="display:block;margin-top:6px;font-size:10px;color:var(--muted)">${esc(mediaRef(x.id))}</code><div class="row-actions" style="margin-top:8px"><button class="btn gray sm" onclick="copyMedia('${x.id}')">Copiar referência</button><button class="btn red sm" onclick="deleteMedia('${x.id}')">Excluir</button></div></div></div>`}).join('')||'<div class="note">Nenhuma imagem enviada.</div>';
+  $('mediaGrid').innerHTML=state.media.map(x=>{const src=x.dataUrl||x.url||'imagens/logo.png';const kb=(Number(x.size||0)/1024).toFixed(0);return `<div class="media-card"><img src="${esc(src)}" alt="${esc(x.name)}"><div><strong title="${esc(x.name)}">${esc(x.name)}</strong><small>${kb} KB • ${x.storage==='firestore'?'Biblioteca':'legado'}</small><code style="display:block;margin-top:6px;font-size:10px;color:var(--muted)">${esc(mediaRef(x.id))}</code><div class="row-actions" style="margin-top:8px"><button class="btn gray sm" onclick="copyMedia('${x.id}')">Copiar referência</button><button class="btn red sm" onclick="deleteMedia('${x.id}')">Excluir</button></div></div></div>`}).join('')||'<div class="note">Nenhuma imagem enviada.</div>';
 }
 
 // SETTINGS
-function fillSettings(){const s=state.settings||{};$('setCompany').value=s.companyName||'Alderico Kleimpaul';$('setTitle').value=s.siteTitle||'Alderico Kleimpaul';$('setWhatsapp').value=s.whatsapp||'5549999973286';$('setInstagram').value=s.instagram||'https://instagram.com/alderico_kleimpaul';$('setAccent').value=s.accent||'#ff6a00';$('setAccent2').value=s.accent2||'#ff9a4a';$('setLogo').value=s.logoUrl||'';$('setBadge').checked=!!s.showFirebaseBadge;}
-$('settingsSave').onclick=async()=>{const data={companyName:$('setCompany').value.trim(),siteTitle:$('setTitle').value.trim(),whatsapp:$('setWhatsapp').value.trim(),instagram:$('setInstagram').value.trim(),accent:$('setAccent').value,accent2:$('setAccent2').value,logoUrl:$('setLogo').value.trim(),showFirebaseBadge:$('setBadge').checked,updatedAt:serverTimestamp(),updatedAtISO:nowISO()};await setDoc(dref('site_settings','config'),data,{merge:true});await audit('settings.update','site_settings/config');toast('Configurações salvas.');};
+function fillSettings(){const s=state.settings||{};$('setCompany').value=s.companyName||'Alderico Kleimpaul';$('setTitle').value=s.siteTitle||'Alderico Kleimpaul';$('setWhatsapp').value=s.whatsapp||'5549999973286';$('setInstagram').value=s.instagram||'https://instagram.com/alderico_kleimpaul';$('setAccent').value=s.accent||'#ff6a00';$('setAccent2').value=s.accent2||'#ff9a4a';$('setLogo').value=s.logoUrl||'';$('setBadge').checked=false;}
+$('settingsSave').onclick=async()=>{const data={companyName:$('setCompany').value.trim(),siteTitle:$('setTitle').value.trim(),whatsapp:$('setWhatsapp').value.trim(),instagram:$('setInstagram').value.trim(),accent:$('setAccent').value,accent2:$('setAccent2').value,logoUrl:$('setLogo').value.trim(),showFirebaseBadge:false,updatedAt:serverTimestamp(),updatedAtISO:nowISO()};await setDoc(dref('site_settings','config'),data,{merge:true});await audit('settings.update','site_settings/config');toast('Configurações salvas.');};
 
 // AUDIT
 function renderAudit(){$('auditRows').innerHTML=state.audit.map(x=>`<tr><td>${esc(x.createdAtISO||fmtDate(x.createdAt))}</td><td>${esc(x.action)}</td><td>${esc(x.target||'-')}</td><td><code>${esc(JSON.stringify(x.details||{})).slice(0,260)}</code></td></tr>`).join('');}
@@ -270,19 +270,19 @@ async function exportData(){
 }
 $('backupDownload').onclick=async()=>{setBusy($('backupDownload'),true,'Gerando...');try{const payload=await exportData();downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),`kleimpaul-empresa-${companyId}-${new Date().toISOString().replace(/[:.]/g,'-')}.json`);await audit('backup.download','local',{records:countRecords(payload),checksum:payload.checksum});toast('Backup completo baixado.');}finally{setBusy($('backupDownload'),false)}};
 $('backupCloud').onclick=async()=>{
-  setBusy($('backupCloud'),true,'Salvando no Firestore...');
+  setBusy($('backupCloud'),true,'Criando backup...');
   try{
     const payload=await exportData(); const text=JSON.stringify(payload); const chunks=splitBackupText(text); const backupId=`backup_${Date.now()}`;
     const ops=[]; chunks.forEach((chunk,index)=>ops.push(b=>b.set(dref('backup_chunks',`${backupId}_${String(index).padStart(4,'0')}`),{backupId,index,payload:chunk})));
     await commitOps(ops);
     await setDoc(dref('backups',backupId),{file:`${backupId}.json`,storage:'firestore',size:new Blob([text]).size,records:countRecords(payload),checksum:payload.checksum,chunkCount:chunks.length,createdAt:serverTimestamp(),createdAtISO:nowISO(),createdAtMs:Date.now()});
-    await audit('backup.cloud_firestore',backupId,{records:countRecords(payload),chunks:chunks.length}); toast(`Backup salvo no Firestore em ${chunks.length} bloco(s).`);
+    await audit('backup.cloud_firestore',backupId,{records:countRecords(payload),chunks:chunks.length}); toast('Backup criado com sucesso.');
   }catch(e){console.error(e);toast(`Falha no backup cloud: ${e.message}`,'error')}
   finally{setBusy($('backupCloud'),false)}
 };
 window.downloadCloudBackup=async id=>{const x=state.backups.find(x=>x.id===id);if(!x)return;const chunks=await getBackupChunks(id);if(!chunks.length){toast('Blocos do backup não encontrados.','error');return}const text=chunks.map(c=>c.payload||'').join('');downloadBlob(new Blob([text],{type:'application/json'}),x.file||'backup.json');await audit('backup.cloud_download',x.file,{chunks:chunks.length})};
-window.deleteCloudBackup=async id=>{const x=state.backups.find(x=>x.id===id);if(!x||!confirm('Excluir este backup do Firestore?'))return;const chunks=await getBackupChunks(id);const ops=chunks.map(c=>(b)=>b.delete(dref('backup_chunks',c.id)));ops.push(b=>b.delete(dref('backups',id)));await commitOps(ops);await audit('backup.cloud_delete',x.file,{chunks:chunks.length});toast('Backup excluído.')};
-function renderBackups(){$('backupRows').innerHTML=state.backups.map(x=>`<tr><td>${esc(x.createdAtISO||'-')}</td><td>${(Number(x.size||0)/1024).toFixed(1)} KB</td><td>${Number(x.records||0)}</td><td><div class="row-actions"><button class="btn gray sm" onclick="downloadCloudBackup('${x.id}')">Baixar</button><button class="btn red sm" onclick="deleteCloudBackup('${x.id}')">Excluir</button></div></td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--muted)">Nenhum backup cloud no Firestore.</td></tr>'}
+window.deleteCloudBackup=async id=>{const x=state.backups.find(x=>x.id===id);if(!x||!confirm('Excluir este backup?'))return;const chunks=await getBackupChunks(id);const ops=chunks.map(c=>(b)=>b.delete(dref('backup_chunks',c.id)));ops.push(b=>b.delete(dref('backups',id)));await commitOps(ops);await audit('backup.cloud_delete',x.file,{chunks:chunks.length});toast('Backup excluído.')};
+function renderBackups(){$('backupRows').innerHTML=state.backups.map(x=>`<tr><td>${esc(x.createdAtISO||'-')}</td><td>${(Number(x.size||0)/1024).toFixed(1)} KB</td><td>${Number(x.records||0)}</td><td><div class="row-actions"><button class="btn gray sm" onclick="downloadCloudBackup('${x.id}')">Baixar</button><button class="btn red sm" onclick="deleteCloudBackup('${x.id}')">Excluir</button></div></td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--muted)">Nenhum backup disponível.</td></tr>'}
 
 async function commitOps(ops){for(let i=0;i<ops.length;i+=400){const b=writeBatch(db);ops.slice(i,i+400).forEach(op=>op(b));await b.commit();}}
 async function clearCollection(name){const s=await getDocs(cref(name));const ops=s.docs.map(d=>(b)=>b.delete(d.ref));await commitOps(ops);}
@@ -294,7 +294,7 @@ async function restorePayload(payload,clearFirst){
   const cfg=payload.data?.site_settings?.config||{}; if(Object.keys(cfg).length) await setDoc(dref('site_settings','config'),cfg,{merge:false});
   for(const name of COLLECTIONS.filter(x=>x!=='audit')){const rows=Array.isArray(payload.data?.[name])?payload.data[name]:[];const ops=rows.map(row=>(b)=>{const clean={...row};const id=clean.id||doc(cref(name)).id;delete clean.id; b.set(dref(name,id),clean);});await commitOps(ops);}
 }
-$('restoreBtn').onclick=async()=>{const file=$('restoreFile').files?.[0];if(!file){toast('Selecione o JSON do backup.','error');return}if(!confirm('Restaurar este backup no Firebase?'))return;setBusy($('restoreBtn'),true,'Restaurando...');try{const payload=JSON.parse(await file.text());await restorePayload(payload,$('restoreClear').checked);await audit('backup.restore',file.name,{clearFirst:$('restoreClear').checked});toast('Backup restaurado com sucesso.');}catch(e){console.error(e);toast(`Falha: ${e.message}`,'error')}finally{setBusy($('restoreBtn'),false)}};
+$('restoreBtn').onclick=async()=>{const file=$('restoreFile').files?.[0];if(!file){toast('Selecione o JSON do backup.','error');return}if(!confirm('Restaurar este backup?'))return;setBusy($('restoreBtn'),true,'Restaurando...');try{const payload=JSON.parse(await file.text());await restorePayload(payload,$('restoreClear').checked);await audit('backup.restore',file.name,{clearFirst:$('restoreClear').checked});toast('Backup restaurado com sucesso.');}catch(e){console.error(e);toast(`Falha: ${e.message}`,'error')}finally{setBusy($('restoreBtn'),false)}};
 async function verifyDatabase(showToast=true){try{const cfg=await getDoc(dref('site_settings','config'));const counts={};for(const n of ['site_overrides','highlights','catalog_items','inventory','trash','chat','media']) counts[n]=(await getDocs(cref(n))).size;const issues=[];if(!cfg.exists())issues.push('configurações globais ausentes');if(state.inventory.some(x=>!x.name||!x.code))issues.push('estoque com campos obrigatórios vazios');$('backupIntegrity').textContent=issues.length?`Atenção: ${issues.join('; ')}.`:`Banco íntegro. ${Object.values(counts).reduce((a,b)=>a+b,0)} registros verificados.`;if(showToast)toast(issues.length?'Verificação concluída com alertas.':'Banco verificado.','info');return{counts,issues};}catch(e){$('backupIntegrity').textContent='Não foi possível verificar o banco.';if(showToast)toast('Erro na verificação.','error')}}
 $('verifyBtn').onclick=()=>verifyDatabase(true);
 

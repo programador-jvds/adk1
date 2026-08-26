@@ -31,8 +31,6 @@ document.addEventListener('error',(event)=>{
 function setConnected(ok){
   window.KleimpaulCMS.connected=ok;
   document.documentElement.dataset.firebase=ok?'online':'offline';
-  const badge=document.querySelector('.cms-live-badge');
-  if(badge){ badge.dataset.state=ok?'online':'offline'; const span=badge.querySelector('span'); if(span) span.textContent=ok?'Conteúdo sincronizado':'Modo de contingência'; }
 }
 function money(v){
   if(v===null||v===undefined||v==='') return '';
@@ -61,9 +59,6 @@ async function applyGlobalSettings(s={}){
     floating.href=`https://wa.me/${phone}`;
   }
   if(s.instagram){ document.querySelectorAll('a[href*="instagram.com"]').forEach(a=>a.href=s.instagram); }
-  if(s.showFirebaseBadge && !document.querySelector('.cms-live-badge')){
-    const b=document.createElement('div');b.className='cms-live-badge';b.innerHTML='<i></i><span>Conteúdo sincronizado</span>';document.body.appendChild(b);
-  }
 }
 function safeSelector(sel){ try{return [...document.querySelectorAll(sel)]}catch{return []} }
 async function applyOverride(o){
