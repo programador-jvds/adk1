@@ -1,0 +1,21 @@
+KLEIMPAUL — CORREÇÃO DO PAINEL
+
+Correção aplicada:
+- admin.js: imports estáticos corrigidos (o erro "Unexpected template string" foi eliminado).
+- cache-busting adicionado aos scripts/estilos para evitar o navegador usar a versão antiga no GitHub Pages.
+- login da interface continua: diva
+- senha cadastrada no Firebase Authentication: 151871
+- empresa interna: 1
+
+NO GITHUB:
+1. Substitua TODOS os arquivos desta versão no repositório.
+2. Aguarde o GitHub Pages concluir o deploy.
+3. Abra:
+   https://programador-ivds.github.io/adk1/admin
+4. Pressione Ctrl+F5.
+5. Em Firebase Authentication > Settings > Authorized domains, confirme:
+   programador-ivds.github.io
+
+Se o console ainda mostrar "admin.js:2 Unexpected template string", o GitHub Pages ainda está servindo o arquivo antigo. Abra diretamente:
+https://programador-ivds.github.io/adk1/admin.js
+A linha 2 correta deve usar aspas simples na URL, e NÃO crases/backticks.

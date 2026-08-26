@@ -1,10 +1,10 @@
-import { FIREBASE_CONFIG, DEFAULT_COMPANY_ID, FIREBASE_VERSION, adminEmail } from './firebase-config.js';
-import { initializeApp, getApps } from `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-app.js`;
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-auth.js`;
+import { FIREBASE_CONFIG, DEFAULT_COMPANY_ID, adminEmail } from './firebase-config.js';
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
 import {
   getFirestore, collection, doc, addDoc, setDoc, updateDoc, deleteDoc, getDoc, getDocs,
   onSnapshot, serverTimestamp, writeBatch, query, orderBy, limit, where
-} from `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}/firebase-firestore.js`;
+} from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
 
 const $ = (id)=>document.getElementById(id);
 const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
