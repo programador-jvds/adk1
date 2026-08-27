@@ -5,6 +5,7 @@
   const SECTIONS=[
     ['dashboard','Dashboard','Visão geral, indicadores e atalhos','fa-chart-line'],
     ['editor','Editor do site','Textos, imagens, links e estilos','fa-pen-ruler'],
+    ['images','Imagens do site','Trocar imagens, banners e fundos visualmente','fa-images'],
     ['highlights','Destaques','Promoções e cards da página inicial','fa-star'],
     ['catalog','Catálogos','Produtos, preços e especificações','fa-layer-group'],
     ['inventory','Estoque','Produtos, quantidades, SKU e alertas','fa-boxes-stacked'],
@@ -38,7 +39,7 @@
   function installQuickActions(){
     const hero=$('.hero-admin'); if(!hero||$('.admin-quick-actions'))return;
     const box=document.createElement('div');box.className='admin-quick-actions';
-    box.innerHTML='<button data-quick="editor"><i class="fa-solid fa-pen-ruler"></i><span><strong>Editar site</strong><small>Alterar conteúdo</small></span></button><button data-quick="catalog"><i class="fa-solid fa-plus"></i><span><strong>Novo produto</strong><small>Catálogo público</small></span></button><button data-quick="inventory"><i class="fa-solid fa-boxes-stacked"></i><span><strong>Estoque</strong><small>Consultar itens</small></span></button><button data-quick="backup"><i class="fa-solid fa-shield-halved"></i><span><strong>Backup</strong><small>Proteger dados</small></span></button>';
+    box.innerHTML='<button data-quick="editor"><i class="fa-solid fa-pen-ruler"></i><span><strong>Editar site</strong><small>Alterar conteúdo</small></span></button><button data-quick="images"><i class="fa-solid fa-images"></i><span><strong>Trocar imagens</strong><small>Editor visual</small></span></button><button data-quick="catalog"><i class="fa-solid fa-plus"></i><span><strong>Novo produto</strong><small>Catálogo público</small></span></button><button data-quick="inventory"><i class="fa-solid fa-boxes-stacked"></i><span><strong>Estoque</strong><small>Consultar itens</small></span></button><button data-quick="backup"><i class="fa-solid fa-shield-halved"></i><span><strong>Backup</strong><small>Proteger dados</small></span></button>';
     hero.insertAdjacentElement('afterend',box); $$('[data-quick]',box).forEach(b=>b.onclick=()=>go(b.dataset.quick));
   }
 

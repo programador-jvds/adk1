@@ -1,0 +1,30 @@
+KLEIMPAUL — EDITOR VISUAL DE IMAGENS
+
+NOVO NO ADM
+- seção "Imagens do site"
+- escolhe a página e detecta automaticamente imagens e fundos
+- modo "Selecionar na prévia": clique na imagem dentro do site
+- troca imagens normais, banners e backgrounds / ::before / ::after
+- upload com compactação automática e salvamento no Firestore
+- escolha direta da Biblioteca de mídia
+- edição de ALT, object-fit/background-size e posição
+- restauração da imagem original
+- opção de substituir todas as ocorrências da mesma imagem na página
+- auditoria das trocas de imagem
+
+BIBLIOTECA DE MÍDIA
+- busca por nome/referência
+- detecção de upload duplicado
+- mostra resolução e quantidade de usos
+- renomear imagem
+- botão Usar para enviar a referência ao editor visual
+- aviso ao excluir mídia que está em uso
+
+RUNTIME
+- overrides de background agora funcionam em elementos e pseudo-elementos (::before/::after)
+- imagens dinâmicas de destaques e catálogos recebem novamente as personalizações depois da renderização
+
+LOGIN
+Usuário: diva
+Senha: 151871
+Empresa interna: 1

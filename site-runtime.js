@@ -63,18 +63,34 @@ async function applyGlobalSettings(s={}){
   if(s.instagram){ document.querySelectorAll('a[href*="instagram.com"]').forEach(a=>a.href=s.instagram); }
 }
 function safeSelector(sel){ try{return [...document.querySelectorAll(sel)]}catch{return []} }
+const overrideStyleMap=new Map();
+function cssUrlValue(v){return String(v||'').replace(/\\/g,'\\\\').replace(/"/g,'\\"').replace(/[\r\n]/g,'');}
+function backgroundSizeValue(v){return v==='fill'?'100% 100%':v;}
+function backgroundImageValue(o,value){const u=cssUrlValue(value);return o.backgroundTemplate&&o.backgroundTemplate.includes('__CMS_IMAGE__')?o.backgroundTemplate.replace('__CMS_IMAGE__',u):`url("${u}")`;}
+function setOverrideRule(o,css){const id=`cms-override-${String(o.id||Math.random()).replace(/[^a-zA-Z0-9_-]/g,'')}`;let style=document.getElementById(id);if(!style){style=document.createElement('style');style.id=id;style.dataset.cmsOverride=o.id||'';document.head.appendChild(style)}style.textContent=css;overrideStyleMap.set(o.id,id);}
 async function applyOverride(o){
   if(!o||o.enabled===false||!o.selector) return;
+  const mode=o.mode||'text'; const pseudo=/::(?:before|after)$/.test(o.selector);
+  if(pseudo){
+    if(mode==='background'){
+      const value=await resolveMedia(o.value??'');const extra=[o.fit?`background-size:${backgroundSizeValue(o.fit)} !important;`:'',o.position?`background-position:${o.position} !important;`:''].join('');
+      setOverrideRule(o,`${o.selector}{background-image:${backgroundImageValue(o,value)} !important;${extra}}`);return;
+    }
+    if(mode==='style'&&o.attribute){setOverrideRule(o,`${o.selector}{${o.attribute}:${o.value??''} !important;}`);return;}
+  }
   for(const el of safeSelector(o.selector)){
-    const mode=o.mode||'text';
     if(mode==='text') el.textContent=o.value??'';
     else if(mode==='html') el.innerHTML=o.value??'';
     else if(mode==='src' && 'src' in el) el.src=await resolveMedia(o.value??'');
+    else if(mode==='background'){const value=await resolveMedia(o.value??'');el.style.setProperty('background-image',backgroundImageValue(o,value),'important');}
     else if(mode==='href' && 'href' in el) el.href=o.value??'';
     else if(mode==='placeholder' && 'placeholder' in el) el.placeholder=o.value??'';
     else if(mode==='attribute' && o.attribute) el.setAttribute(o.attribute,o.value??'');
     else if(mode==='style' && o.attribute) el.style.setProperty(o.attribute,o.value??'');
     else if(mode==='class') el.classList.toggle(String(o.value||o.attribute),o.active!==false);
+    if(o.alt && el.tagName==='IMG') el.alt=o.alt;
+    if(o.fit){if(el.tagName==='IMG')el.style.setProperty('object-fit',o.fit,'important');else el.style.setProperty('background-size',backgroundSizeValue(o.fit),'important');}
+    if(o.position){if(el.tagName==='IMG')el.style.setProperty('object-position',o.position,'important');else el.style.setProperty('background-position',o.position,'important');}
     if(o.title) el.setAttribute('title',o.title);
   }
 }
@@ -86,7 +102,8 @@ function listenOverrides(){
   const q=query(collection(db,...company('site_overrides')),where('page','in',[PAGE,'*']));
   onSnapshot(q,(snap)=>{
     setConnected(true);
-    cachedOverrides=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.enabled!==false).sort((a,b)=>(a.priority||0)-(b.priority||0));
+    const next=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.enabled!==false).sort((a,b)=>(a.priority||0)-(b.priority||0));
+    const nextIds=new Set(next.map(x=>x.id));document.querySelectorAll('style[data-cms-override]').forEach(s=>{if(!nextIds.has(s.dataset.cmsOverride))s.remove()});cachedOverrides=next;
     applyCachedOverrides();
   },()=>setConnected(false));
 }
@@ -108,11 +125,12 @@ function listenHighlights(){
     rows=await resolveRowsImages(rows);
     const grid=section.querySelector('[data-cms-highlight-grid]');
     if(!rows.length){section.style.display='none';return} section.style.display='';
-    grid.innerHTML=rows.map(x=>`<a class="cms-highlight" href="${escapeHTML(x.link||'#')}" ${/^https?:/i.test(x.link||'')?'target="_blank" rel="noopener"':''}>
+    grid.innerHTML=rows.map(x=>`<a class="cms-highlight" data-highlight-id="${escapeHTML(x.id)}" href="${escapeHTML(x.link||'#')}" ${/^https?:/i.test(x.link||'')?'target="_blank" rel="noopener"':''}>
       ${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy" decoding="async">`:''}
       <div class="cms-highlight-content">${x.badge?`<span class="cms-highlight-badge">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.title||'Destaque')}</h3>${x.subtitle?`<p>${escapeHTML(x.subtitle)}</p>`:''}</div>
     </a>`).join('');
     window.dispatchEvent(new CustomEvent('kleimpaul:highlights',{detail:{rows}}));
+    setTimeout(applyCachedOverrides,0);
   });
 }
 function ensureCatalogSection(){
@@ -136,15 +154,17 @@ function renderCatalogRows(rows){
   if(PAGE==='motosserras' && typeof window.kleimpaulSetMotosserras==='function'){
     window.kleimpaulSetMotosserras(rows.map((x,i)=>({id:x.slug||x.id||i+1,name:x.name||x.title||'Produto',price:Number(x.price||0),power:Number(x.power||0),image:x.image||'imagens/logo.png',info:specArray(x)})));
     window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
+    setTimeout(applyCachedOverrides,0);
     return;
   }
   const section=ensureCatalogSection(); const grid=section.querySelector('[data-cms-catalog-grid]');
   if(!rows.length){section.style.display='none';window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows:[]}}));return} section.style.display='';
   grid.innerHTML=rows.map(x=>{
     const specs=specArray(x);
-    return `<article class="cms-catalog-card">${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.name||'Produto')}" loading="lazy" decoding="async">`:''}<div class="cms-catalog-body">${x.badge?`<span class="cms-catalog-tag">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.name||'Produto')}</h3>${x.description?`<p>${escapeHTML(x.description)}</p>`:''}${x.price?`<strong class="cms-price">${money(x.price)}</strong>`:''}${specs.length?`<div class="cms-specs">${specs.map(s=>`<span>${escapeHTML(s.label)}: ${escapeHTML(s.value)}</span>`).join('')}</div>`:''}</div></article>`;
+    return `<article class="cms-catalog-card" data-catalog-id="${escapeHTML(x.id)}">${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.name||'Produto')}" loading="lazy" decoding="async">`:''}<div class="cms-catalog-body">${x.badge?`<span class="cms-catalog-tag">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.name||'Produto')}</h3>${x.description?`<p>${escapeHTML(x.description)}</p>`:''}${x.price?`<strong class="cms-price">${money(x.price)}</strong>`:''}${specs.length?`<div class="cms-specs">${specs.map(s=>`<span>${escapeHTML(s.label)}: ${escapeHTML(s.value)}</span>`).join('')}</div>`:''}</div></article>`;
   }).join('');
   window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
+  setTimeout(applyCachedOverrides,0);
 }
 function listenCatalog(){
   if(PAGE==='index') return;
