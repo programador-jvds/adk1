@@ -1,0 +1,19 @@
+KLEIMPAUL — ADMIN: PROPORÇÕES E DIAGNÓSTICO VISUAL
+
+Melhorias desta versão:
+- Corrigido o vazamento/sobreposição dos previews Atual e Nova no editor de imagens.
+- Grid do editor agora respeita min-width:0 e quebra para uma coluna quando necessário.
+- Preview de imagem responsivo e proporcional.
+- Seleção de proporção persistente: original, 1:1, 4:3, 3:2, 16:9, 9:16 e 21:9.
+- Presets rápidos: Logo, Card, Banner, Story e Original.
+- Informações de arquivo, resolução natural, resolução exibida e proporção.
+- Prévia por dispositivo: Desktop, Tablet e Celular.
+- Controle de zoom da prévia.
+- Diagnóstico Visual: baixa resolução, ALT ausente e possível distorção.
+- Botão para localizar a imagem problemática no editor.
+- Copiar seletor CSS da imagem selecionada.
+- Atalhos no editor: Ctrl+S salva e Ctrl+D executa diagnóstico visual.
+- Acabamento visual adicional nas páginas públicas.
+- Nenhuma função anterior foi removida.
+
+As regras atuais do Firestore continuam suficientes: a proporção é salva no mesmo site_overrides/site_settings já usado pelo editor.

@@ -1,0 +1,16 @@
+/* Kleimpaul — acabamento visual adicional sem alterar conteúdo */
+html{scroll-behavior:smooth;text-rendering:optimizeLegibility}
+body{background-image:radial-gradient(circle at 8% 18%,rgba(255,106,0,.035),transparent 26%),radial-gradient(circle at 92% 64%,rgba(255,106,0,.025),transparent 24%)}
+img{image-rendering:auto;backface-visibility:hidden}
+.section-title h1,.section-title h2,.hero h1{text-wrap:balance}
+.section-title p,.hero p{text-wrap:pretty}
+.product-card,.visual-card,.cms-catalog-card,.cms-highlight-card{transform:translateZ(0);will-change:transform;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.product-card:hover,.visual-card:hover,.cms-catalog-card:hover,.cms-highlight-card:hover{box-shadow:0 28px 72px rgba(0,0,0,.24),0 10px 34px rgba(255,106,0,.075)}
+.product-image,.card-image-wrapper,.cms-catalog-image{background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.008))}
+.product-image img,.card-image-wrapper img,.cms-catalog-image img{object-position:center;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+header{box-shadow:0 1px 0 rgba(255,255,255,.025),0 18px 48px rgba(0,0,0,.08)}
+.btn,.back-btn,.search-btn{isolation:isolate}
+.btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid rgba(255,106,0,.85);outline-offset:3px}
+@media(min-width:1600px){.container{max-width:1480px!important}.products-grid{gap:26px!important}}
+@media(max-width:640px){section{overflow:hidden}.section-title{padding-left:4px;padding-right:4px}.product-card,.visual-card,.cms-catalog-card{border-radius:22px!important}}
+@media(prefers-reduced-motion:reduce){.product-card,.visual-card,.cms-catalog-card,.cms-highlight-card,.product-image img,.card-image-wrapper img,.cms-catalog-image img{transition:none!important;will-change:auto!important}}

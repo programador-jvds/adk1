@@ -53,6 +53,7 @@ async function applyGlobalImageReplacements(root=document){
     const value=await resolveMedia(rule.value); if(value&&img.src!==value)img.src=value;
     if(rule.alt)img.alt=rule.alt;
     if(rule.fit)img.style.setProperty('object-fit',rule.fit,'important');
+    if(rule.aspectRatio)img.style.setProperty('aspect-ratio',rule.aspectRatio,'important');
     if(rule.position)img.style.setProperty('object-position',rule.position,'important');
   }
   const nodes=[];
@@ -146,6 +147,7 @@ async function applyOverride(o){
     else if(mode==='class') el.classList.toggle(String(o.value||o.attribute),o.active!==false);
     if(o.alt && el.tagName==='IMG') el.alt=o.alt;
     if(o.fit){if(el.tagName==='IMG')el.style.setProperty('object-fit',o.fit,'important');else el.style.setProperty('background-size',backgroundSizeValue(o.fit),'important');}
+    if(o.aspectRatio&&el.tagName==='IMG')el.style.setProperty('aspect-ratio',o.aspectRatio,'important');
     if(o.position){if(el.tagName==='IMG')el.style.setProperty('object-position',o.position,'important');else el.style.setProperty('background-position',o.position,'important');}
     if(o.title) el.setAttribute('title',o.title);
   }
