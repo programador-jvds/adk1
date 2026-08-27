@@ -1,0 +1,15 @@
+KLEIMPAUL — MOTOSSERRAS PADRONIZADA
+
+Alteração aplicada:
+- Motosserras agora usa a MESMA base visual/estrutural de Roçadeiras, Sopradores e Lavadoras:
+  header > hero > info > catálogo > footer.
+- Removidas as classes exclusivas de layout moto-header/moto-hero/moto-benefits/moto-footer.
+- Cabeçalho, logo, botão Início, hero, ícone, título, botões, cards informativos e rodapé seguem o mesmo padrão das demais categorias.
+- O catálogo de motosserras foi preservado como extensão funcional da página.
+- Busca, ordenação, favoritos e integração com o catálogo do ADM continuam funcionando.
+- Nenhuma alteração de Firestore Rules é necessária para esta mudança visual.
+
+Validação:
+- JavaScript: OK
+- Scripts inline: OK
+- Referências locais: OK

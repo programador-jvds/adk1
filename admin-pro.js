@@ -9,6 +9,7 @@
     ['highlights','Destaques','Promoções e cards da página inicial','fa-star'],
     ['catalog','Catálogos','Produtos, preços e especificações','fa-layer-group'],
     ['inventory','Estoque','Produtos, quantidades, SKU e alertas','fa-boxes-stacked'],
+    ['sales','Vendas & Notas','Clientes, orçamento, venda, recebimento e NF-e externa','fa-receipt'],
     ['media','Biblioteca de mídia','Imagens e referências para o site','fa-images'],
     ['chat','Chat interno','Comunicação da equipe','fa-comments'],
     ['trash','Lixeira','Itens removidos e restauração','fa-trash-can'],
@@ -39,7 +40,7 @@
   function installQuickActions(){
     const hero=$('.hero-admin'); if(!hero||$('.admin-quick-actions'))return;
     const box=document.createElement('div');box.className='admin-quick-actions';
-    box.innerHTML='<button data-quick="editor"><i class="fa-solid fa-pen-ruler"></i><span><strong>Editar site</strong><small>Alterar conteúdo</small></span></button><button data-quick="images"><i class="fa-solid fa-images"></i><span><strong>Trocar imagens</strong><small>Editor visual</small></span></button><button data-quick="catalog"><i class="fa-solid fa-plus"></i><span><strong>Novo produto</strong><small>Catálogo público</small></span></button><button data-quick="inventory"><i class="fa-solid fa-boxes-stacked"></i><span><strong>Estoque</strong><small>Consultar itens</small></span></button><button data-quick="backup"><i class="fa-solid fa-shield-halved"></i><span><strong>Backup</strong><small>Proteger dados</small></span></button>';
+    box.innerHTML='<button data-quick="editor"><i class="fa-solid fa-pen-ruler"></i><span><strong>Editar site</strong><small>Alterar conteúdo</small></span></button><button data-quick="images"><i class="fa-solid fa-images"></i><span><strong>Trocar imagens</strong><small>Editor visual</small></span></button><button data-quick="catalog"><i class="fa-solid fa-plus"></i><span><strong>Novo produto</strong><small>Catálogo público</small></span></button><button data-quick="inventory"><i class="fa-solid fa-boxes-stacked"></i><span><strong>Estoque</strong><small>Consultar itens</small></span></button><button data-quick="sales"><i class="fa-solid fa-receipt"></i><span><strong>Nova venda</strong><small>Vendas & notas</small></span></button><button data-quick="backup"><i class="fa-solid fa-shield-halved"></i><span><strong>Backup</strong><small>Proteger dados</small></span></button>';
     hero.insertAdjacentElement('afterend',box); $$('[data-quick]',box).forEach(b=>b.onclick=()=>go(b.dataset.quick));
   }
 
@@ -47,7 +48,7 @@
     const nav=$('#nav');if(!nav||nav.dataset.grouped)return;const buttons=$$('button[data-go]',nav);if(!buttons.length){setTimeout(groupSidebar,80);return;}
     nav.dataset.grouped='1';
     const before=(id,label)=>{const b=$(`[data-go="${id}"]`,nav);if(!b)return;const s=document.createElement('span');s.className='admin-nav-label';s.textContent=label;nav.insertBefore(s,b);};
-    before('dashboard','Visão geral');before('editor','Conteúdo');before('inventory','Operação');before('backup','Segurança');before('settings','Sistema');
+    before('dashboard','Visão geral');before('editor','Conteúdo');before('inventory','Operação');before('sales','Comercial');before('backup','Segurança');before('settings','Sistema');
   }
 
   function keyboard(){document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();window.KleimpaulAdminSearch?.();}});}

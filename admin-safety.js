@@ -1,0 +1,21 @@
+import { FIREBASE_CONFIG, DEFAULT_COMPANY_ID, adminEmail } from './firebase-config.js';
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, serverTimestamp, addDoc, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
+
+const $=id=>document.getElementById(id),app=getApps().length?getApps()[0]:initializeApp(FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app),companyId=DEFAULT_COMPANY_ID,EXPECTED=adminEmail('diva','1');
+const c=n=>collection(db,'empresas',companyId,n),d=(n,id)=>doc(db,'empresas',companyId,n,id);
+let vault=[],unsub=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function notify(msg,type='ok'){if(typeof window.notificar==='function')return window.notificar(msg,type==='error'?'var(--red)':'var(--green)');const e=document.createElement('div');e.className='toast';e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),3200)}
+async function audit(action,target,details={}){try{await addDoc(c('audit'),{action,target,details,actor:auth.currentUser?.email||'',createdAt:serverTimestamp(),createdAtISO:new Date().toISOString(),createdAtMs:Date.now()})}catch{}}
+function render(){
+  if($('vaultCount'))$('vaultCount').textContent=`${vault.length} cópias protegidas`;
+  if(!$('vaultRows'))return;
+  $('vaultRows').innerHTML=vault.map(x=>`<tr><td>${esc(x.createdAtISO||'-')}</td><td><strong>${esc(x.label||x.sourceId||'-')}</strong><br><small>${esc(x.sourceCollection||'-')} / ${esc(x.sourceId||'-')}</small></td><td><code>${esc(String(x.checksum||'').slice(0,14))}${x.checksum?'…':''}</code></td><td><div class="row-actions"><button class="btn green sm" onclick="KleimpaulVault.restore('${x.id}')"><i class="fa-solid fa-rotate-left"></i>Restaurar</button><button class="btn gray sm" onclick="KleimpaulVault.download('${x.id}')"><i class="fa-solid fa-download"></i></button><button class="btn red sm" onclick="KleimpaulVault.remove('${x.id}')"><i class="fa-solid fa-trash"></i></button></div></td></tr>`).join('')||'<tr><td colspan="4" style="color:var(--muted)">O Cofre está vazio. Exclusões definitivas protegidas aparecerão aqui.</td></tr>';
+}
+async function restore(id){const x=vault.find(v=>v.id===id);if(!x)return;if(!confirm(`Restaurar ${x.label||x.sourceId} em ${x.sourceCollection}?`))return;try{await setDoc(d(x.sourceCollection,x.sourceId),{...(x.data||{}),recoveredAt:serverTimestamp(),recoveredAtISO:new Date().toISOString()},{merge:false});await audit('vault.restore',`${x.sourceCollection}/${x.sourceId}`,{vaultId:id});notify('Registro restaurado a partir do Cofre.')}catch(e){console.error(e);notify(e.message||'Falha ao restaurar.','error')}}
+function download(id){const x=vault.find(v=>v.id===id);if(!x)return;const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),vault:x},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`cofre-${x.sourceCollection}-${x.sourceId}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+async function remove(id){const x=vault.find(v=>v.id===id);if(!x)return;const sec=window.KleimpaulSecurity;if(!sec?.confirmPermanent)return notify('Módulo de segurança indisponível.','error');if(!await sec.confirmPermanent({label:`Cópia protegida: ${x.label||x.sourceId}`,message:'Apagar do Cofre remove esta camada extra de recuperação.'}))return;await deleteDoc(d('recovery_vault',id));await audit('vault.delete',id,{sourceCollection:x.sourceCollection,sourceId:x.sourceId});notify('Cópia do Cofre apagada definitivamente.')}
+window.KleimpaulVault={restore,download,remove};
+onAuthStateChanged(auth,user=>{if(unsub){unsub();unsub=null}if(user?.email?.toLowerCase()!==EXPECTED)return;const q=query(c('recovery_vault'),orderBy('createdAtMs','desc'),limit(200));unsub=onSnapshot(q,s=>{vault=s.docs.map(dd=>({id:dd.id,...dd.data()}));render()},e=>{console.error(e);if($('vaultRows'))$('vaultRows').innerHTML='<tr><td colspan="4">Não foi possível carregar o Cofre.</td></tr>'})});

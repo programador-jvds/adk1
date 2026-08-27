@@ -62,3 +62,8 @@ Este pacote não depende de Firebase Storage. Ainda assim, o Firestore possui co
 ATUALIZAÇÃO VENDAS & NOTAS
 Esta versão adiciona as coleções privadas empresas/1/customers e empresas/1/sales. Publique novamente o arquivo firestore.rules incluído no pacote.
 O módulo registra documentos comerciais e NF-e emitida externamente; emissão fiscal oficial exige integração específica com SEFAZ/provedor fiscal.
+
+=== ATUALIZAÇÃO BACKUP SEGURO / COFRE ===
+Esta versão usa a coleção privada empresas/1/recovery_vault para proteger exclusões definitivas.
+Publique novamente o arquivo firestore.rules desta pasta no Firebase Console > Firestore Database > Rules.
+Não é necessário ativar Firebase Storage.

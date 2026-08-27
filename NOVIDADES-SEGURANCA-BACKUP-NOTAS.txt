@@ -1,0 +1,61 @@
+KLEIMPAUL — BACKUP SEGURO, VENDAS/NOTAS E TEMA V2
+
+ACESSO DO ADM
+- Usuário visível: diva
+- Empresa interna: 1
+- A senha do usuário administrativo continua a mesma configurada no Authentication.
+
+EXCLUSÃO DEFINITIVA
+- Toda exclusão permanente disponível no painel pede a senha/PIN de exclusão definido pelo proprietário.
+- O PIN não fica gravado em texto puro no JavaScript; o painel compara um hash SHA-256.
+- Antes de excluir registros importantes, o sistema grava uma cópia em empresas/1/recovery_vault.
+- Enviar estoque para a Lixeira NÃO pede PIN, pois é recuperável.
+- Apagar definitivamente da Lixeira pede PIN.
+- Catálogo, destaques, edições, mídia, chat, clientes, vendas, logs, backups e Cofre usam proteção para exclusão permanente.
+
+COFRE DE RECUPERAÇÃO
+- Guarda automaticamente cópias de registros antes da exclusão definitiva.
+- Permite restaurar o registro no documento de origem.
+- Permite baixar a cópia individual em JSON.
+- Apagar uma cópia do próprio Cofre também exige a senha de exclusão.
+
+BACKUP
+- Backup local JSON completo com checksum SHA-256.
+- Backup cloud manual completo, incluindo mídia.
+- Backup automático diário otimizado: protege dados sem duplicar todas as imagens diariamente.
+- Imagens apagadas ficam protegidas pelo Cofre.
+- Antes de qualquer restauração, o painel cria um backup completo do estado atual.
+- Arquivo local é analisado e validado antes de habilitar a restauração.
+- Backups cloud podem ser verificados por checksum antes de restaurar.
+- Restauração cloud/local exige confirmação de segurança.
+- Backups antigos de versões anteriores continuam compatíveis.
+
+IMPORTANTE SOBRE "ZERO PERDAS"
+Nenhum sistema somente em navegador + um único projeto Firestore pode prometer perda absolutamente zero em todos os cenários. Esta versão adiciona várias camadas de recuperação. Para proteção contra perda do projeto inteiro, mantenha também backups JSON locais fora do Firebase.
+
+VENDAS & NOTAS
+- Frete é opcional e vem DESLIGADO por padrão.
+- Ao ativar frete, aparecem valor, modalidade, transportadora e rastreio.
+- Valor recebido e saldo restante calculados automaticamente.
+- Vendedor/atendente opcional.
+- NF-e externa: número, série, chave de 44 dígitos, protocolo e natureza da operação.
+- Proteção contra número de documento duplicado.
+- Proteção contra chave de NF-e duplicada.
+- Validação de vencimento.
+- Itens da venda agora podem ser editados antes da baixa de estoque.
+- Orçamento/pedido pode ser convertido em uma nova venda.
+- Rascunho local automático: se o navegador fechar antes de salvar, o painel oferece recuperação.
+- Cliente ganhou Inscrição Estadual opcional e bloqueio de CPF/CNPJ duplicado.
+- Impressão mostra recebido, saldo e frete somente quando usado.
+
+NOTA FISCAL OFICIAL
+O painel registra e controla NF-e emitida externamente. Ele não chama documento interno de NF-e válida. Emissão fiscal oficial requer SEFAZ/certificado digital ou provedor fiscal autorizado.
+
+TEMA DO SITE
+- Dark mode refinado com mais profundidade e contraste.
+- Light mode redesenhado com fundo claro premium, cartões brancos, sombras suaves e melhor contraste.
+- Roçadeiras, Sopradores, Lavadoras e Motosserras recebem alternador de tema automaticamente e seguem o mesmo padrão visual.
+
+FIRESTORE RULES
+Esta versão adiciona a coleção privada recovery_vault.
+É NECESSÁRIO publicar o firestore.rules incluído neste pacote.

@@ -250,5 +250,18 @@ async function getSearchCatalog(){
   return searchCatalogPromise;
 }
 window.KleimpaulCMS.getSearchCatalog=getSearchCatalog;
+
+function setupProfessionalTheme(){
+  const body=document.body;if(!body)return;
+  const current=localStorage.getItem('theme');
+  const theme=current==='light'||current==='dark'?current:(body.classList.contains('light')?'light':'dark');
+  body.classList.remove('light','dark');body.classList.add(theme);
+  const setTheme=t=>{body.classList.remove('light','dark');body.classList.add(t);localStorage.setItem('theme',t);const btn=document.getElementById('cmsThemeSwitch');if(btn){btn.innerHTML=`<i class="fa-solid ${t==='dark'?'fa-sun':'fa-moon'}"></i>`;btn.title=t==='dark'?'Ativar modo claro':'Ativar modo escuro';btn.setAttribute('aria-label',btn.title)}const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=t==='dark'?'#070b11':'#f5f7fa';window.dispatchEvent(new CustomEvent('kleimpaul:theme',{detail:{theme:t}}));};
+  const existing=document.getElementById('themeToggle');
+  if(existing){existing.title='Alternar tema';existing.addEventListener('click',()=>setTimeout(()=>setTheme(body.classList.contains('light')?'light':'dark'),0));return;}
+  const nav=document.querySelector('header .nav,header .navbar');if(!nav)return;
+  const btn=document.createElement('button');btn.type='button';btn.id='cmsThemeSwitch';btn.className='cms-theme-switch';nav.insertBefore(btn,nav.querySelector('.back')||nav.lastElementChild);btn.onclick=()=>setTheme(body.classList.contains('dark')?'light':'dark');setTheme(theme);
+}
+
 window.addEventListener('kleimpaul:ui-ready',applyCachedOverrides);
-listenSettings();listenOverrides();listenHighlights();listenCatalog();
+setupProfessionalTheme();listenSettings();listenOverrides();listenHighlights();listenCatalog();
