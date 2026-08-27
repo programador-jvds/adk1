@@ -1,0 +1,14 @@
+KLEIMPAUL — REVISÃO DESTAQUES + IMAGENS + MOTOSSERRAS
+
+- Destaques agora são um carretel/carrossel horizontal com swipe no celular e setas no desktop.
+- Viewer dos destaques usa a própria foto desfocada no fundo para imagens horizontais/verticais sem deixar grandes áreas pretas.
+- Botão flutuante de WhatsApp removido. Links normais de contato foram preservados.
+- Motosserras foi padronizada visualmente com as demais categorias: hero, navegação, catálogo em grid, cards e responsividade.
+- Editor visual de imagens ganhou substituição GLOBAL: a mesma imagem pode ser trocada em todas as páginas.
+- Pode marcar a nova imagem como logo principal.
+- Edição local, restauração, fundos, pseudo-elementos, biblioteca, upload e recursos anteriores continuam disponíveis.
+- Não exige novas coleções nem novas Rules além das já publicadas, pois usa site_settings, site_overrides e media.
+
+Login: diva
+Senha: 151871
+Empresa: 1

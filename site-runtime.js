@@ -25,6 +25,59 @@ async function resolveMedia(value){
 }
 async function resolveRowsImages(rows){return await Promise.all(rows.map(async x=>({...x,image:x.image?await resolveMedia(x.image):x.image})));}
 
+let globalImageRules=[];
+let globalImageObserver=null;
+function globalImageKey(value){
+  const raw=String(value||'').trim(); if(!raw)return '';
+  if(/^media:/i.test(raw))return raw;
+  if(/^data:/i.test(raw))return raw.slice(0,96);
+  try{
+    const u=new URL(raw,location.href); const path=decodeURIComponent(u.pathname).replace(/\\/g,'/');
+    const markers=['/imagens/','/ms-imagem/'];
+    for(const marker of markers){const i=path.toLowerCase().lastIndexOf(marker);if(i>=0)return path.slice(i+1).toLowerCase();}
+    return path.split('/').filter(Boolean).slice(-2).join('/').toLowerCase();
+  }catch{return raw.replace(/^\.\//,'').toLowerCase();}
+}
+function cssFirstUrl(value){const m=String(value||'').match(/url\((?:["']?)(.*?)(?:["']?)\)/i);return m?m[1]:'';}
+async function applyGlobalImageReplacements(root=document){
+  if(!globalImageRules.length)return;
+  const rules=globalImageRules.filter(x=>x&&x.enabled!==false&&x.match&&x.value);
+  if(!rules.length)return;
+  const imgs=[];
+  if(root?.tagName==='IMG')imgs.push(root);
+  if(root?.querySelectorAll)imgs.push(...root.querySelectorAll('img'));
+  for(const img of imgs){
+    const original=img.dataset.cmsOriginalSrc||img.getAttribute('src')||img.currentSrc||'';
+    if(!img.dataset.cmsOriginalSrc&&original)img.dataset.cmsOriginalSrc=original;
+    const key=globalImageKey(original); const rule=rules.find(x=>globalImageKey(x.match)===key); if(!rule)continue;
+    const value=await resolveMedia(rule.value); if(value&&img.src!==value)img.src=value;
+    if(rule.alt)img.alt=rule.alt;
+    if(rule.fit)img.style.setProperty('object-fit',rule.fit,'important');
+    if(rule.position)img.style.setProperty('object-position',rule.position,'important');
+  }
+  const nodes=[];
+  if(root?.nodeType===1)nodes.push(root);
+  if(root?.querySelectorAll)nodes.push(...root.querySelectorAll('*'));
+  for(const el of nodes){
+    if(el.tagName==='IMG'||['SCRIPT','STYLE','LINK','META'].includes(el.tagName))continue;
+    let cs;try{cs=getComputedStyle(el)}catch{continue}
+    const bg=cs.backgroundImage; const src=cssFirstUrl(bg); if(!src)continue;
+    const original=el.dataset.cmsOriginalBg||src; if(!el.dataset.cmsOriginalBg)el.dataset.cmsOriginalBg=original;
+    const key=globalImageKey(original); const rule=rules.find(x=>globalImageKey(x.match)===key); if(!rule)continue;
+    const value=await resolveMedia(rule.value); if(!value)continue;
+    const escaped=String(value).replace(/\\/g,'\\\\').replace(/"/g,'\\"');
+    const next=bg.replace(/url\((?:["']?)(.*?)(?:["']?)\)/i,`url("${escaped}")`);
+    el.style.setProperty('background-image',next,'important');
+    if(rule.fit)el.style.setProperty('background-size',rule.fit==='fill'?'100% 100%':rule.fit,'important');
+    if(rule.position)el.style.setProperty('background-position',rule.position,'important');
+  }
+}
+function installGlobalImageObserver(){
+  if(globalImageObserver||!document.body)return;
+  let timer=0; globalImageObserver=new MutationObserver(muts=>{clearTimeout(timer);timer=setTimeout(()=>{for(const m of muts){m.addedNodes?.forEach(n=>{if(n.nodeType===1)applyGlobalImageReplacements(n)});} },80);});
+  globalImageObserver.observe(document.body,{childList:true,subtree:true});
+}
+
 document.addEventListener('error',(event)=>{
   const img=event.target;
   if(img?.tagName==='IMG' && !img.dataset.cmsFallback){ img.dataset.cmsFallback='1'; img.src='imagens/logo.png'; }
@@ -53,15 +106,15 @@ async function applyGlobalSettings(s={}){
   if(s.companyName){
     document.querySelectorAll('.logo-text strong,.footer-wrapper h3').forEach(el=>{ if(el) el.textContent=s.companyName; });
   }
-  if(s.logoUrl){ const logo=await resolveMedia(s.logoUrl); document.querySelectorAll('.logo img').forEach(img=>img.src=logo); }
+  if(s.logoUrl){ const logo=await resolveMedia(s.logoUrl); document.querySelectorAll('.logo img,[data-brand-logo]').forEach(img=>{if(!img.dataset.cmsOriginalSrc)img.dataset.cmsOriginalSrc=img.getAttribute('src')||'';img.src=logo;}); }
+  globalImageRules=Array.isArray(s.imageReplacements)?s.imageReplacements:[];
+  await applyGlobalImageReplacements(document); installGlobalImageObserver();
   if(s.whatsapp){
     const phone=normalizeWhatsapp(s.whatsapp);
     document.querySelectorAll('a[href*="wa.me/"]').forEach(a=>{
       try{const old=new URL(a.href); const text=old.searchParams.get('text'); a.href=`https://wa.me/${phone}${text?'?text='+encodeURIComponent(text):''}`;}catch{}
     });
-    let floating=document.querySelector('.cms-floating-contact');
-    if(!floating){ floating=document.createElement('a'); floating.className='cms-floating-contact'; floating.target='_blank'; floating.rel='noopener'; floating.title='Falar no WhatsApp'; floating.setAttribute('aria-label','Falar no WhatsApp'); floating.innerHTML='<i class="fa-brands fa-whatsapp"></i>'; document.body.appendChild(floating); }
-    floating.href=`https://wa.me/${phone}`;
+    document.querySelectorAll('.cms-floating-contact').forEach(el=>el.remove());
   }
   if(s.instagram){ document.querySelectorAll('a[href*="instagram.com"]').forEach(a=>a.href=s.instagram); }
 }
@@ -84,7 +137,7 @@ async function applyOverride(o){
   for(const el of safeSelector(o.selector)){
     if(mode==='text') el.textContent=o.value??'';
     else if(mode==='html') el.innerHTML=o.value??'';
-    else if(mode==='src' && 'src' in el) el.src=await resolveMedia(o.value??'');
+    else if(mode==='src' && 'src' in el){if(!el.dataset.cmsOriginalSrc)el.dataset.cmsOriginalSrc=el.getAttribute('src')||el.src||'';el.src=await resolveMedia(o.value??'');}
     else if(mode==='background'){const value=await resolveMedia(o.value??'');el.style.setProperty('background-image',backgroundImageValue(o,value),'important');}
     else if(mode==='href' && 'href' in el) el.href=o.value??'';
     else if(mode==='placeholder' && 'placeholder' in el) el.placeholder=o.value??'';
@@ -134,12 +187,12 @@ function listenHighlights(){
   onSnapshot(collection(db,...company('highlights')),async(snap)=>{
     let rows=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
     rows=await resolveHighlightRows(rows);
-    if(renderNativeStories(rows)){document.querySelector('[data-firestore-highlights]')?.remove();setTimeout(applyCachedOverrides,0);return;}
+    if(renderNativeStories(rows)){document.querySelector('[data-firestore-highlights]')?.remove();setTimeout(()=>{applyCachedOverrides();applyGlobalImageReplacements(document)},0);return;}
     if(!rows.length)return; // mantém os destaques originais como fallback quando o banco está vazio
     const section=ensureHighlightsContainer(); if(!section)return;
     const grid=section.querySelector('[data-cms-highlight-grid]');
     grid.innerHTML=rows.map(x=>`<a class="cms-highlight" data-highlight-id="${escapeHTML(x.id)}" href="${escapeHTML(x.link||'#')}" ${/^https?:/i.test(x.link||'')?'target="_blank" rel="noopener"':''}>${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy" decoding="async">`:''}<div class="cms-highlight-content">${x.badge?`<span class="cms-highlight-badge">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.title||'Destaque')}</h3>${x.subtitle?`<p>${escapeHTML(x.subtitle)}</p>`:''}</div></a>`).join('');
-    setTimeout(applyCachedOverrides,0);
+    setTimeout(()=>{applyCachedOverrides();applyGlobalImageReplacements(document)},0);
   });
 }
 function ensureCatalogSection(){
@@ -163,7 +216,7 @@ function renderCatalogRows(rows){
   if(PAGE==='motosserras' && typeof window.kleimpaulSetMotosserras==='function'){
     window.kleimpaulSetMotosserras(rows.map((x,i)=>({id:x.slug||x.id||i+1,name:x.name||x.title||'Produto',price:Number(x.price||0),power:Number(x.power||0),image:x.image||'imagens/logo.png',info:specArray(x)})));
     window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
-    setTimeout(applyCachedOverrides,0);
+    setTimeout(()=>{applyCachedOverrides();applyGlobalImageReplacements(document)},0);
     return;
   }
   const section=ensureCatalogSection(); const grid=section.querySelector('[data-cms-catalog-grid]');
