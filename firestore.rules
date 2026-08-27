@@ -34,7 +34,7 @@ service cloud.firestore {
     // Dados administrativos privados.
     match /empresas/{companyId}/{collectionName}/{docId} {
       allow read, write: if isCompanyAdmin(companyId)
-        && collectionName in ['inventory','trash','chat','audit','backups','backup_chunks'];
+        && collectionName in ['inventory','customers','sales','trash','chat','audit','backups','backup_chunks'];
     }
 
     // Somente para migração do painel antigo. Pode remover depois da migração.

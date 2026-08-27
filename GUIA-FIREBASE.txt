@@ -57,3 +57,8 @@ Também pode publicar os arquivos em outro host HTTPS.
 
 IMPORTANTE SOBRE O PLANO GRATUITO
 Este pacote não depende de Firebase Storage. Ainda assim, o Firestore possui cotas gratuitas de armazenamento/leitura/escrita; imagens são comprimidas justamente para reduzir consumo. Para uma loja institucional com volume moderado, mantenha as imagens otimizadas e apague mídias/backups antigos quando não forem mais necessários.
+
+
+ATUALIZAÇÃO VENDAS & NOTAS
+Esta versão adiciona as coleções privadas empresas/1/customers e empresas/1/sales. Publique novamente o arquivo firestore.rules incluído no pacote.
+O módulo registra documentos comerciais e NF-e emitida externamente; emissão fiscal oficial exige integração específica com SEFAZ/provedor fiscal.

@@ -11,7 +11,7 @@ const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const PAGES = ['index','motosserras','correias','retentores','rolamentos','mancais','mangueiras','oleos','pinhao','polias','lavadoras','rocadeiras','sopradores','desenvolvedor'];
-const COLLECTIONS = ['site_overrides','highlights','catalog_items','inventory','trash','chat','media','audit'];
+const COLLECTIONS = ['site_overrides','highlights','catalog_items','inventory','customers','sales','trash','chat','media','audit'];
 const PUBLIC_COLLECTIONS = new Set(['site_overrides','highlights','catalog_items']);
 const EXPECTED_USER = 'diva';
 const EXPECTED_COMPANY = '1';
@@ -53,7 +53,7 @@ function downloadBlob(blob,name){ const a=document.createElement('a'); a.href=UR
 
 const NAV = [
   ['dashboard','fa-chart-line','Dashboard'],['editor','fa-pen-ruler','Editor do site'],['images','fa-images','Imagens do site'],['highlights','fa-star','Destaques'],
-  ['catalog','fa-layer-group','Catálogos'],['inventory','fa-boxes-stacked','Estoque'],['media','fa-images','Mídia'],
+  ['catalog','fa-layer-group','Catálogos'],['inventory','fa-boxes-stacked','Estoque'],['sales','fa-receipt','Vendas & Notas'],['media','fa-images','Mídia'],
   ['chat','fa-comments','Chat'],['trash','fa-trash-can','Lixeira'],['backup','fa-cloud-arrow-up','Backup'],
   ['audit','fa-clock-rotate-left','Auditoria'],['settings','fa-gear','Configurações']
 ];
@@ -393,7 +393,7 @@ async function restorePayload(payload,clearFirst){
   for(const name of COLLECTIONS.filter(x=>x!=='audit')){const rows=Array.isArray(payload.data?.[name])?payload.data[name]:[];const ops=rows.map(row=>(b)=>{const clean={...row};const id=clean.id||doc(cref(name)).id;delete clean.id; b.set(dref(name,id),clean);});await commitOps(ops);}
 }
 $('restoreBtn').onclick=async()=>{const file=$('restoreFile').files?.[0];if(!file){toast('Selecione o JSON do backup.','error');return}if(!confirm('Restaurar este backup?'))return;setBusy($('restoreBtn'),true,'Restaurando...');try{const payload=JSON.parse(await file.text());await restorePayload(payload,$('restoreClear').checked);await audit('backup.restore',file.name,{clearFirst:$('restoreClear').checked});toast('Backup restaurado com sucesso.');}catch(e){console.error(e);toast(`Falha: ${e.message}`,'error')}finally{setBusy($('restoreBtn'),false)}};
-async function verifyDatabase(showToast=true){try{const cfg=await getDoc(dref('site_settings','config'));const counts={};for(const n of ['site_overrides','highlights','catalog_items','inventory','trash','chat','media']) counts[n]=(await getDocs(cref(n))).size;const issues=[];if(!cfg.exists())issues.push('configurações globais ausentes');if(state.inventory.some(x=>!x.name||!x.code))issues.push('estoque com campos obrigatórios vazios');$('backupIntegrity').textContent=issues.length?`Atenção: ${issues.join('; ')}.`:`Banco íntegro. ${Object.values(counts).reduce((a,b)=>a+b,0)} registros verificados.`;if(showToast)toast(issues.length?'Verificação concluída com alertas.':'Banco verificado.','info');return{counts,issues};}catch(e){$('backupIntegrity').textContent='Não foi possível verificar o banco.';if(showToast)toast('Erro na verificação.','error')}}
+async function verifyDatabase(showToast=true){try{const cfg=await getDoc(dref('site_settings','config'));const counts={};for(const n of ['site_overrides','highlights','catalog_items','inventory','customers','sales','trash','chat','media']) counts[n]=(await getDocs(cref(n))).size;const issues=[];if(!cfg.exists())issues.push('configurações globais ausentes');if(state.inventory.some(x=>!x.name||!x.code))issues.push('estoque com campos obrigatórios vazios');$('backupIntegrity').textContent=issues.length?`Atenção: ${issues.join('; ')}.`:`Banco íntegro. ${Object.values(counts).reduce((a,b)=>a+b,0)} registros verificados.`;if(showToast)toast(issues.length?'Verificação concluída com alertas.':'Banco verificado.','info');return{counts,issues};}catch(e){$('backupIntegrity').textContent='Não foi possível verificar o banco.';if(showToast)toast('Erro na verificação.','error')}}
 $('verifyBtn').onclick=()=>verifyDatabase(true);
 
 // MIGRAÇÃO LEGADA (coleções raiz do painel antigo)

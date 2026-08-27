@@ -1,0 +1,27 @@
+KLEIMPAUL — ATUALIZAÇÃO VENDAS, NOTAS E PADRONIZAÇÃO VISUAL
+
+1. MOTOSSERRAS
+- Página reconstruída no mesmo padrão visual de Roçadeiras.
+- Cabeçalho, hero, cards institucionais, catálogo, busca e filtros padronizados.
+- Mantém os modelos originais e integração com catálogo do painel.
+- Favoritos e ordenação preservados.
+
+2. ADMIN — VENDAS & NOTAS
+- Cadastro de clientes.
+- Orçamento, pedido, venda/recibo e registro de NF-e emitida externamente.
+- Numeração automática.
+- Itens vinculados ao estoque ou manuais.
+- Cálculo de subtotal, descontos, frete/acréscimo e total.
+- Baixa automática de estoque ao concluir/pagar.
+- Cancelamento devolve o estoque quando aplicável.
+- Impressão profissional.
+- Busca, filtros, duplicação, status e exportação CSV.
+- Número, série e chave de acesso de NF-e externa.
+- Histórico, indicadores do mês e gráfico dos últimos 6 meses.
+- Clientes e vendas entram no backup completo.
+
+IMPORTANTE SOBRE NF-e
+O painel NÃO emite NF-e fiscal oficial diretamente. Emissão válida exige SEFAZ, certificado digital/provedor fiscal e regras tributárias. O módulo permite registrar e controlar uma NF-e emitida externamente.
+
+FIRESTORE RULES
+Esta versão usa duas coleções privadas novas: customers e sales. Publique o firestore.rules incluído no ZIP uma vez.

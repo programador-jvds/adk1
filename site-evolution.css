@@ -1,0 +1,16 @@
+
+/* KLEIMPAUL — EVOLUÇÃO VISUAL 2026 */
+:root{--evo-line:rgba(255,255,255,.075);--evo-shadow:0 24px 70px rgba(0,0,0,.20);--evo-orange:var(--orange,#ff6a00)}
+html{background:#070b11}body{background-image:radial-gradient(circle at 88% 4%,rgba(255,106,0,.045),transparent 28%)}
+::selection{background:rgba(255,106,0,.85);color:#fff}
+header{isolation:isolate}header:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,106,0,.34),transparent);pointer-events:none}
+.hero,.hero-product{isolation:isolate}.hero h1,.hero-product h1,.section-title h2{text-wrap:balance}.hero p,.hero-product p,.section-title p{text-wrap:pretty}
+.product-card,.card,.visual-card,.cms-product-card{transform:translateZ(0);backface-visibility:hidden}
+.product-card,.card,.cms-product-card{box-shadow:var(--evo-shadow)}
+.product-card img,.visual-card img,.cms-product-card img,.hero-product-image img{image-rendering:auto;-webkit-font-smoothing:antialiased}
+.btn,a.btn,.back,.back-btn{position:relative;overflow:hidden}.btn:after,a.btn:after,.back:after,.back-btn:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 15%,rgba(255,255,255,.12),transparent 70%);transform:translateX(-120%);transition:transform .55s ease;pointer-events:none}.btn:hover:after,a.btn:hover:after,.back:hover:after,.back-btn:hover:after{transform:translateX(120%)}
+section{scroll-margin-top:90px}.section-title span{display:inline-flex;align-items:center;gap:8px}.section-title span:before,.section-title span:after{content:"";width:18px;height:1px;background:currentColor;opacity:.45}
+footer{background:linear-gradient(180deg,transparent,rgba(255,106,0,.018))}
+@media(min-width:1600px){.container{max-width:1320px!important}.product-card,.card{border-radius:26px}}
+@media(max-width:720px){body{font-size:15px}.section-title{margin-bottom:2.3rem!important}.section-title h2{letter-spacing:-.035em}.btn,a.btn{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.btn:after,a.btn:after,.back:after,.back-btn:after{display:none}}
