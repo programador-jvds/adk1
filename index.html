@@ -1542,7 +1542,7 @@ footer{
 
 </style>
 
-<link rel="stylesheet" href="site-premium.css?v=20260826-1602">
+<link rel="stylesheet" href="site-premium.css?v=20260827-1005">
 </head>
 
 <body class="dark">
@@ -1759,6 +1759,7 @@ qualidade e atendimento especializado.
       <div class="stories-footer">
         <span class="stories-counter"><span id="currentSlide">1</span> / <span id="totalSlides">3</span></span>
         <span class="stories-description" id="storyDescription">Confira nossas novidades</span>
+        <a class="story-action" id="storyAction" href="#" hidden>Saiba mais <i class="fa-solid fa-arrow-right"></i></a>
       </div>
 
       <button class="stories-nav-btn prev" id="prevBtn" aria-label="Story anterior">
@@ -2467,7 +2468,7 @@ Todos os direitos reservados.
 
 <script>
 
-const storiesData = [
+let storiesData = [
   {
     title: 'Promoções',
     images: [
@@ -2534,14 +2535,21 @@ let currentStory = 0;
 let currentSlide = 0;
 let autoplayTimer;
 
-document.querySelectorAll('.story-btn').forEach((btn, idx) => {
-  btn.addEventListener('click', () => {
-    currentStory = idx;
-    currentSlide = 0;
-    loadStory();
-    storiesModal.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  });
+const storyAction = document.getElementById('storyAction');
+const storiesWrapper = document.querySelector('.stories-wrapper');
+function openStoryAt(index){
+  currentStory = Number(index)||0; currentSlide = 0; loadStory();
+  storiesModal.classList.add('show'); document.body.style.overflow = 'hidden';
+}
+storiesWrapper?.addEventListener('click',(event)=>{const btn=event.target.closest('.story-btn');if(!btn)return;openStoryAt(btn.dataset.story);});
+window.addEventListener('kleimpaul:stories',(event)=>{
+  const rows=event.detail?.rows||[]; if(!rows.length)return;
+  storiesData=rows.map(x=>{const slides=[
+    {url:x.storyImage1||x.image,desc:x.storyDesc1||x.subtitle||x.title},
+    {url:x.storyImage2,desc:x.storyDesc2||x.subtitle||x.title},
+    {url:x.storyImage3,desc:x.storyDesc3||x.subtitle||x.title}
+  ].filter(s=>s.url);return {title:x.title||'Destaque',time:x.time||'Alderico Kleimpaul',link:x.link||'',buttonLabel:x.buttonLabel||'Saiba mais',images:slides.length?slides:[{url:x.image||'imagens/logo.png',desc:x.subtitle||x.title||'Destaque'}]};});
+  if(currentStory>=storiesData.length)currentStory=0;
 });
 
 storiesClose.addEventListener('click', closeStories);
@@ -2566,9 +2574,11 @@ function loadStory() {
   const image = story.images[currentSlide];
 
   storyTitle.textContent = story.title;
+  storyTime.textContent = story.time || 'Alderico Kleimpaul';
   storyImage.src = image.url;
-  storyImage.alt = image.desc;
-  storyDescription.textContent = image.desc;
+  storyImage.alt = image.desc || story.title;
+  storyDescription.textContent = image.desc || story.title;
+  if(storyAction){if(story.link){storyAction.hidden=false;storyAction.href=story.link;storyAction.textContent=story.buttonLabel||'Saiba mais';storyAction.insertAdjacentHTML('beforeend',' <i class="fa-solid fa-arrow-right"></i>');}else{storyAction.hidden=true;}}
   currentSlideSpan.textContent = currentSlide + 1;
   totalSlidesSpan.textContent = story.images.length;
 
@@ -2613,7 +2623,7 @@ function autoplay() {
     } else {
       closeStories();
     }
-  }, 5000);
+  }, Math.max(3000, Number(window.KleimpaulCMS?.storyAutoplayMs || 5000)));
 }
 
 prevBtn.addEventListener('click', () => {
@@ -2839,7 +2849,7 @@ setInterval(() => {
 }, 30000);
 </script>
 
-<script type="module" src="site-runtime.js?v=20260827-0942"></script>
-<script src="site-pro.js?v=20260826-1602" defer></script>
+<script type="module" src="site-runtime.js?v=20260827-1005"></script>
+<script src="site-pro.js?v=20260827-1005" defer></script>
 </body>
 </html>

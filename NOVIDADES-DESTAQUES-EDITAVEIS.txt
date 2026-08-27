@@ -1,0 +1,11 @@
+KLEIMPAUL — DESTAQUES TOTALMENTE EDITÁVEIS
+
+Nesta versão:
+- A área “Fique por dentro / Novidades e Destaques” da home é controlada pelo painel.
+- Edita chamada, título, subtítulo, visibilidade e tempo automático.
+- Cada destaque permite nome, selo, ordem, capa, até 3 imagens de story, descrições, link e botão.
+- Seleção direta da biblioteca de mídia e upload rápido dentro do editor de destaques.
+- Duplicar, mover, editar e excluir destaques.
+- Quando não há destaques no banco, o conteúdo original continua como fallback.
+- Nenhuma coleção nova foi criada: continua usando site_settings, highlights e media.
+- Portanto as regras Firestore da versão anterior continuam compatíveis.

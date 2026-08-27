@@ -47,6 +47,9 @@ async function applyGlobalSettings(s={}){
   if(s.accent2) root.style.setProperty('--cms-accent-2',s.accent2), root.style.setProperty('--orange-light',s.accent2);
   if(s.radius) root.style.setProperty('--cms-radius',`${Number(s.radius)}px`);
   if(s.siteTitle) document.title=s.siteTitle;
+  window.KleimpaulCMS.storyAutoplayMs=Number(s.storyAutoplayMs||5000);
+  const storySection=document.querySelector('#stories');
+  if(storySection){storySection.style.display=s.storySectionEnabled===false?'none':'';const eyebrow=storySection.querySelector('.section-title span'),title=storySection.querySelector('.section-title h2'),subtitle=storySection.querySelector('.section-title p');if(eyebrow&&s.storyEyebrow)eyebrow.textContent=s.storyEyebrow;if(title&&s.storyTitle)title.textContent=s.storyTitle;if(subtitle&&s.storySubtitle)subtitle.textContent=s.storySubtitle;}
   if(s.companyName){
     document.querySelectorAll('.logo-text strong,.footer-wrapper h3').forEach(el=>{ if(el) el.textContent=s.companyName; });
   }
@@ -117,19 +120,25 @@ function ensureHighlightsContainer(){
   if(anchor) anchor.parentNode.insertBefore(section,anchor); else document.body.appendChild(section);
   return section;
 }
+async function resolveHighlightRows(rows){return await Promise.all(rows.map(async x=>({...x,image:x.image?await resolveMedia(x.image):'',storyImage1:x.storyImage1?await resolveMedia(x.storyImage1):'',storyImage2:x.storyImage2?await resolveMedia(x.storyImage2):'',storyImage3:x.storyImage3?await resolveMedia(x.storyImage3):''})));}
+function renderNativeStories(rows){
+  const section=document.querySelector('#stories'),wrap=section?.querySelector('.stories-wrapper');
+  if(!section||!wrap||!rows.length)return false;
+  wrap.innerHTML=rows.map((x,i)=>{const cover=x.image||x.storyImage1||'imagens/logo.png';return `<button class="story-btn" data-story="${i}" data-highlight-id="${escapeHTML(x.id)}" aria-label="Ver destaque ${escapeHTML(x.title||'Destaque')}"><div class="story-ring"><img src="${escapeHTML(cover)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy" decoding="async"></div><div class="story-name">${escapeHTML(x.title||'Destaque')}</div>${x.badge?`<span class="story-badge">${escapeHTML(x.badge)}</span>`:''}</button>`}).join('');
+  section.dataset.cmsManaged='1';
+  window.dispatchEvent(new CustomEvent('kleimpaul:stories',{detail:{rows}}));
+  return true;
+}
 function listenHighlights(){
   if(PAGE!=='index') return;
   onSnapshot(collection(db,...company('highlights')),async(snap)=>{
-    const section=ensureHighlightsContainer(); if(!section)return;
     let rows=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
-    rows=await resolveRowsImages(rows);
+    rows=await resolveHighlightRows(rows);
+    if(renderNativeStories(rows)){document.querySelector('[data-firestore-highlights]')?.remove();setTimeout(applyCachedOverrides,0);return;}
+    if(!rows.length)return; // mantém os destaques originais como fallback quando o banco está vazio
+    const section=ensureHighlightsContainer(); if(!section)return;
     const grid=section.querySelector('[data-cms-highlight-grid]');
-    if(!rows.length){section.style.display='none';return} section.style.display='';
-    grid.innerHTML=rows.map(x=>`<a class="cms-highlight" data-highlight-id="${escapeHTML(x.id)}" href="${escapeHTML(x.link||'#')}" ${/^https?:/i.test(x.link||'')?'target="_blank" rel="noopener"':''}>
-      ${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy" decoding="async">`:''}
-      <div class="cms-highlight-content">${x.badge?`<span class="cms-highlight-badge">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.title||'Destaque')}</h3>${x.subtitle?`<p>${escapeHTML(x.subtitle)}</p>`:''}</div>
-    </a>`).join('');
-    window.dispatchEvent(new CustomEvent('kleimpaul:highlights',{detail:{rows}}));
+    grid.innerHTML=rows.map(x=>`<a class="cms-highlight" data-highlight-id="${escapeHTML(x.id)}" href="${escapeHTML(x.link||'#')}" ${/^https?:/i.test(x.link||'')?'target="_blank" rel="noopener"':''}>${x.image?`<img src="${escapeHTML(x.image)}" alt="${escapeHTML(x.title||'Destaque')}" loading="lazy" decoding="async">`:''}<div class="cms-highlight-content">${x.badge?`<span class="cms-highlight-badge">${escapeHTML(x.badge)}</span>`:''}<h3>${escapeHTML(x.title||'Destaque')}</h3>${x.subtitle?`<p>${escapeHTML(x.subtitle)}</p>`:''}</div></a>`).join('');
     setTimeout(applyCachedOverrides,0);
   });
 }
