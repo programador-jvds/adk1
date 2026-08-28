@@ -9,7 +9,24 @@ function sameMeasure(value,query){if(!query)return true;const a=norm(value).repl
 function filtered(){const q=norm($('retBusca')?.value),sabo=norm($('retSabo')?.value),arca=norm($('retArca')?.value),e=$('retEixo')?.value,a=$('retAloj')?.value,h=$('retAltura')?.value,o=norm($('retOrient')?.value);return rows.filter(r=>{const hay=norm([r.saboCode,r.arcaCode,r.shaft,r.housing,r.housing2,r.height,r.height2,r.orientation,r.type,r.line,r.material,r.montadora,r.original,r.corteco,r.aplicacao,r.modelo].join(' '));return(!q||hay.includes(q))&&(!sabo||norm(r.saboCode).includes(sabo))&&(!arca||norm(r.arcaCode).includes(arca))&&sameMeasure(r.shaft,e)&&sameMeasure(r.housing,a)&&sameMeasure(r.height,h)&&(!o||norm(r.orientation).includes(o))})}
 function render(){const list=filtered();if($('retTotal'))$('retTotal').textContent=rows.length;if($('retResultado'))$('retResultado').textContent=rows.length?`${list.length} de ${rows.length} referências encontradas`:'Catálogo técnico carregando…';if($('retCatalogMeta'))$('retCatalogMeta').textContent='Catálogo técnico Sabó × ARCA';if($('retRows'))$('retRows').innerHTML=list.length?list.slice(0,1000).map(r=>`<tr><td class="ret-code-sabo">${esc(r.saboCode||'-')}</td><td class="ret-code-arca">${esc(r.arcaCode||'-')}</td><td class="ret-measure">${esc(r.shaft||'-')}</td><td class="ret-measure">${esc(r.housing||'-')}</td><td class="ret-measure">${esc(r.height||'-')}</td><td>${r.orientation?`<span class="ret-orientation">${esc(r.orientation)}</span>`:'-'}</td><td>${esc(r.type||'-')}</td></tr>`).join('')+(list.length>1000?`<tr><td colspan="7" class="ret-empty">Mostrando 1.000 de ${list.length}. Refine a pesquisa para localizar mais rápido.</td></tr>`:''):'<tr><td colspan="7" class="ret-empty">Nenhum retentor encontrado com esses filtros.</td></tr>'}
 function reset(){['retBusca','retSabo','retArca','retEixo','retAloj','retAltura'].forEach(id=>{if($(id))$(id).value=''});if($('retOrient'))$('retOrient').value='';render()}
-async function loadOfficial(){try{const r=await fetch(`data/retentores-sabo-arca.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();catalogMeta=d||{};officialRows=Array.isArray(d.items)?d.items:[];mergeRows();}catch(e){console.warn('Base local de retentores indisponível',e);mergeRows();}}
+const MIN_FULL_CATALOG=650;
+const CATALOG_SOURCES=[
+  ()=>`data/retentores-sabo-arca.json?v=${Date.now()}`,
+  ()=>`https://raw.githubusercontent.com/programador-jvds/adk1/main/data/retentores-sabo-arca.json?v=${Date.now()}`,
+  ()=>`https://raw.githubusercontent.com/programador-jvds/adk1/master/data/retentores-sabo-arca.json?v=${Date.now()}`
+];
+let retryTimer=null,retryCount=0;
+async function fetchCatalog(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(!d||!Array.isArray(d.items))throw new Error('formato inválido');return d;}
+async function loadOfficial(){
+  let best=catalogMeta&&Array.isArray(catalogMeta.items)?catalogMeta:null;
+  for(const makeUrl of CATALOG_SOURCES){
+    try{const d=await fetchCatalog(makeUrl());if(!best||Number(d.count||d.items.length)>Number(best.count||best.items?.length||0))best=d;if(Number(d.count||d.items.length)>=MIN_FULL_CATALOG&&!d.bootstrap)break;}catch(e){console.warn('Catálogo alternativo indisponível',e)}
+  }
+  if(best){catalogMeta=best;officialRows=best.items||[];mergeRows();}
+  else mergeRows();
+  const count=Number(best?.count||best?.items?.length||0);
+  if(count<MIN_FULL_CATALOG&&retryCount<30){clearTimeout(retryTimer);retryCount++;retryTimer=setTimeout(loadOfficial,retryCount<10?20000:60000);}
+}
 ['retBusca','retSabo','retArca','retEixo','retAloj','retAltura','retOrient'].forEach(id=>$(id)?.addEventListener('input',render));$('retReset')?.addEventListener('click',reset);$('retLimparBusca')?.addEventListener('click',()=>{if($('retBusca'))$('retBusca').value='';render();$('retBusca')?.focus()});
 window.addEventListener('kleimpaul:catalog',e=>{if(e.detail?.category!=='retentores')return;firestoreRows=e.detail.rows||[];mergeRows()});
 window.KleimpaulRetentores={reload:loadOfficial,getRows:()=>rows,getOfficial:()=>officialRows};loadOfficial();

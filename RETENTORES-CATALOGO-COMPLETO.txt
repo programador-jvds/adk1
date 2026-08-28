@@ -1,0 +1,29 @@
+RETENTORES — CATÁLOGO SABÓ x ARCA
+
+CORREÇÃO DESTA VERSÃO
+- Os 10 registros antigos eram apenas uma base de segurança.
+- A sincronização foi refeita para usar o catálogo amplo ARCA arquivado (170 páginas),
+  os lançamentos atuais e, quando disponíveis, os catálogos atuais por linha.
+- Somente equivalências que possuam código Sabó entram na consulta Sabó x ARCA.
+- O catálogo é deduplicado por Sabó + ARCA + medidas.
+- Uma base nova só substitui a anterior quando passa pelas validações de quantidade,
+  variedade de códigos e integridade.
+- Depois que o robô salva a base no GitHub, a página também tenta ler diretamente
+  o arquivo RAW do repositório, reduzindo a espera pelo cache do GitHub Pages.
+- Enquanto uma base pequena estiver presente, a página tenta novamente
+  automaticamente; o usuário não precisa importar CSV/TXT.
+
+PESQUISA PÚBLICA
+- Código Sabó
+- Código ARCA
+- Ø eixo
+- Ø alojamento
+- altura
+- orientação
+- busca geral
+
+ATUALIZAÇÃO
+O workflow .github/workflows/sync-retentores.yml roda automaticamente em push,
+manualmente pelo GitHub Actions e uma vez por dia.
+
+Não há nova coleção Firestore e não é necessário mudar as Rules por causa desta correção.

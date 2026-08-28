@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
-"""Sincroniza automaticamente referências Sabó x ARCA.
+"""Gera a base Sabó x ARCA automaticamente.
 
-Estratégia:
-- consulta o catálogo público por dígitos 0..9 (todo código ARCA/Sabó é numérico);
-- extrai apenas linhas que possuem uma referência Sabó reconhecível;
-- deduplica aplicações repetidas mantendo uma referência técnica por combinação
-  Sabó + ARCA + medidas;
-- agrega montadoras/linhas/aplicações em campos auxiliares;
-- só substitui o arquivo local se a coleta parecer completa e consistente.
+Fontes, em ordem:
+1) catálogo público ARCA arquivado em HTML (170 páginas, dividido em 4 faixas);
+2) página de lançamentos ARCA atual;
+3) PDFs de linhas ARCA atuais (quando disponíveis).
 
-O script foi desenhado para GitHub Actions. Nenhuma ação manual no catálogo é
-necessária depois de publicar o repositório.
+Somente registros com referência Sabó reconhecida entram no JSON público.
+O arquivo anterior só é substituído quando a coleta passa por validações fortes.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import re
 import sys
@@ -31,193 +29,213 @@ from urllib3.util.retry import Retry
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "retentores-sabo-arca.json"
-URL = "https://www.arcaretentores.com.br/produtos?q={term}"
-TERMS = list("0123456789")
-MIN_UNIQUE = 350
 
-SABO_RE = re.compile(r"(?<!\d)(\d{3,6}\s*-\s*[A-Z][A-Z0-9]{0,10})(?![A-Z0-9])", re.I)
+ARCHIVE_URLS = [
+    "https://pubhtml5.com/lwdy/rlqp/basic/",
+    "https://pubhtml5.com/lwdy/rlqp/basic/51-100",
+    "https://pubhtml5.com/lwdy/rlqp/basic/101-150",
+    "https://pubhtml5.com/lwdy/rlqp/basic/151-170",
+]
+LAUNCHES_URL = "https://www.arcaretentores.com.br/lancamentos"
+PDF_URLS = [
+    "https://www.arcaretentores.com.br/assets/file/upload/downloads/4pdnh3UMqEu51Bg7.pdf",
+    "https://www.arcaretentores.com.br/assets/file/upload/downloads/aNDKNWIyTjcUrdMy.pdf",
+    "https://www.arcaretentores.com.br/assets/file/upload/downloads/7jZO5SGcwt75BPKT.pdf",
+    "https://www.arcaretentores.com.br/assets/file/upload/downloads/38rrFunNTGq6WXPR.pdf",
+    "https://www.arcaretentores.com.br/assets/file/upload/downloads/UV7UsG2Fo3VXLlak.pdf",
+    "https://www.arcaretentores.com.br/assets/file/upload/downloads/ruqKVdACT609n36J.pdf",
+]
+
+# O catálogo histórico possui milhares de aplicações repetidas. Após deduplicar
+# Sabó+ARCA+medidas, esperamos muitas centenas de equivalências distintas.
+MIN_UNIQUE = 650
+
+# ARCA + três dimensões principais. Aceita código com ou sem sufixo.
+ARCA_DIM_RE = re.compile(
+    r"(?<!\d)(?P<arca>\d{4,5}(?:-[A-Z]{1,9})?)\s+"
+    r"(?P<shaft>\d{1,3}(?:[.,]\d{1,2})?)\s*[Xx×]\s*"
+    r"(?P<housing>\d{1,3}(?:[.,]\d{1,2})?)"
+    r"(?:\s*/\s*(?P<housing2>\d{1,3}(?:[.,]\d{1,2})?))?\s*[Xx×]\s*"
+    r"(?P<height>\d{1,3}(?:[.,]\d{1,2})?)"
+    r"(?:\s*/\s*(?P<height2>\d{1,3}(?:[.,]\d{1,2})?))?",
+    re.I,
+)
+# Referências Sabó vistas nos catálogos usam cinco dígitos e um sufixo técnico.
+SABO_RE = re.compile(r"(?<!\d)(\d{5})\s*[- ]\s*([A-Z][A-Z0-9]{0,10})(?![A-Z0-9])", re.I)
 
 
 def clean(v: object) -> str:
     return re.sub(r"\s+", " ", str(v or "")).strip()
 
 
-def norm_header(v: str) -> str:
-    return (
-        clean(v)
-        .lower()
-        .replace("º", "")
-        .replace("°", "")
-        .replace("ø", "")
-        .replace(".", "")
-    )
+def num(v: str) -> str:
+    v = clean(v).replace(".", ",")
+    return v
 
 
-def sabo_codes(raw: str) -> list[str]:
-    out = []
-    for m in SABO_RE.finditer(clean(raw).upper()):
-        code = re.sub(r"\s+", "", m.group(1))
-        if code not in out:
-            out.append(code)
-    return out
+def normalize_sabo(a: str, b: str) -> str:
+    return f"{a}-{b}".upper().replace(" ", "")
 
 
 def session() -> requests.Session:
     s = requests.Session()
     retry = Retry(
-        total=4,
-        connect=4,
-        read=4,
-        backoff_factor=1.1,
+        total=5,
+        connect=5,
+        read=5,
+        backoff_factor=1.2,
         status_forcelist=(429, 500, 502, 503, 504),
         allowed_methods=frozenset(["GET"]),
     )
-    s.mount("https://", HTTPAdapter(max_retries=retry, pool_connections=4, pool_maxsize=4))
-    s.headers.update(
-        {
-            "User-Agent": "Mozilla/5.0 (compatible; KleimpaulCatalogSync/3.0; +https://github.com/)",
-            "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
-        }
-    )
+    s.mount("https://", HTTPAdapter(max_retries=retry, pool_connections=8, pool_maxsize=8))
+    s.headers.update({
+        "User-Agent": "Mozilla/5.0 (compatible; KleimpaulCatalogSync/5.0; +https://github.com/)",
+        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
+        "Accept": "text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8",
+    })
     return s
 
 
-def find_table(soup: BeautifulSoup):
-    best = None
-    best_score = -1
-    for table in soup.find_all("table"):
-        text = norm_header(table.get_text(" ", strip=True))
-        score = sum(
-            key in text
-            for key in ("arca", "material", "ref sb", "eixo", "aloj", "alt")
-        )
-        if score > best_score:
-            best, best_score = table, score
-    return best if best_score >= 4 else None
+def archive_rows(html: str, source: str) -> list[dict]:
+    text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
+    text = text.replace("º", "°")
+    matches = list(ARCA_DIM_RE.finditer(text))
+    out: list[dict] = []
+    for i, m in enumerate(matches):
+        tail_end = matches[i + 1].start() if i + 1 < len(matches) else min(len(text), m.end() + 900)
+        # Não deixe uma célula muito grande capturar outra página inteira.
+        tail = text[m.end():min(tail_end, m.end() + 850)]
+        refs = []
+        for a, b in SABO_RE.findall(tail):
+            code = normalize_sabo(a, b)
+            if code not in refs:
+                refs.append(code)
+        if not refs:
+            continue
+        arca = clean(m.group("arca")).upper()
+        typ = arca.split("-", 1)[1] if "-" in arca else ""
+        base = {
+            "arcaCode": arca,
+            "retType": typ,
+            "material": "",
+            "retLine": "",
+            "montadora": "",
+            "original": "",
+            "corteco": "",
+            "aplicacao": "",
+            "modelo": "",
+            "shaft": num(m.group("shaft")),
+            "housing": num(m.group("housing")),
+            "housing2": num(m.group("housing2") or ""),
+            "height": num(m.group("height")),
+            "height2": num(m.group("height2") or ""),
+            "lancamento": "",
+            "orientation": "",
+            "active": True,
+            "officialSource": "ARCA",
+            "sourceDataset": source,
+        }
+        for ref in refs:
+            out.append({**base, "saboCode": ref})
+    return out
 
 
-def header_map(table) -> dict[str, int]:
-    ths = table.find_all("th")
-    headers = [norm_header(x.get_text(" ", strip=True)) for x in ths]
-    # Algumas versões usam cabeçalho em duas linhas; preferimos a linha com mais THs.
-    rows = []
-    for tr in table.find_all("tr")[:5]:
-        h = [norm_header(x.get_text(" ", strip=True)) for x in tr.find_all("th")]
-        if h:
-            rows.append(h)
-    if rows:
-        headers = max(rows, key=len)
-
-    def idx(*needles: str, default: int | None = None):
-        for i, h in enumerate(headers):
-            if all(n in h for n in needles):
-                return i
-        return default
-
-    # Fallback é a ordem usada atualmente pelo site ARCA.
-    return {
-        "arca": idx("arca", default=0),
-        "type": idx("tipo", default=1),
-        "material": idx("material", default=2),
-        "line": idx("linha", default=3),
-        "maker": idx("montadora", default=4),
-        "original": idx("original", default=5),
-        "sabo": idx("ref", "sb", default=6),
-        "corteco": idx("ref", "ct", default=7),
-        "application": idx("aplica", default=8),
-        "model": idx("modelo", default=9),
-        "shaft": idx("eixo", default=10),
-        "housing": idx("aloj", "ext1", default=11),
-        "housing2": idx("aloj", "ext2", default=12),
-        "height": idx("alt", "1", default=13),
-        "height2": idx("alt", "2", default=14),
-        "launch": idx("lanc", default=15),
-    }
-
-
-def cell(cells: list[str], i: int | None) -> str:
-    if i is None or i < 0 or i >= len(cells):
-        return ""
-    return clean(cells[i])
-
-
-def parse_page(html: str, term: str) -> list[dict]:
+def parse_launches(html: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
-    table = find_table(soup)
-    if table is None:
-        raise RuntimeError(f"Tabela de produtos não encontrada para q={term}")
-    hm = header_map(table)
-    out = []
-    for tr in table.find_all("tr"):
-        cells = [clean(td.get_text(" ", strip=True)) for td in tr.find_all("td")]
-        if len(cells) < 10:
+    out: list[dict] = []
+    # A página atual usa tabela. Parseia pelas células para manter as colunas exatas.
+    for tr in soup.find_all("tr"):
+        cells = [clean(x.get_text(" ", strip=True)) for x in tr.find_all("td")]
+        if len(cells) < 13:
             continue
-        arca = cell(cells, hm["arca"])
-        raw_sabo = cell(cells, hm["sabo"])
-        if not arca:
+        arca = cells[0].upper()
+        if not re.fullmatch(r"\d{4,5}(?:-[A-Z]{1,9})?", arca):
             continue
-        refs = sabo_codes(raw_sabo)
+        raw_sabo = cells[6] if len(cells) > 6 else ""
+        refs = [normalize_sabo(a, b) for a, b in SABO_RE.findall(raw_sabo)]
         if not refs:
             continue
         base = {
             "arcaCode": arca,
-            "retType": cell(cells, hm["type"]),
-            "material": cell(cells, hm["material"]),
-            "retLine": cell(cells, hm["line"]),
-            "montadora": cell(cells, hm["maker"]),
-            "original": cell(cells, hm["original"]),
-            "corteco": cell(cells, hm["corteco"]),
-            "aplicacao": cell(cells, hm["application"]),
-            "modelo": cell(cells, hm["model"]),
-            "shaft": cell(cells, hm["shaft"]),
-            "housing": cell(cells, hm["housing"]),
-            "housing2": cell(cells, hm["housing2"]),
-            "height": cell(cells, hm["height"]),
-            "height2": cell(cells, hm["height2"]),
-            "lancamento": cell(cells, hm["launch"]),
+            "retType": cells[1] if len(cells) > 1 else "",
+            "material": cells[2] if len(cells) > 2 else "",
+            "retLine": cells[3] if len(cells) > 3 else "",
+            "montadora": cells[4] if len(cells) > 4 else "",
+            "original": cells[5] if len(cells) > 5 else "",
+            "corteco": cells[7] if len(cells) > 7 else "",
+            "aplicacao": cells[8] if len(cells) > 8 else "",
+            "modelo": cells[9] if len(cells) > 9 else "",
+            "shaft": num(cells[10] if len(cells) > 10 else ""),
+            "housing": num(cells[11] if len(cells) > 11 else ""),
+            "height": num(cells[12] if len(cells) > 12 else ""),
+            "housing2": num(cells[13] if len(cells) > 13 else ""),
+            "height2": num(cells[14] if len(cells) > 14 else ""),
+            "lancamento": cells[15] if len(cells) > 15 else "",
             "orientation": "",
             "active": True,
             "officialSource": "ARCA",
+            "sourceDataset": "lancamentos-atual",
         }
-        for sabo in refs:
-            out.append({**base, "saboCode": sabo})
+        for ref in dict.fromkeys(refs):
+            out.append({**base, "saboCode": ref})
+    return out
+
+
+def pdf_text_rows(pdf_bytes: bytes, source: str) -> list[dict]:
+    """Extrai equivalências dos PDFs atuais. Falha silenciosamente se pdfplumber não existir."""
+    try:
+        import pdfplumber  # type: ignore
+    except Exception:
+        return []
+    out: list[dict] = []
+    try:
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            for page in pdf.pages:
+                text = page.extract_text(x_tolerance=2, y_tolerance=3) or ""
+                if text:
+                    # Preserva separações de linha e adiciona espaços para o parser genérico.
+                    out.extend(archive_rows(text, source))
+    except Exception as exc:
+        print(f"Aviso: PDF {source} não pôde ser lido: {exc}")
     return out
 
 
 def key_for(x: dict) -> str:
-    raw = "|".join(
-        clean(x.get(k, "")).upper()
-        for k in ("arcaCode", "saboCode", "shaft", "housing", "housing2", "height", "height2")
-    )
+    raw = "|".join(clean(x.get(k, "")).upper() for k in (
+        "arcaCode", "saboCode", "shaft", "housing", "housing2", "height", "height2"
+    ))
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:20]
 
 
 def aggregate(rows: list[dict]) -> list[dict]:
     grouped: dict[str, dict] = {}
-    extras: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+    source_sets: dict[str, set[str]] = defaultdict(set)
     for row in rows:
+        if not row.get("saboCode") or not row.get("arcaCode"):
+            continue
         k = key_for(row)
+        src = clean(row.get("sourceDataset", ""))
         if k not in grouped:
             grouped[k] = dict(row)
             grouped[k]["sourceKey"] = k
-        ex = extras[k]
-        for src, dest in (
-            ("retLine", "lines"),
-            ("montadora", "makers"),
-            ("original", "originals"),
-            ("aplicacao", "applications"),
-            ("modelo", "models"),
-        ):
-            v = clean(row.get(src, ""))
-            if v:
-                ex[dest].add(v)
+        else:
+            # Dados atuais têm precedência sobre o arquivo histórico.
+            old = grouped[k]
+            current = row.get("sourceDataset") == "lancamentos-atual"
+            if current:
+                for field, value in row.items():
+                    if clean(value) or field in {"active"}:
+                        old[field] = value
+            else:
+                for field, value in row.items():
+                    if not clean(old.get(field, "")) and clean(value):
+                        old[field] = value
+        if src:
+            source_sets[k].add(src)
+
     items = []
     for k, item in grouped.items():
-        ex = extras[k]
-        for dest in ("lines", "makers", "originals", "applications", "models"):
-            vals = sorted(ex.get(dest, set()))
-            # Evita JSON exagerado: busca técnica usa principalmente código e medida.
-            item[dest] = vals[:24]
+        item["datasets"] = sorted(source_sets[k])
         items.append(item)
     items.sort(key=lambda x: (x["saboCode"].upper(), x["arcaCode"].upper(), x.get("shaft", "")))
     return items
@@ -230,59 +248,125 @@ def load_previous() -> dict:
         return {}
 
 
+def self_test() -> None:
+    sample = (
+        "5000-BA 30,00 X 62,00 X 10,00 01273-BA 2011 N 0,79 "
+        "5045-BRG 40,00 X 55,00 X 8,00 01707-BRG / 02391-BRG 39090006-6 0,67 "
+        "54368-BAGS 40,00 X 60,00 X 10,00 00185-BA 6025.008.049.00.0"
+    )
+    rows = archive_rows(sample, "teste")
+    pairs = {(x["arcaCode"], x["saboCode"]) for x in rows}
+    expected = {
+        ("5000-BA", "01273-BA"),
+        ("5045-BRG", "01707-BRG"),
+        ("5045-BRG", "02391-BRG"),
+        ("54368-BAGS", "00185-BA"),
+    }
+    assert expected.issubset(pairs), (expected, pairs)
+    print(f"Self-test OK: {len(rows)} equivalências de teste")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--terms", default="".join(TERMS), help="termos usados na varredura; padrão 0123456789")
-    ap.add_argument("--min", type=int, default=MIN_UNIQUE, help="mínimo de referências únicas para aceitar a atualização")
+    ap.add_argument("--min", type=int, default=MIN_UNIQUE)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--self-test-only", action="store_true")
     args = ap.parse_args()
+
+    self_test()
+    if args.self_test_only:
+        return 0
 
     previous = load_previous()
     s = session()
-    raw_rows: list[dict] = []
-    stats = {}
+    all_rows: list[dict] = []
+    stats: dict[str, int] = {}
+    errors: list[str] = []
 
-    for term in dict.fromkeys(args.terms):
-        url = URL.format(term=term)
-        print(f"Consultando {url}")
-        r = s.get(url, timeout=(15, 120))
+    # Catálogo amplo arquivado — fonte principal para equivalências Sabó x ARCA.
+    for i, url in enumerate(ARCHIVE_URLS, 1):
+        name = f"arca-arquivo-{i}"
+        try:
+            print(f"Baixando {url}")
+            r = s.get(url, timeout=(20, 180))
+            r.raise_for_status()
+            found = archive_rows(r.text, name)
+            stats[name] = len(found)
+            all_rows.extend(found)
+            print(f"  {len(found)} equivalências")
+        except Exception as exc:
+            errors.append(f"{name}: {exc}")
+            print(f"Aviso: {errors[-1]}")
+        time.sleep(0.4)
+
+    # Lançamentos atuais — atualiza e adiciona referências recentes.
+    try:
+        print(f"Baixando {LAUNCHES_URL}")
+        r = s.get(LAUNCHES_URL, timeout=(20, 120))
         r.raise_for_status()
-        page_rows = parse_page(r.text, term)
-        stats[term] = len(page_rows)
-        raw_rows.extend(page_rows)
-        print(f"  {len(page_rows)} linhas com referência Sabó")
-        time.sleep(0.35)
+        found = parse_launches(r.text)
+        # Caso o HTML servido mude e o parser de tabela não veja TDs, usa parser genérico.
+        if len(found) < 5:
+            found = archive_rows(r.text, "lancamentos-atual")
+        stats["lancamentos-atual"] = len(found)
+        all_rows.extend(found)
+        print(f"  {len(found)} equivalências atuais")
+    except Exception as exc:
+        errors.append(f"lancamentos-atual: {exc}")
+        print(f"Aviso: {errors[-1]}")
 
-    items = aggregate(raw_rows)
+    # Catálogos de linha atuais: reforço, não ponto único de falha.
+    for i, url in enumerate(PDF_URLS, 1):
+        name = f"arca-pdf-linha-{i}"
+        try:
+            print(f"Baixando PDF {i}/{len(PDF_URLS)}")
+            r = s.get(url, timeout=(20, 180))
+            r.raise_for_status()
+            found = pdf_text_rows(r.content, name)
+            stats[name] = len(found)
+            all_rows.extend(found)
+            print(f"  {len(found)} equivalências do PDF")
+        except Exception as exc:
+            errors.append(f"{name}: {exc}")
+            print(f"Aviso: {errors[-1]}")
+
+    items = aggregate(all_rows)
     if len(items) < args.min:
         old_count = int(previous.get("count") or 0)
         raise RuntimeError(
-            f"Coleta retornou apenas {len(items)} referências únicas (mínimo {args.min}). "
-            f"Arquivo anterior com {old_count} itens foi preservado."
+            f"Coleta retornou {len(items)} equivalências únicas; mínimo de segurança é {args.min}. "
+            f"A base anterior ({old_count}) foi preservada. Erros: {'; '.join(errors[:5])}"
         )
+
+    # Sanidade extra: precisamos de variedade real, não uma única página repetida.
+    arca_unique = len({x["arcaCode"] for x in items})
+    sabo_unique = len({x["saboCode"] for x in items})
+    if arca_unique < 450 or sabo_unique < 450:
+        raise RuntimeError(f"Base suspeita: {arca_unique} ARCA únicos e {sabo_unique} Sabó únicos")
 
     canonical = json.dumps(items, ensure_ascii=False, separators=(",", ":"))
     payload = {
-        "schemaVersion": 3,
-        "source": "https://www.arcaretentores.com.br/produtos?q=",
+        "schemaVersion": 4,
+        "source": "ARCA - catálogo amplo + lançamentos atuais",
         "sourceLabel": "Catálogo técnico Sabó × ARCA",
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "count": len(items),
+        "uniqueArca": arca_unique,
+        "uniqueSabo": sabo_unique,
         "bootstrap": False,
         "automatic": True,
-        "terms": list(dict.fromkeys(args.terms)),
         "queryStats": stats,
+        "warnings": errors,
         "sha256": hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
         "items": items,
     }
-    print(f"TOTAL: {len(items)} referências Sabó × ARCA únicas")
+    print(f"TOTAL: {len(items)} equivalências | ARCA únicos: {arca_unique} | Sabó únicos: {sabo_unique}")
     if args.dry_run:
         return 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     tmp = OUT.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     tmp.replace(OUT)
-    print(f"Gravado em {OUT}")
     return 0
 
 
