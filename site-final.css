@@ -1,0 +1,60 @@
+/* Kleimpaul — acabamento final 20260828-1101. Carregue por último. */
+:root{--final-orange:#ff6a00;--final-dark:#070b11;--final-light:#f3f5f8}
+html{background:var(--cms-user-dark-bg,#070b11)}
+body.dark,body:not(.light){--bg:var(--cms-user-dark-bg,#070b11)!important;--bg-secondary:#0b1119!important;--card:#0f1823!important;--text:#f8fafc!important;--text-soft:#9aa9bc!important;--border:rgba(255,255,255,.075)!important;--glass:rgba(10,17,26,.78)!important;color:var(--text);background-color:var(--bg)}
+body.light{--bg:var(--cms-user-light-bg,#f3f5f8)!important;--bg-secondary:#f8fafc!important;--card:#ffffff!important;--text:#172033!important;--text-soft:#647084!important;--border:rgba(21,32,50,.085)!important;--glass:rgba(255,255,255,.86)!important;color:var(--text);background-color:var(--bg)}
+body.dark:not(.cms-custom-site-bg){background-image:radial-gradient(circle at 8% -5%,rgba(255,106,0,.08),transparent 25%),radial-gradient(circle at 92% 10%,rgba(52,93,130,.055),transparent 24%),linear-gradient(180deg,#080d14 0%,var(--bg) 34%,#060a0f 100%)!important}
+body.light:not(.cms-custom-site-bg){background-image:radial-gradient(circle at 8% -4%,rgba(255,106,0,.075),transparent 23%),radial-gradient(circle at 92% 6%,rgba(66,95,126,.045),transparent 23%),linear-gradient(180deg,#fafbfc 0%,var(--bg) 38%,#eef1f5 100%)!important}
+body.light header{background:rgba(250,251,252,.9)!important;box-shadow:0 10px 35px rgba(23,32,51,.06)!important}
+body.dark header{background:rgba(7,11,17,.84)!important;box-shadow:0 12px 38px rgba(0,0,0,.2)!important}
+/* menos poluição, mais ritmo */
+section{content-visibility:auto;contain-intrinsic-size:600px}
+.section-title{max-width:780px;margin-left:auto;margin-right:auto}
+.section-title h2{letter-spacing:-.05em!important;line-height:1.02!important}
+.section-title p{max-width:680px!important}
+.products-grid{gap:24px!important}
+.product-card{border-radius:25px!important;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.13)!important}
+.product-image{aspect-ratio:4/3;height:auto!important;min-height:0!important;background:var(--bg-secondary)!important}
+.product-image img{width:100%!important;height:100%!important;object-fit:cover!important}
+.product-content{padding:20px 21px 22px!important}
+.product-content h3{font-size:1.08rem!important;letter-spacing:-.025em}
+.product-content p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;min-height:2.9em;margin-bottom:16px!important;line-height:1.45!important;font-size:.88rem!important}
+.product-tag{font-size:.68rem!important;padding:7px 11px!important}
+.product-link{font-size:.82rem!important}
+body.light .product-card,body.light .cms-catalog-card,body.light .card{background:#fff!important;border-color:rgba(23,32,51,.075)!important;box-shadow:0 14px 40px rgba(23,32,51,.075)!important}
+body.light .product-image,body.light .cms-catalog-card img{background:#eef1f4!important}
+body.light .product-card:hover,body.light .cms-catalog-card:hover{box-shadow:0 24px 58px rgba(23,32,51,.115)!important;border-color:rgba(255,106,0,.22)!important}
+body.light .breadcrumb,body.light .cms-category-rail{background:rgba(248,250,252,.72)!important}
+body.dark .product-card,body.dark .cms-catalog-card,body.dark .card{background:linear-gradient(155deg,#101925,#0c131d)!important;border-color:rgba(255,255,255,.07)!important}
+/* categoria limpa e idêntica */
+.hero-product{padding-top:clamp(48px,7vw,84px)!important;padding-bottom:clamp(48px,7vw,84px)!important}
+.hero-product-grid{gap:clamp(34px,7vw,82px)!important}
+.hero-product-image{border-radius:30px!important;overflow:hidden;min-height:0!important}
+.hero-product-image img{aspect-ratio:4/3;object-fit:cover!important;animation:none!important;border-radius:30px!important;max-height:520px}
+.hero-product-content h1{font-size:clamp(2.4rem,6.2vw,4.7rem)!important;letter-spacing:-.055em!important;margin-bottom:0!important}
+.cta-section{max-width:1320px;margin:0 auto 70px!important;border-width:1px!important;padding:clamp(42px,6vw,70px) clamp(20px,4vw,44px)!important}
+.cms-category-assist{padding:36px 0!important}
+.cms-assist-head{gap:18px!important}
+.cms-assist-grid{margin-top:15px!important}
+.cms-catalog{padding:42px 0 80px!important}
+.cms-catalog-card img{aspect-ratio:4/3;height:auto!important;object-fit:cover!important}
+/* Home: foco no conteúdo, sem excesso */
+#inicio.hero{min-height:min(820px,90vh)!important}
+#inicio .hero-grid{gap:clamp(36px,7vw,88px)!important}
+#inicio .glass-card{max-width:440px;justify-self:end}
+#inicio .cms-hero-finder{max-width:690px}
+#produtos .products-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#pecas .products-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+/* Stories mais discretos */
+#stories .stories-wrapper{gap:20px!important}
+#stories .story-name{font-size:.82rem!important}
+/* formatação do catálogo dinâmico */
+.cms-catalog-body p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+/* light realmente premium */
+body.light .glass-card{background:rgba(255,255,255,.9)!important;border-color:rgba(23,32,51,.08)!important;box-shadow:0 25px 70px rgba(23,32,51,.11)!important}
+body.light #inicio .glass-card h3,body.light #inicio .glass-card p,body.light #inicio .hero-stat p{color:#172033!important}
+body.light .hero-stat{background:#f7f8fa!important;border-color:rgba(23,32,51,.07)!important}
+body.light footer{background:rgba(248,250,252,.74)!important}
+@media(max-width:1180px){#produtos .products-grid,#pecas .products-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:900px){#produtos .products-grid,#pecas .products-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-product-image img{max-height:430px}}
+@media(max-width:640px){#produtos .products-grid,#pecas .products-grid{grid-template-columns:1fr!important}.products-grid{gap:15px!important}.product-card{border-radius:21px!important}.product-content{padding:18px!important}.hero-product-grid{gap:24px!important}.cta-section{margin-left:12px!important;margin-right:12px!important;margin-bottom:45px!important}.cms-category-assist{padding:22px 0!important}}

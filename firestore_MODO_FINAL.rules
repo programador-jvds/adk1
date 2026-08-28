@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isCompanyAdmin(companyId) {
+      return request.auth != null
+        && companyId == '1'
+        && request.auth.token.email == 'diva@empresa1.kleimpaul.com';
+    }
+
+    // Conteúdo público do site.
+    match /empresas/{companyId}/site_settings/{docId} {
+      allow read: if true;
+      allow write: if isCompanyAdmin(companyId);
+    }
+    match /empresas/{companyId}/site_overrides/{docId} {
+      allow read: if true;
+      allow write: if isCompanyAdmin(companyId);
+    }
+    match /empresas/{companyId}/highlights/{docId} {
+      allow read: if true;
+      allow write: if isCompanyAdmin(companyId);
+    }
+    match /empresas/{companyId}/catalog_items/{docId} {
+      allow read: if true;
+      allow write: if isCompanyAdmin(companyId);
+    }
+
+    // Biblioteca de imagens no próprio Firestore. O site só lê mídias marcadas como públicas.
+    match /empresas/{companyId}/media/{docId} {
+      allow read: if isCompanyAdmin(companyId) || resource.data.public == true;
+      allow create, update, delete: if isCompanyAdmin(companyId);
+    }
+
+    // Dados administrativos privados.
+    match /empresas/{companyId}/{collectionName}/{docId} {
+      allow read, write: if isCompanyAdmin(companyId)
+        && collectionName in ['inventory','customers','sales','trash','chat','audit','backups','backup_chunks','recovery_vault'];
+    }
+
+    // Somente para migração do painel antigo. Pode remover depois da migração.
+    match /pecas/{docId} { allow read: if isCompanyAdmin('1'); allow write: if false; }
+    match /lixeira/{docId} { allow read: if isCompanyAdmin('1'); allow write: if false; }
+    match /chat/{docId} { allow read: if isCompanyAdmin('1'); allow write: if false; }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}

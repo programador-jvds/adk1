@@ -1,116 +1,1309 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-company="1">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="Motosserras STIHL para uso doméstico, rural e profissional. Consulte modelos e especificações na Alderico Kleimpaul.">
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Motosserras e equipamentos para uso profissional, rural e manutenção.">
 <meta name="theme-color" content="#0b1118">
 <meta name="color-scheme" content="dark light">
-<title>Motosserras | Alderico Kleimpaul</title>
-<link rel="icon" href="imagens/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><link rel="stylesheet" href="site-premium.css?v=20260827-1810">
+
+<title>Alderico Kleimpaul</title>
+
+<link rel="icon" href="imagens/logo.png" type="image/png"/>
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
 <style>
-:root{--orange:#ff6a00;--orange-light:#ff9a4a;--bg:#070b11;--card:#101823;--text:#fff;--text-soft:#9eabba;--border:rgba(255,255,255,.08)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}.container{width:min(1180px,calc(100% - 32px));margin:auto}header{position:sticky;top:0;z-index:20;background:rgba(7,11,17,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}.nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{display:flex;align-items:center;gap:12px}.logo img{width:48px;height:48px;object-fit:cover;border-radius:13px;border:1px solid rgba(255,106,0,.35)}.logo strong{font-family:Poppins;font-size:14px}.back{padding:11px 15px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--orange-light));font-weight:800}.hero{min-height:520px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 25%,rgba(255,106,0,.17),transparent 34%)}.hero:before{content:"";position:absolute;width:520px;height:520px;border:1px solid rgba(255,106,0,.12);border-radius:50%;box-shadow:0 0 100px rgba(255,106,0,.08)}.hero-content{position:relative;z-index:2;max-width:850px;padding:70px 0}.icon{width:86px;height:86px;border-radius:25px;display:grid;place-items:center;margin:0 auto 24px;background:rgba(255,106,0,.11);border:1px solid rgba(255,106,0,.2);color:var(--orange);font-size:32px;box-shadow:0 20px 60px rgba(255,106,0,.12)}h1{font:900 clamp(2.4rem,8vw,5rem)/1 Poppins;margin-bottom:20px;letter-spacing:-.05em}h1 span{background:linear-gradient(135deg,var(--orange),#ffd1b0);-webkit-background-clip:text;color:transparent}.hero p{font-size:clamp(1rem,2vw,1.2rem);line-height:1.7;color:var(--text-soft);max-width:700px;margin:auto}.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}.btn{padding:13px 18px;border-radius:13px;background:#121d2a;border:1px solid var(--border);font-weight:800}.btn.primary{background:linear-gradient(135deg,var(--orange),var(--orange-light));border:0}.info{padding:70px 0}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:24px;border-radius:20px;background:var(--card);border:1px solid var(--border)}.card i{color:var(--orange);font-size:22px;margin-bottom:15px}.card h3{font:800 1.05rem Poppins;margin-bottom:7px}.card p{color:var(--text-soft);line-height:1.55;font-size:.9rem}footer{padding:35px 0;border-top:1px solid var(--border);color:var(--text-soft);text-align:center}
-/* Catálogo funcional, mantendo a mesma identidade visual das outras páginas */
-.catalog-section{padding:0 0 80px}.catalog-title{text-align:center;margin-bottom:28px}.catalog-title small{display:block;color:var(--orange);font-weight:900;letter-spacing:.15em;margin-bottom:8px}.catalog-title h2{font:900 clamp(1.8rem,5vw,2.8rem)/1.08 Poppins;letter-spacing:-.04em}.catalog-title p{color:var(--text-soft);margin:10px auto 0;max-width:650px;line-height:1.6}.catalog-tools{display:grid;grid-template-columns:minmax(0,1fr) 220px auto;gap:10px;margin-bottom:18px}.catalog-tools input,.catalog-tools select,.catalog-count{height:48px;border:1px solid var(--border);background:#0c141f;color:#fff;border-radius:13px;padding:0 14px;outline:none}.catalog-tools input:focus,.catalog-tools select:focus{border-color:rgba(255,106,0,.55);box-shadow:0 0 0 4px rgba(255,106,0,.08)}.catalog-count{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;white-space:nowrap}.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.product-card{padding:0;overflow:hidden}.product-card .product-photo{aspect-ratio:4/3;display:grid;place-items:center;background:#0b121b;padding:16px;position:relative}.product-card .product-photo img{width:100%;height:100%;object-fit:contain}.fav-btn{position:absolute;right:11px;top:11px;width:38px;height:38px;border-radius:12px;border:1px solid var(--border);background:rgba(7,11,17,.78);color:#8d99a8;display:grid;place-items:center;cursor:pointer}.fav-btn.active{color:#ffb347;border-color:rgba(255,179,71,.35)}.product-card .product-body{padding:20px 22px 22px}.product-card .product-head{display:flex;align-items:start;justify-content:space-between;gap:10px;margin-bottom:10px}.product-card .product-head h3{margin:0}.product-tag{padding:5px 8px;border-radius:999px;background:rgba(255,106,0,.1);color:#ff9954;font-size:9px;font-weight:900;white-space:nowrap}.spec-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid rgba(255,255,255,.055);font-size:11px}.spec-row strong{color:var(--text-soft);font-weight:600}.spec-row span{font-weight:800;text-align:right}.empty-state{display:none;text-align:center;color:var(--text-soft);padding:34px;border:1px dashed var(--border);border-radius:20px;margin-top:16px}.fav-summary{text-align:center;color:var(--text-soft);font-size:12px;margin-top:14px}.fav-summary i{color:#ffb347}.top-btn{position:fixed;right:18px;bottom:18px;width:48px;height:48px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--orange),var(--orange-light));color:white;box-shadow:0 15px 38px rgba(255,106,0,.25);opacity:0;pointer-events:none;transform:translateY(10px);transition:.2s;z-index:45}.top-btn.show{opacity:1;pointer-events:auto;transform:none}
-@media(max-width:900px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-tools{grid-template-columns:1fr 1fr}.catalog-tools input{grid-column:1/-1}}@media(max-width:720px){.cards,.product-grid{grid-template-columns:1fr}.nav{height:68px}.logo span{display:none}.catalog-tools{grid-template-columns:1fr}.catalog-tools input{grid-column:auto}}
-</style><link rel="stylesheet" href="refeito-max.css?v=20260827-1810">
-<link rel="stylesheet" href="site-ultimate.css?v=20260827-1810">
-<link rel="stylesheet" href="site-evolution.css?v=20260827-1810">
-<link rel="stylesheet" href="site-theme-v2.css?v=20260827-1810"></head><body>
-<header><div class="container nav"><a class="logo" href="index.html"><img src="imagens/logo.png" alt="Alderico Kleimpaul"><span><strong>Alderico Kleimpaul</strong><small style="display:block;color:var(--text-soft)">Tradição, qualidade e confiança</small></span></a><a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Início</a></div></header>
-<main>
-<section class="hero"><div class="container hero-content"><div class="icon"><i class="fa-solid fa-tree"></i></div><h1>Motosserras <span>Kleimpaul</span></h1><p>Potência, precisão e confiança para uso doméstico, rural e profissional.</p><div class="hero-actions"><a class="btn primary" href="https://wa.me/5549999973286" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp</a><a class="btn" href="#catalogo">Ver catálogo</a></div></div></section>
-<section class="info"><div class="container"><div class="cards"><article class="card"><i class="fa-solid fa-shield-halved"></i><h3>Atendimento especializado</h3><p>Informações claras, atendimento especializado e suporte para encontrar a solução certa.</p></article><article class="card"><i class="fa-solid fa-circle-check"></i><h3>Qualidade e confiança</h3><p>Uma experiência organizada, atualizada e pensada para facilitar sua escolha.</p></article><article class="card"><i class="fa-solid fa-screwdriver-wrench"></i><h3>Suporte Kleimpaul</h3><p>Entre em contato para confirmar disponibilidade, aplicação e detalhes técnicos.</p></article></div></div></section>
-<section class="catalog-section" id="catalogo"><div class="container"><div class="catalog-title"><small>CATÁLOGO</small><h2>Modelos de motosserras</h2><p>Consulte os modelos e filtre por nome, potência ou aplicação.</p></div><div class="catalog-tools"><input id="searchInput" type="search" placeholder="Buscar modelo, potência ou categoria..." autocomplete="off"><select id="sortSelect" aria-label="Ordenar motosserras"><option value="default">Ordenar</option><option value="az">A → Z</option><option value="za">Z → A</option><option value="power-asc">Menor potência</option><option value="power-desc">Maior potência</option></select><div class="catalog-count" id="resultCount">0 modelos</div></div><div class="product-grid" id="carousel"></div><div class="empty-state" id="noResults"><i class="fa-solid fa-box-open"></i><p>Nenhum modelo encontrado.</p></div><div class="fav-summary"><i class="fa-solid fa-star"></i> Favoritos: <b id="favCount">0</b></div></div></section>
-</main>
-<footer><div class="container">© 2026 — Alderico Kleimpaul. Todos os direitos reservados.</div></footer>
-<button class="top-btn" id="topBtn" aria-label="Voltar ao topo"><i class="fa-solid fa-arrow-up"></i></button>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:80px;
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  width:100%;
+  max-width:100vw;
+  overflow-x:hidden;
+  transition:.35s ease;
+  position:relative;
+}
+
+body.menu-open{
+  overflow:hidden;
+}
+
+/* =========================================================
+   THEME VARIABLES
+========================================================= */
+
+:root{
+  --orange:#ff6a00;
+  --orange-light:#ff8f3c;
+  --orange-dark:#e55a00;
+  --green:#1d7a49;
+  --radius:30px;
+  --transition:.35s ease;
+  --shadow: 0 10px 40px rgba(0,0,0,.08);
+  --shadow-hover: 0 25px 80px rgba(255,106,0,.18);
+}
+
+/* =========================================================
+   LIGHT MODE
+========================================================= */
+
+body.light{
+  --bg:#f4f7fb;
+  --bg-secondary:#ffffff;
+  --text:#111827;
+  --text-soft:#6b7280;
+  --card:#ffffff;
+  --border:rgba(0,0,0,.08);
+  --glass:rgba(255,255,255,.72);
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark{
+  --bg:#0b1118;
+  --bg-secondary:#161f2b;
+  --text:#ffffff;
+  --text-soft:#fffff;
+  --card:#1a2332;
+  --border:rgba(255,255,255,.08);
+  --glass:rgba(255,255,255,.08);
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+.container{
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+  padding:0 clamp(0.75rem, 4vw, 2rem);
+  box-sizing:border-box;
+}
+
+section{
+  width:100%;
+  padding:clamp(60px, 12vw, 120px) 0;
+  position:relative;
+  box-sizing:border-box;
+}
+
+img{
+  width:100%;
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+/* =========================================================
+   CUSTOM SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--orange);
+  border-radius:4px;
+  opacity:0.6;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:var(--orange-dark);
+  opacity:1;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  max-width:100vw;
+  z-index:999;
+  backdrop-filter:blur(20px);
+  background:rgba(11,17,24,.8);
+  border-bottom:1px solid var(--border);
+  transition:var(--transition);
+}
+
+.navbar{
+  height:clamp(60px, 12vh, 92px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:clamp(0.5rem, 2vw, 1.2rem);
+  padding:0 clamp(0.75rem, 4vw, 2rem);
+  box-sizing:border-box;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:clamp(0.7rem, 2vw, 1rem);
+  cursor:pointer;
+  transition:var(--transition);
+  flex-shrink:0;
+  min-width:fit-content;
+}
+
+.logo:hover{
+  opacity:0.8;
+}
+
+.logo img{
+  width:clamp(48px, 10vw, 64px);
+  height:clamp(48px, 10vw, 64px);
+  object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 4px 16px rgba(255,106,0,.15);
+  transition:var(--transition);
+}
+
+.logo:hover img{
+  box-shadow:0 8px 24px rgba(255,106,0,.25);
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  gap:0.2rem;
+}
+
+.logo-text strong{
+  color:var(--text);
+  font-size:clamp(0.85rem, 3vw, 1rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  line-height:1;
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.logo-text span{
+  color:var(--text-soft);
+  font-size:clamp(0.65rem, 2vw, 0.82rem);
+  line-height:1;
+}
+
+.slogan{
+    font-weight:700;
+    font-style:italic;
+}
+
+/* =========================================================
+   MENU OVERLAY
+========================================================= */
+
+.menu-overlay{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(4px);
+  z-index:997;
+}
+
+.menu-overlay.show{
+  display:block;
+}
+
+/* =========================================================
+   MENU HAMBURGER
+========================================================= */
+
+.menu-toggle{
+  display:none;
+  flex-direction:column;
+  gap:clamp(4px, 1vw, 6px);
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  z-index:1001;
+  padding:clamp(0.5rem, 1vw, 0.75rem);
+  flex-shrink:0;
+}
+
+.menu-toggle span{
+  width:clamp(24px, 6vw, 28px);
+  height:3px;
+  background:var(--text);
+  border-radius:999px;
+  transition:.4s ease;
+  display:block;
+}
+
+.menu-toggle.active span:nth-child(1){
+  transform:rotate(45deg) translate(8px, 8px);
+}
+
+.menu-toggle.active span:nth-child(2){
+  opacity:0;
+}
+
+.menu-toggle.active span:nth-child(3){
+  transform:rotate(-45deg) translate(7px, -7px);
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.menu {
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 2vw, 0.75rem);
+  flex-grow:1;
+}
+
+.menu a {
+  color:var(--text-soft);
+  font-weight:600;
+  padding:clamp(0.6rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.3rem);
+  border-radius:12px;
+  transition:var(--transition);
+  position:relative;
+  white-space:nowrap;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.menu a::after {
+  content:'';
+  position:absolute;
+  bottom:6px;
+  left:clamp(0.75rem, 2vw, 1.2rem);
+  right:clamp(0.75rem, 2vw, 1.2rem);
+  height:2px;
+  background:var(--orange);
+  transform:scaleX(0);
+  transform-origin:right;
+  transition:0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.menu a:hover {
+  color:var(--orange);
+}
+
+.menu a:hover::after {
+  transform:scaleX(1);
+  transform-origin:left;
+}
+
+.support-btn {
+  display:none;
+  padding:clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.6rem) !important;
+  font-size:clamp(0.8rem, 1.8vw, 0.95rem) !important;
+  border-radius:18px !important;
+  flex-shrink:0;
+}
+
+.header-controls {
+  display:flex;
+  align-items:center;
+  gap:clamp(0.5rem, 2vw, 0.75rem);
+  flex-shrink:0;
+}
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+@media(max-width:1024px) {
+  .menu {
+    display:none;
+    position:fixed;
+    top:clamp(60px, 12vh, 92px);
+    left:0;
+    right:0;
+    width:100%;
+    max-width:100vw;
+    flex-direction:column;
+    gap:0;
+    background:var(--bg-secondary);
+    border-bottom:1px solid var(--border);
+    padding:clamp(1rem, 3vw, 1.5rem);
+    box-sizing:border-box;
+    z-index:998;
+    box-shadow:var(--shadow);
+    overflow-y:auto;
+    max-height:calc(100vh - clamp(60px, 12vh, 92px));
+  }
+
+  .menu.show {
+    display:flex;
+  }
+
+  .menu a {
+    padding:clamp(1rem, 2vw, 1.2rem) clamp(0.75rem, 3vw, 1.5rem);
+    width:100%;
+    border-radius:0;
+    font-size:clamp(0.9rem, 2.5vw, 1rem);
+  }
+
+  .menu a::after{
+    display:none;
+  }
+
+  .menu-toggle {
+    display:flex;
+  }
+
+  .support-btn {
+    display:flex !important;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    margin-top:clamp(0.75rem, 2vw, 1rem);
+    gap:0.5rem;
+  }
+
+  .header-controls {
+    gap:clamp(0.35rem, 1.5vw, 0.5rem);
+  }
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+  border:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(0.5rem, 1.5vw, 0.75rem);
+  transition:var(--transition);
+  font-weight:700;
+  white-space:nowrap;
+  font-size:clamp(0.8rem, 2vw, 0.95rem);
+  position:relative;
+  overflow:hidden;
+}
+
+.btn::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  background:rgba(255,255,255,.2);
+  border-radius:50%;
+  transform:translate(-50%, -50%);
+  transition:.6s ease;
+  z-index:0;
+}
+
+.btn:hover::before{
+  width:300px;
+  height:300px;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  color:white;
+  padding:clamp(1rem, 2vw, 1.1rem) clamp(1.8rem, 3vw, 2rem);
+  border-radius:20px;
+  box-shadow:0 10px 40px rgba(255,106,0,.25);
+  font-weight:700;
+  position:relative;
+  z-index:1;
+}
+
+.btn-primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 60px rgba(255,106,0,.4);
+}
+
+.btn-primary:active{
+  transform:translateY(-2px);
+}
+
+.btn-outline{
+  padding:clamp(1rem, 2vw, 1.1rem) clamp(1.8rem, 3vw, 2rem);
+  border-radius:20px;
+  background:transparent;
+  border:2px solid var(--orange);
+  color:var(--orange);
+  position:relative;
+  z-index:1;
+  font-weight:700;
+}
+
+.btn-outline:hover{
+  background:rgba(255,106,0,.1);
+  box-shadow:0 10px 30px rgba(255,106,0,.15);
+}
+
+.btn i {
+  font-size:clamp(1rem, 2.2vw, 1.2rem);
+  z-index:1;
+}
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.theme-toggle{
+  width:clamp(48px, 10vw, 56px);
+  height:clamp(48px, 10vw, 56px);
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:clamp(1rem, 2vw, 1.2rem);
+  transition:var(--transition);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.theme-toggle:hover{
+  transform:translateY(-3px) rotate(20deg);
+  background:var(--orange);
+  color:white;
+  box-shadow:0 10px 30px rgba(255,106,0,.2);
+}
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.breadcrumb{
+  padding:clamp(1rem, 2vw, 1.5rem) 0;
+  margin-top:clamp(60px, 12vh, 92px);
+  border-bottom:1px solid var(--border);
+}
+
+.breadcrumb-nav{
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  flex-wrap:wrap;
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.breadcrumb-nav a{
+  color:var(--orange);
+  transition:var(--transition);
+  font-weight:600;
+}
+
+.breadcrumb-nav a:hover{
+  color:var(--orange-light);
+  text-decoration:underline;
+}
+
+.breadcrumb-nav span{
+  color:var(--text-soft);
+}
+
+/* =========================================================
+   HERO SECTION - PRODUCT
+========================================================= */
+
+.hero-product{
+  min-height:auto;
+  padding:clamp(4rem, 10vw, 6rem) 0;
+  position:relative;
+  width:100%;
+  max-width:100vw;
+  overflow:hidden;
+}
+
+.hero-product::before{
+  content:'';
+  position:absolute;
+  top:-50%;
+  right:-20%;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle, rgba(255,106,0,.08) 0%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.hero-product-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(3rem, 10vw, 5rem);
+  align-items:center;
+  width:100%;
+  max-width:100%;
+  position:relative;
+  z-index:1;
+}
+
+.hero-product-image{
+  position:relative;
+  width:100%;
+  max-width:100%;
+}
+
+.hero-product-image::before{
+  content:'';
+  position:absolute;
+  inset:-20px;
+  background:linear-gradient(135deg, rgba(255,106,0,.15), transparent);
+  border-radius:40px;
+  z-index:-1;
+}
+
+.hero-product-image img{
+  width:100%;
+  height:auto;
+  border-radius:40px;
+  box-shadow:0 40px 100px rgba(0,0,0,.3);
+  transition:var(--transition);
+}
+
+.hero-product-image img:hover{
+  transform:scale(1.04) translateY(-10px);
+  box-shadow:0 60px 140px rgba(255,106,0,.15);
+}
+
+.hero-product-content h1{
+  font-size:clamp(2.2rem, 7vw, 4rem);
+  line-height:1.15;
+  margin-bottom:clamp(2rem, 3vw, 2.5rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  letter-spacing:-1px;
+}
+
+.hero-product-content h1 span{
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  display:inline-block;
+  animation:shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* =========================================================
+   CTA SECTION
+========================================================= */
+
+.cta-section{
+  padding:clamp(4rem, 10vw, 6rem) 0;
+  background:linear-gradient(135deg, rgba(255,106,0,.12) 0%, rgba(255,106,0,.04) 100%);
+  border:2px solid rgba(255,106,0,.2);
+  border-radius:40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.cta-section::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--orange), transparent);
+}
+
+.cta-content{
+  position:relative;
+  z-index:1;
+}
+
+.cta-content h2{
+  font-size:clamp(1.8rem, 6vw, 3rem);
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  margin-bottom:clamp(1rem, 2vw, 1.5rem);
+  letter-spacing:-0.5px;
+}
+
+.cta-content h2 span{
+  background:linear-gradient(135deg, var(--orange), var(--orange-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.cta-content p{
+  font-size:clamp(1rem, 2.5vw, 1.15rem);
+  color:var(--text-soft);
+  margin-bottom:clamp(2.5rem, 5vw, 3.5rem);
+  max-width:650px;
+  margin-left:auto;
+  margin-right:auto;
+  line-height:1.6;
+}
+
+.cta-buttons-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:clamp(1.2rem, 3vw, 1.8rem);
+  justify-content:center;
+  align-items:center;
+}
+
+.cta-buttons-group .btn{
+  min-width:clamp(160px, 45vw, 240px);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  padding:clamp(4rem, 8vw, 6rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  border-top:1px solid var(--border);
+  background:linear-gradient(180deg, transparent, rgba(255,106,0,.02));
+}
+
+.footer-wrapper{
+  display:flex;
+  justify-content:space-between;
+  gap:clamp(2rem, 4vw, 3rem);
+  flex-wrap:wrap;
+  align-items:flex-start;
+}
+
+.footer-wrapper h3{
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+  font-size:clamp(1rem, 2.5vw, 1.3rem);
+  margin-bottom:clamp(1rem, 2vw, 1.3rem);
+  background:linear-gradient(135deg, var(--text), var(--text-soft));
+  -webkit-background-clip:text;
+  background-clip:text;
+}
+
+.footer-wrapper p{
+  color:var(--text-soft);
+  font-size:clamp(0.9rem, 2vw, 1rem);
+  line-height:1.6;
+  max-width:350px;
+}
+
+.footer-social{
+  display:flex;
+  gap:clamp(1rem, 2vw, 1.2rem);
+  flex-wrap:wrap;
+}
+
+.footer-social a{
+  width:clamp(50px, 12vw, 60px);
+  height:clamp(50px, 12vw, 60px);
+  border-radius:16px;
+  background:var(--glass);
+  border:1.5px solid var(--border);
+  color:var(--text-soft);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+  font-size:clamp(1.1rem, 2.2vw, 1.4rem);
+  flex-shrink:0;
+}
+
+.footer-social a:hover{
+  background:var(--orange);
+  color:white;
+  border-color:var(--orange);
+  transform:translateY(-6px) scale(1.1);
+  box-shadow:0 15px 40px rgba(255,106,0,.3);
+}
+
+.footer-bottom{
+  margin-top:clamp(3rem, 4vw, 4rem);
+  padding-top:clamp(2rem, 3vw, 2.5rem);
+  border-top:1px solid var(--border);
+  text-align:center;
+  color:var(--text-soft);
+  font-size:clamp(0.85rem, 2vw, 0.95rem);
+  line-height:1.6;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(50px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+section{
+  animation:fadeUp 0.8s ease-out;
+}
+
+.hero-product-image img{
+  animation:float 3s ease-in-out infinite;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1024px){
+
+  .hero-product-grid{
+    grid-template-columns:1fr;
+    gap:2rem;
+  }
+
+  .hero-product::before{
+    display:none;
+  }
+
+  .hero-product{
+    padding:3rem 0;
+  }
+
+  section{
+    padding:2.5rem 0;
+  }
+
+}
+
+@media(max-width:640px){
+
+  .navbar{
+    height:60px;
+  }
+
+  .breadcrumb{
+    margin-top:60px;
+  }
+
+  .hero-product{
+    padding:2rem 0;
+  }
+
+  .hero-product-content{
+    text-align:center;
+  }
+
+  .hero-product-content h1{
+    font-size:2rem;
+    margin-bottom:1rem;
+    line-height:1.2;
+  }
+
+  .cta-buttons-group{
+    flex-direction:column;
+    gap:0.8rem;
+  }
+
+  .cta-buttons-group .btn{
+    width:100%;
+    min-width:unset;
+  }
+
+  section{
+    padding:2rem 0;
+  }
+
+}
+
+@media(max-width:480px){
+
+  .container{
+    padding:0 12px;
+  }
+
+  .navbar{
+    height:56px;
+    gap:6px;
+  }
+
+  .breadcrumb{
+    margin-top:56px;
+  }
+
+  .logo img{
+    width:40px;
+    height:40px;
+  }
+
+  .hero-product{
+    padding:1.5rem 0;
+  }
+
+  .hero-product-image img{
+    border-radius:20px;
+  }
+
+  .hero-product-content{
+    text-align:center;
+  }
+
+  .hero-product-content h1{
+    font-size:1.6rem;
+    line-height:1.2;
+    margin-bottom:0.8rem;
+  }
+
+  section{
+    padding:1.5rem 0;
+  }
+
+  .cta-section{
+    border-radius:16px;
+    padding:1.5rem 1rem;
+  }
+
+  .cta-content h2{
+    font-size:1.3rem;
+    line-height:1.2;
+    margin-bottom:0.6rem;
+  }
+
+  .cta-content p{
+    font-size:0.9rem;
+    line-height:1.5;
+    margin-bottom:1rem;
+  }
+
+  .cta-buttons-group{
+    gap:0.8rem;
+  }
+
+  .cta-buttons-group .btn{
+    width:100%;
+    padding:0.8rem 1rem;
+    min-width:unset;
+    font-size:0.9rem;
+  }
+
+  .footer-wrapper{
+    text-align:center;
+    justify-content:center;
+  }
+
+  .footer-social{
+    justify-content:center;
+  }
+
+  .footer-bottom{
+    font-size:0.8rem;
+  }
+
+}
+
+</style>
+
+<link rel="stylesheet" href="site-premium.css?v=20260828-1101">
+<link rel="stylesheet" href="refeito-max.css?v=20260828-1101">
+<link rel="stylesheet" href="site-ultimate.css?v=20260828-1101">
+<link rel="stylesheet" href="site-evolution.css?v=20260828-1101">
+<link rel="stylesheet" href="site-theme-v2.css?v=20260828-1101"><link rel="stylesheet" href="site-final.css?v=20260828-1101">
+</head>
+
+<body class="dark">
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+  <div class="container" style="padding:0;">
+    <div class="navbar">
+
+      <a href="index.html" class="logo">
+        <img src="imagens/logo.png" alt="Alderico Kleimpaul" loading="lazy">
+        <div class="logo-text">
+          <strong>Alderico Kleimpaul</strong>
+          <span>Tradição, Qualidade e Confiança</span>
+        </div>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="menu" id="menu" role="navigation">
+        <a href="index.html">Início</a>
+        <a href="index.html#produtos">Produtos</a>
+        <a href="index.html#sobre">Sobre</a>
+        <a href="index.html#contato">Contato</a>
+        <a
+          href="https://wa.me/5549999973286?text=Olá%2C%20Gostaria%20de%20informações%20sobre%20Motosserras"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary support-btn"
+        >
+          <i class="fas fa-headset"></i>
+          <span>Suporte</span>
+        </a>
+      </nav>
+
+      <div class="header-controls">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          title="Alternar tema"
+          aria-label="Alternar tema claro/escuro"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================
+     BREADCRUMB
+========================================================= -->
+
+<section class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-nav">
+      <a href="index.html">
+        <i class="fa-solid fa-house"></i> Início
+      </a>
+      <span><i class="fa-solid fa-chevron-right"></i></span>
+      <a href="index.html#produtos">Equipamentos</a>
+      <span><i class="fa-solid fa-chevron-right"></i></span>
+      <span>Motosserras</span>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     HERO PRODUCT
+========================================================= -->
+
+<section class="hero-product">
+
+<div class="container">
+
+<div class="hero-product-grid">
+
+<!-- LEFT - IMAGE -->
+<div class="hero-product-image">
+  <img src="imagens/motosserra.png" alt="Motosserras — Alderico Kleimpaul" loading="lazy">
+</div>
+
+<!-- RIGHT - CONTENT -->
+<div class="hero-product-content">
+
+<h1>
+Motosserras
+<span>Profissionais</span>
+</h1>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     CTA SECTION
+========================================================= -->
+
+<section class="cta-section">
+
+<div class="container">
+
+<div class="cta-content">
+
+<h2>Potência com <span>Precisão</span> e <span>Confiança</span></h2>
+
+<p>
+Consulte opções, especificações e disponibilidade. Os produtos cadastrados no painel aparecem automaticamente nesta página.
+</p>
+
+<div class="cta-buttons-group">
+
+<a href="https://wa.me/5549999973286?text=Olá%2C%20Gostaria%20de%20fazer%20um%20orçamento%20de%20Motosserras" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+<i class="fab fa-whatsapp"></i>
+<span>WhatsApp</span>
+</a>
+
+<a href="index.html#contato" class="btn btn-outline">
+<i class="fa-solid fa-phone"></i>
+<span>Contato</span>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+<div class="container">
+
+<div class="footer-wrapper">
+
+<div>
+
+<h3>Alderico Kleimpaul</h3>
+
+<p class="slogan">
+    Aqui é tradição, experiência e compromisso com você.
+</p>
+
+</div>
+
+<div class="footer-social">
+
+<a
+href="https://instagram.com/alderico_kleimpaul"
+target="_blank"
+rel="noopener noreferrer"
+title="Instagram Alderico Kleimpaul"
+aria-label="Seguir no Instagram"
+>
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+<a
+href="https://wa.me/5549999973286"
+target="_blank"
+rel="noopener noreferrer"
+title="WhatsApp Alderico Kleimpaul"
+aria-label="Entrar em contato pelo WhatsApp"
+>
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+© 2026 — Alderico Kleimpaul. Todos os direitos reservados.
+
+</div>
+
+</div>
+
+</footer>
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
+
 <script>
-let products = [
-  { id: 1, name: 'MS 162', power: 1.3, image: 'ms-imagem/ms162.png', info: [
-    { label: 'Cilindrada', value: '30,1 cm³' },
-    { label: 'Potência', value: '1,3 kW / 1,8 CV' },
-    { label: 'Categoria', value: 'Doméstico' }
-  ]},
-  { id: 2, name: 'MS 172', power: 1.5, image: 'ms-imagem/ms172.png', info: [
-    { label: 'Cilindrada', value: '31,8 cm³' },
-    { label: 'Potência', value: '1,5 kW / 2 CV' },
-    { label: 'Categoria', value: 'Semi-profissional' }
-  ]},
-  { id: 3, name: 'MS 172 C-BE', power: 1.5, image: 'ms-imagem/ms172cbe.png', info: [
-    { label: 'Cilindrada', value: '31,8 cm³' },
-    { label: 'Potência', value: '1,5 kW / 2 CV' },
-    { label: 'Categoria', value: 'Semi-profissional' }
-  ]},
-  { id: 4, name: 'MS 182', power: 1.6, image: 'ms-imagem/ms182.png', info: [
-    { label: 'Cilindrada', value: '35,8 cm³' },
-    { label: 'Potência', value: '1,6 kW / 2,2 CV' },
-    { label: 'Categoria', value: 'Semi-profissional' }
-  ]},
-  { id: 5, name: 'MS 194 T', power: 1.4, image: 'ms-imagem/ms194t.png', info: [
-    { label: 'Cilindrada', value: '31,8 cm³' },
-    { label: 'Potência', value: '1,4 kW' },
-    { label: 'Categoria', value: 'Poda' }
-  ]},
-  { id: 6, name: 'MS 212', power: 1.8, image: 'ms-imagem/ms212.png', info: [
-    { label: 'Cilindrada', value: '39 cm³' },
-    { label: 'Potência', value: '1,8 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 7, name: 'MS 250', power: 2.3, image: 'ms-imagem/ms250.png', info: [
-    { label: 'Cilindrada', value: '45,4 cm³' },
-    { label: 'Potência', value: '2,3 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 8, name: 'MS 260', power: 2.6, image: 'ms-imagem/ms260.png', info: [
-    { label: 'Cilindrada', value: '50,2 cm³' },
-    { label: 'Potência', value: '2,6 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 9, name: 'MS 363', power: 3.4, image: 'ms-imagem/ms363.png', info: [
-    { label: 'Cilindrada', value: '59 cm³' },
-    { label: 'Potência', value: '3,4 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 10, name: 'MS 382', power: 3.9, image: 'ms-imagem/ms382.png', info: [
-    { label: 'Cilindrada', value: '72,2 cm³' },
-    { label: 'Potência', value: '3,9 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 11, name: 'MS 462', power: 4.4, image: 'ms-imagem/ms462.png', info: [
-    { label: 'Cilindrada', value: '72,2 cm³' },
-    { label: 'Potência', value: '4,4 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 12, name: 'MS 661', power: 5.4, image: 'ms-imagem/ms661.png', info: [
-    { label: 'Cilindrada', value: '91,1 cm³' },
-    { label: 'Potência', value: '5,4 kW' },
-    { label: 'Categoria', value: 'Profissional' }
-  ]},
-  { id: 13, name: 'MSE 141 C-Q', power: 1.4, image: 'ms-imagem/mse141cq.png', info: [
-    { label: 'Tipo', value: 'Elétrica' },
-    { label: 'Potência', value: '1,4 kW' },
-    { label: 'Categoria', value: 'Residencial' }
-  ]},
-  { id: 14, name: 'MSE 170 C-BQ', power: 1.7, image: 'ms-imagem/mse170cbq.png', info: [
-    { label: 'Tipo', value: 'Elétrica' },
-    { label: 'Potência', value: '1,7 kW' },
-    { label: 'Categoria', value: 'Semi-profissional' }
-  ]}
-];
-const carousel=document.getElementById('carousel'),searchInput=document.getElementById('searchInput'),resultCount=document.getElementById('resultCount'),noResults=document.getElementById('noResults'),topBtn=document.getElementById('topBtn'),sortSelect=document.getElementById('sortSelect'),favCount=document.getElementById('favCount');
-let visibleCards=[...products];
-const escMoto=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function favKey(id){return `fav${id}`;}
-function productCategory(p){const row=(p.info||[]).find(i=>String(i.label||'').toLowerCase().includes('categoria'));return row?.value||'';}
-function renderCards(cards){carousel.innerHTML=cards.map(product=>`<article class="card product-card" data-id="${escMoto(product.id)}"><div class="product-photo"><img src="${escMoto(product.image)}" alt="${escMoto(product.name)}" loading="lazy" decoding="async"><button class="fav-btn ${localStorage.getItem(favKey(product.id))==='1'?'active':''}" type="button" data-fav="${escMoto(product.id)}" aria-label="Favoritar ${escMoto(product.name)}"><i class="fa-solid fa-star"></i></button></div><div class="product-body"><div class="product-head"><h3>${escMoto(product.name)}</h3>${productCategory(product)?`<span class="product-tag">${escMoto(productCategory(product))}</span>`:''}</div>${(product.info||[]).map(item=>`<div class="spec-row"><strong>${escMoto(item.label)}</strong><span>${escMoto(item.value)}</span></div>`).join('')}</div></article>`).join('');noResults.style.display=cards.length?'none':'block';resultCount.textContent=`${cards.length} ${cards.length===1?'modelo':'modelos'}`;carousel.querySelectorAll('[data-fav]').forEach(btn=>btn.onclick=()=>{const id=btn.dataset.fav;const on=localStorage.getItem(favKey(id))==='1';localStorage.setItem(favKey(id),on?'0':'1');btn.classList.toggle('active',!on);updateFavCount();});}
-function updateFavCount(){favCount.textContent=products.filter(p=>localStorage.getItem(favKey(p.id))==='1').length;}
-function applyFilters(){const q=searchInput.value.trim().toLowerCase();let rows=products.filter(p=>!q||[p.name,...(p.info||[]).flatMap(i=>[i.label,i.value])].some(v=>String(v||'').toLowerCase().includes(q)));if(sortSelect.value==='az')rows.sort((a,b)=>a.name.localeCompare(b.name));if(sortSelect.value==='za')rows.sort((a,b)=>b.name.localeCompare(a.name));if(sortSelect.value==='power-asc')rows.sort((a,b)=>Number(a.power||0)-Number(b.power||0));if(sortSelect.value==='power-desc')rows.sort((a,b)=>Number(b.power||0)-Number(a.power||0));visibleCards=rows;renderCards(rows);}
-let debounceTimer;searchInput.addEventListener('input',()=>{clearTimeout(debounceTimer);debounceTimer=setTimeout(applyFilters,120)});sortSelect.addEventListener('change',applyFilters);window.addEventListener('scroll',()=>topBtn.classList.toggle('show',scrollY>320),{passive:true});topBtn.onclick=()=>scrollTo({top:0,behavior:'smooth'});
-window.kleimpaulSetMotosserras=function(rows){if(!Array.isArray(rows)||!rows.length)return;products.splice(0,products.length,...rows);applyFilters();updateFavCount();};
-renderCards(products);updateFavCount();
+
+// =========================================================
+// MENU HAMBURGER & OVERLAY
+// =========================================================
+
+const menuToggle = document.getElementById('menuToggle');
+const menu = document.getElementById('menu');
+const menuOverlay = document.getElementById('menuOverlay');
+const body = document.body;
+
+function closeMenu() {
+  menuToggle.classList.remove('active');
+  menu.classList.remove('show');
+  menuOverlay.classList.remove('show');
+  body.classList.remove('menu-open');
+}
+
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('active');
+  menu.classList.toggle('show');
+  menuOverlay.classList.toggle('show');
+  body.classList.toggle('menu-open');
+});
+
+document.querySelectorAll('.menu a').forEach(link => {
+  link.addEventListener('click', () => {
+    closeMenu();
+  });
+});
+
+menuOverlay.addEventListener('click', closeMenu);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeMenu();
+  }
+});
+
+// =========================================================
+// THEME TOGGLE + LOCAL STORAGE
+// =========================================================
+
+const themeToggle = document.getElementById("themeToggle");
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme){
+  body.className = savedTheme;
+}else{
+  body.className = "dark";
+}
+
+updateIcon();
+
+themeToggle.addEventListener("click", () => {
+
+  if(body.classList.contains("dark")){
+    body.classList.remove("dark");
+    body.classList.add("light");
+    localStorage.setItem("theme","light");
+  }else{
+    body.classList.remove("light");
+    body.classList.add("dark");
+    localStorage.setItem("theme","dark");
+  }
+
+  updateIcon();
+
+});
+
+function updateIcon(){
+  if(body.classList.contains("dark")){
+    themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  }else{
+    themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+  }
+}
+
+// =========================================================
+// BOTÃO VOLTAR AO TOPO
+// =========================================================
+
+const topBtn = document.createElement('button');
+topBtn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+topBtn.style.cssText = 'position:fixed;bottom:30px;right:30px;width:60px;height:60px;border:none;border-radius:16px;cursor:pointer;z-index:9999;font-size:20px;display:none;background:linear-gradient(135deg, #ff6a00, #ff8f3c);color:white;font-weight:bold;transition:all .35s ease;box-shadow:0 10px 35px rgba(255,106,0,.3);backdrop-filter:blur(10px)';
+document.body.appendChild(topBtn);
+
+window.addEventListener('scroll',() => {
+  topBtn.style.display = window.scrollY > 500 ? 'block' : 'none';
+});
+
+topBtn.addEventListener('mouseover', () => {
+  topBtn.style.boxShadow = '0 15px 50px rgba(255,106,0,.5)';
+  topBtn.style.transform = 'scale(1.1) translateY(-5px)';
+});
+
+topBtn.addEventListener('mouseout', () => {
+  topBtn.style.boxShadow = '0 10px 35px rgba(255,106,0,.3)';
+  topBtn.style.transform = 'scale(1) translateY(0)';
+});
+
+topBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+// =========================================================
+// PREVENT BODY OVERFLOW
+// =========================================================
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    closeMenu();
+  }
+});
+
+// =========================================================
+// SMOOTH SCROLL
+// =========================================================
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
 </script>
-<script type="module" src="site-runtime.js?v=20260827-1810"></script><script src="site-pro.js?v=20260827-1810" defer></script>
-<script src="refeito-max.js?v=20260827-1810" defer></script>
-</body></html>
+
+<script type="module" src="site-runtime.js?v=20260828-1101"></script>
+<script src="site-pro.js?v=20260828-1101" defer></script>
+<script src="refeito-max.js?v=20260828-1101" defer></script>
+</body>
+</html>

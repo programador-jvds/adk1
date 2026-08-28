@@ -1,0 +1,18 @@
+KLEIMPAUL — MODO FINAL
+
+Principais mudanças:
+- Motosserras, Roçadeiras, Sopradores e Lavadoras agora usam a MESMA estrutura-fonte das demais páginas de categoria.
+- Produtos estáticos removidos dessas quatro páginas. Catálogo aparece somente quando você cadastrar produtos no ADM.
+- Nova categoria DIVERSOS + diversos.html.
+- Favicon editável e com upload pelo ADM.
+- Fundo principal editável e com upload pelo ADM, com intensidade e cores base de dark/light.
+- Código de cliente (CLI0001...) com geração automática, pesquisa, impressão e exportação.
+- Os botões "Falar agora" e "Ver equipamentos" do hero da home foram removidos.
+- Dark e Light refinados e site menos poluído visualmente.
+- Backup, Cofre, PIN de exclusão, Vendas & Notas, editor total e editor de imagens foram preservados.
+
+Login ADM: diva
+Senha ADM: 151871
+Senha de exclusão permanente: 287541
+
+As regras Firestore desta versão são as mesmas do pacote de Backup Seguro/Vendas, pois não foi criada coleção privada nova.

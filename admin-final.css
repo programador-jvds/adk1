@@ -1,0 +1,10 @@
+/* Kleimpaul Admin — acabamento final 20260828-1101 */
+.settings-logo-upload{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:9px}
+.settings-logo-upload .control{min-width:0}
+.customer-code{display:inline-flex;padding:3px 7px;border-radius:7px;background:rgba(255,106,0,.11);color:#ff9b57;font-size:9px;font-weight:900;letter-spacing:.08em}
+[data-section="settings"] .card{max-width:1120px}
+[data-section="settings"] .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-section="sales"] .customer-row{padding:12px 4px}
+[data-section="sales"] .customer-row strong{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+[data-section="catalog"] .split{align-items:start}
+@media(max-width:760px){.settings-logo-upload{grid-template-columns:1fr}[data-section="settings"] .form-grid{grid-template-columns:1fr}[data-section="settings"] .span2{grid-column:auto}}

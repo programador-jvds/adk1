@@ -16,10 +16,11 @@
     {key:'mangueiras',label:'Mangueiras',href:'mangueiras.html',icon:'fa-bezier-curve',type:'Peças e acessórios',desc:'Mangueiras para manutenção e aplicações técnicas variadas.',aliases:'mangueira tubo flexivel flexível hidráulica hidraulica'},
     {key:'oleos',label:'Óleos e lubrificantes',href:'oleos.html',icon:'fa-oil-can',type:'Peças e acessórios',desc:'Lubrificação e proteção para equipamentos e componentes.',aliases:'oleo óleo lubrificante lubrificação lubrificacao graxa'},
     {key:'pinhao',label:'Pinhões',href:'pinhao.html',icon:'fa-gears',type:'Peças e acessórios',desc:'Pinhões para transmissão e reposição em diferentes conjuntos.',aliases:'pinhao pinhão engrenagem transmissão transmissao'},
-    {key:'polias',label:'Polias',href:'polias.html',icon:'fa-compact-disc',type:'Peças e acessórios',desc:'Polias e componentes para sistemas de transmissão.',aliases:'polia correia transmissão transmissao eixo'}
+    {key:'polias',label:'Polias',href:'polias.html',icon:'fa-compact-disc',type:'Peças e acessórios',desc:'Polias e componentes para sistemas de transmissão.',aliases:'polia correia transmissão transmissao eixo'},
+    {key:'diversos',label:'Diversos',href:'diversos.html',icon:'fa-boxes-stacked',type:'Produtos diversos',desc:'Produtos variados, utilidades e itens especiais.',aliases:'diversos outros produto utilidade geral'}
   ];
 
-  const MOTO_MODELS = ['MS 162','MS 172','MS 172 C-BE','MS 182','MS 194 T','MS 212','MS 250','MS 260','MS 363','MS 382','MS 462','MS 661','MSE 141 C-Q','MSE 170 C-BQ'];
+  const MOTO_MODELS = [];
   const state = {dynamic:[], catalogLoaded:false, catalogLoading:false, activeIndex:-1};
 
   const $=(s,r=document)=>r.querySelector(s);
@@ -91,7 +92,7 @@
         </div>
         <div class="cms-search-suggestions" id="cmsSearchSuggestions">
           <span>Buscas rápidas:</span>
-          <button data-search-term="motosserras">Motosserras</button><button data-search-term="rolamentos">Rolamentos</button><button data-search-term="correias">Correias</button><button data-search-term="óleos">Óleos</button>
+          <button data-search-term="motosserras">Motosserras</button><button data-search-term="rolamentos">Rolamentos</button><button data-search-term="diversos">Diversos</button><button data-search-term="óleos">Óleos</button>
         </div>
         <div class="cms-search-meta"><span id="cmsSearchStatus">Digite para encontrar o que precisa</span><kbd>ESC</kbd></div>
         <div class="cms-search-results" id="cmsSearchResults"></div>
@@ -173,7 +174,7 @@
     const host=$('.hero-content'); if(!host)return;
     const finder=document.createElement('div');finder.className='cms-hero-finder';finder.dataset.cmsUi='hero-search';
     finder.innerHTML=`<button class="cms-hero-search" type="button"><i class="fa-solid fa-magnifying-glass"></i><span><strong>O que você procura?</strong><small>Motosserras, peças, rolamentos, óleos e muito mais</small></span><kbd>Ctrl K</kbd></button>
-      <div class="cms-hero-chips"><span>Atalhos:</span>${['Motosserras','Correias','Rolamentos','Retentores'].map(x=>`<button type="button" data-term="${x}">${x}</button>`).join('')}</div>`;
+      <div class="cms-hero-chips"><span>Atalhos:</span>${['Motosserras','Correias','Rolamentos','Diversos'].map(x=>`<button type="button" data-term="${x}">${x}</button>`).join('')}</div>`;
     const buttons=$('.hero-buttons',host); (buttons||host.lastElementChild)?.insertAdjacentElement('afterend',finder);
     $('.cms-hero-search',finder).onclick=()=>openSearch();
     $$('[data-term]',finder).forEach(x=>x.onclick=()=>openSearch(x.dataset.term));

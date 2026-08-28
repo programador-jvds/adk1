@@ -95,8 +95,13 @@ function money(v){
 function normalizeWhatsapp(value){
   return String(value||'').replace(/\D/g,'');
 }
+
+let lastSiteSettings={};
+async function applySiteSurfaceSettings(s={}){lastSiteSettings=s||{};const root=document.documentElement,body=document.body;if(s.darkBg)root.style.setProperty('--cms-user-dark-bg',s.darkBg);if(s.lightBg)root.style.setProperty('--cms-user-light-bg',s.lightBg);if(s.faviconUrl){const href=await resolveMedia(s.faviconUrl);let links=[...document.querySelectorAll('link[rel~="icon"]')];if(!links.length){const link=document.createElement('link');link.rel='icon';document.head.appendChild(link);links=[link]}links.forEach(link=>link.href=href)}if(body){if(s.backgroundUrl){const url=await resolveMedia(s.backgroundUrl),opacity=Math.max(0,Math.min(100,Number(s.backgroundOpacity??18)))/100,dark=body.classList.contains('dark'),shade=dark?Math.max(.38,.86-opacity*.55):Math.max(.56,.94-opacity*.42);body.style.setProperty('background-image',`linear-gradient(rgba(${dark?'7,11,17':'243,245,248'},${shade}),rgba(${dark?'7,11,17':'243,245,248'},${shade})),url("${cssUrlValue(url)}")`,'important');body.style.setProperty('background-size','cover','important');body.style.setProperty('background-position','center top','important');body.style.setProperty('background-attachment','fixed','important');body.classList.add('cms-custom-site-bg')}else{body.style.removeProperty('background-image');body.style.removeProperty('background-size');body.style.removeProperty('background-position');body.style.removeProperty('background-attachment');body.classList.remove('cms-custom-site-bg')}}}
+window.addEventListener('kleimpaul:theme',()=>applySiteSurfaceSettings(lastSiteSettings));
 async function applyGlobalSettings(s={}){
   const root=document.documentElement;
+  await applySiteSurfaceSettings(s);
   if(s.accent) root.style.setProperty('--cms-accent',s.accent), root.style.setProperty('--orange',s.accent);
   if(s.accent2) root.style.setProperty('--cms-accent-2',s.accent2), root.style.setProperty('--orange-light',s.accent2);
   if(s.radius) root.style.setProperty('--cms-radius',`${Number(s.radius)}px`);
