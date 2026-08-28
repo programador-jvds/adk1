@@ -1,0 +1,24 @@
+RETENTORES SABÓ × ARCA — CONSULTA TÉCNICA
+
+A página Retentores agora pesquisa por:
+- Código Sabó
+- Código ARCA / referência
+- Ø Eixo
+- Ø Alojamento
+- Altura
+- Orientação
+- Tipo / linha
+
+ADM > Catálogos públicos > Retentores:
+- cadastro individual com campos técnicos;
+- importação em massa CSV/TXT;
+- atualização de referência existente pelo par Sabó + ARCA;
+- modelo CSV incluído no pacote.
+
+Formato recomendado:
+sabo;arca;eixo;alojamento;altura;orientacao;tipo;linha
+
+IMPORTANTE SOBRE A BASE COMPLETA:
+O material do projeto não continha uma base completa e atual de equivalências. Foi localizada publicamente a Atualização 2016 do Catálogo ARCA, que declara conter as tabelas "Código Sabó X Código ARCA" e "Tabela de Medidas". A própria SABÓ informa que seus catálogos são atualizados conforme novos lançamentos. Por isso esta versão NÃO inventa nem apresenta uma lista antiga como se fosse o catálogo atual completo.
+
+Para carregar todos os itens da tabela que você utiliza hoje, exporte/obtenha a tabela atual do fornecedor e importe pelo ADM. O sistema está pronto para milhares de referências em lotes.

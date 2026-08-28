@@ -966,6 +966,7 @@ section{
 <link rel="stylesheet" href="site-ultimate.css?v=20260828-1101">
 <link rel="stylesheet" href="site-evolution.css?v=20260828-1101">
 <link rel="stylesheet" href="site-theme-v2.css?v=20260828-1101"><link rel="stylesheet" href="site-final.css?v=20260828-1101">
+<link rel="stylesheet" href="retentores-pro.css?v=20260828-ret1">
 </head>
 
 <body class="dark">
@@ -1071,6 +1072,45 @@ retentores de
 
 </div>
 
+</section>
+
+
+<!-- CATÁLOGO TÉCNICO SABÓ / ARCA -->
+<section class="ret-catalog-section" id="catalogo-retentores">
+  <div class="container">
+    <div class="ret-head">
+      <div>
+        <span class="ret-kicker">CONSULTA TÉCNICA</span>
+        <h2>Retentores <strong>Sabó</strong> por medida e referência</h2>
+        <p>Pesquise pelo código Sabó, código de referência ARCA ou pelas medidas do retentor.</p>
+      </div>
+      <div class="ret-counter"><strong id="retTotal">0</strong><span>referências</span></div>
+    </div>
+
+    <div class="ret-search-card">
+      <div class="ret-search-main">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="retBusca" autocomplete="off" placeholder="Código Sabó, código ARCA ou qualquer medida...">
+        <button type="button" id="retLimparBusca" title="Limpar pesquisa"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="ret-filters">
+        <label><span>Ø Eixo</span><input id="retEixo" inputmode="decimal" placeholder="Ex.: 30"></label>
+        <label><span>Ø Alojamento</span><input id="retAloj" inputmode="decimal" placeholder="Ex.: 62"></label>
+        <label><span>Altura</span><input id="retAltura" inputmode="decimal" placeholder="Ex.: 10"></label>
+        <label><span>Orientação</span><select id="retOrient"><option value="">Todas</option><option>LI</option><option>LD</option><option>BI</option><option>BD</option><option>N</option></select></label>
+      </div>
+      <div class="ret-search-meta"><span id="retResultado">Nenhuma referência cadastrada ainda.</span><button type="button" id="retReset"><i class="fa-solid fa-rotate-left"></i> Limpar filtros</button></div>
+    </div>
+
+    <div class="ret-table-shell">
+      <div class="ret-table-scroll">
+        <table class="ret-table">
+          <thead><tr><th>Código Sabó</th><th>Código ARCA</th><th>Ø Eixo</th><th>Ø Alojamento</th><th>Altura</th><th>Orientação</th><th>Tipo</th></tr></thead>
+          <tbody id="retRows"><tr><td colspan="7" class="ret-empty">Cadastre ou importe as referências no painel administrativo.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- =========================================================
@@ -1302,8 +1342,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 </script>
 
-<script type="module" src="site-runtime.js?v=20260828-1101"></script>
+<script type="module" src="site-runtime.js?v=20260828-ret2"></script>
 <script src="site-pro.js?v=20260828-1101" defer></script>
 <script src="refeito-max.js?v=20260828-1101" defer></script>
+<script src="retentores-pro.js?v=20260828-ret1"></script>
 </body>
 </html>

@@ -220,6 +220,11 @@ function specArray(x){
   return [];
 }
 function renderCatalogRows(rows){
+  if(PAGE==='retentores'){
+    window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
+    setTimeout(()=>{applyCachedOverrides();applyGlobalImageReplacements(document)},0);
+    return;
+  }
   if(PAGE==='motosserras' && typeof window.kleimpaulSetMotosserras==='function'){
     window.kleimpaulSetMotosserras(rows.map((x,i)=>({id:x.slug||x.id||i+1,name:x.name||x.title||'Produto',price:Number(x.price||0),power:Number(x.power||0),image:x.image||'imagens/logo.png',info:specArray(x)})));
     window.dispatchEvent(new CustomEvent('kleimpaul:catalog',{detail:{category:PAGE,rows}}));
