@@ -1094,19 +1094,21 @@ retentores de
         <button type="button" id="retLimparBusca" title="Limpar pesquisa"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="ret-filters">
-        <label><span>Ø Eixo</span><input id="retEixo" inputmode="decimal" placeholder="Ex.: 30"></label>
-        <label><span>Ø Alojamento</span><input id="retAloj" inputmode="decimal" placeholder="Ex.: 62"></label>
-        <label><span>Altura</span><input id="retAltura" inputmode="decimal" placeholder="Ex.: 10"></label>
+        <label><span>Código Sabó</span><input id="retSabo" autocomplete="off" placeholder="Ex.: 00912-BRG"></label>
+        <label><span>Código ARCA</span><input id="retArca" autocomplete="off" placeholder="Ex.: 5102"></label>
+        <label><span>Ø Eixo</span><input id="retEixo" inputmode="decimal" placeholder="Ex.: 35"></label>
+        <label><span>Ø Alojamento</span><input id="retAloj" inputmode="decimal" placeholder="Ex.: 52"></label>
+        <label><span>Altura</span><input id="retAltura" inputmode="decimal" placeholder="Ex.: 12"></label>
         <label><span>Orientação</span><select id="retOrient"><option value="">Todas</option><option>LI</option><option>LD</option><option>BI</option><option>BD</option><option>N</option></select></label>
       </div>
-      <div class="ret-search-meta"><span id="retResultado">Nenhuma referência cadastrada ainda.</span><button type="button" id="retReset"><i class="fa-solid fa-rotate-left"></i> Limpar filtros</button></div>
+      <div class="ret-search-meta"><small id="retCatalogMeta" class="ret-catalog-meta">Base técnica</small><span id="retResultado">Carregando catálogo técnico…</span><button type="button" id="retReset"><i class="fa-solid fa-rotate-left"></i> Limpar filtros</button></div>
     </div>
 
     <div class="ret-table-shell">
       <div class="ret-table-scroll">
         <table class="ret-table">
           <thead><tr><th>Código Sabó</th><th>Código ARCA</th><th>Ø Eixo</th><th>Ø Alojamento</th><th>Altura</th><th>Orientação</th><th>Tipo</th></tr></thead>
-          <tbody id="retRows"><tr><td colspan="7" class="ret-empty">Cadastre ou importe as referências no painel administrativo.</td></tr></tbody>
+          <tbody id="retRows"><tr><td colspan="7" class="ret-empty">Carregando catálogo técnico Sabó × ARCA…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -1342,9 +1344,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 </script>
 
-<script type="module" src="site-runtime.js?v=20260828-ret2"></script>
+<script type="module" src="site-runtime.js?v=20260828-final3"></script>
 <script src="site-pro.js?v=20260828-1101" defer></script>
 <script src="refeito-max.js?v=20260828-1101" defer></script>
-<script src="retentores-pro.js?v=20260828-ret1"></script>
+<script src="retentores-pro.js?v=20260828-final3"></script>
 </body>
 </html>

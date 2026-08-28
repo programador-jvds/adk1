@@ -192,7 +192,9 @@ function renderNativeStories(rows){
 function listenHighlights(){
   if(PAGE!=='index') return;
   onSnapshot(collection(db,...company('highlights')),async(snap)=>{
-    let rows=snap.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
+    let rows=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(PAGE!=='retentores') rows=rows.filter(x=>x.active!==false);
+    rows.sort((a,b)=>(a.order||0)-(b.order||0));
     rows=await resolveHighlightRows(rows);
     if(renderNativeStories(rows)){document.querySelector('[data-firestore-highlights]')?.remove();setTimeout(()=>{applyCachedOverrides();applyGlobalImageReplacements(document)},0);return;}
     if(!rows.length)return; // mantém os destaques originais como fallback quando o banco está vazio

@@ -1,0 +1,15 @@
+CORREÇÃO — RETENTORES REFEITO
+
+O sincronizador anterior consultava uma rota que não entregava a tabela completa e,
+por isso, a base inicial ficava reduzida.
+
+Nesta revisão:
+- a coleta usa /produtos?q=<termo>;
+- varre 0 a 9 para cobrir códigos numéricos ARCA/Sabó;
+- reconhece múltiplas referências Sabó no mesmo registro;
+- ignora campos que parecem medida mas não são código Sabó;
+- deduplica aplicações repetidas;
+- agrega informações de aplicação/montadora sem duplicar o mesmo retentor;
+- só aceita a atualização quando encontra uma base consistente;
+- mantém o arquivo anterior em qualquer falha;
+- roda automaticamente no primeiro push e diariamente.

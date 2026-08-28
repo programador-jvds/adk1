@@ -1,0 +1,30 @@
+RETENTORES SABÓ × ARCA — CARGA AUTOMÁTICA
+
+Esta versão NÃO exige importação manual do catálogo.
+
+COMO FUNCIONA
+- Ao publicar os arquivos no GitHub, o workflow .github/workflows/sync-retentores.yml é executado.
+- Ele consulta automaticamente o catálogo público de produtos ARCA por múltiplos termos.
+- Somente referências com Código Sabó reconhecível entram na base.
+- Aplicações repetidas são deduplicadas por Código Sabó + Código ARCA + medidas.
+- O arquivo final fica em data/retentores-sabo-arca.json.
+- A página retentores.html carrega esse arquivo automaticamente.
+- O painel administrativo lê a mesma base e permite personalizações individuais.
+- O processo roda novamente diariamente para captar atualizações.
+
+O USUÁRIO NÃO PRECISA
+- cadastrar cada retentor;
+- importar CSV/TXT;
+- copiar códigos manualmente;
+- criar documentos no Firestore para a base completa.
+
+O Firestore guarda somente alterações/personalizações feitas pelo administrador,
+o que reduz consumo da cota gratuita.
+
+SEGURANÇA DA ATUALIZAÇÃO
+- A nova base só substitui a anterior quando há uma quantidade mínima consistente.
+- O JSON recebe SHA-256.
+- Se a fonte estiver indisponível ou mudar de estrutura, a base anterior é preservada.
+- O workflow valida o arquivo antes de fazer commit.
+
+O importador manual permanece escondido em "Avançado" apenas como ferramenta de emergência.
